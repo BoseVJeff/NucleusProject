@@ -8,7 +8,7 @@ namespace NucleusProject
 {
     public class Values
     {
-        private static readonly string baseDir = @"C:Path\To\NucleusProject\NucleusProject\";
+        private static readonly string baseDir = @"C:\Users\jeffb\Desktop\dev\csharp\NucleusProject\NucleusProject\";
 
         public static string ConnectionString { get {
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
