@@ -8,14 +8,12 @@ namespace NucleusProject
 {
     public class Values
     {
-        static readonly string connString = @"Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=C:\Users\jeffb\Desktop\dev\csharp\NucleusProject\NucleusProject\App_Data\NucleusDatabase.mdf;Integrated Security=True";
-
-        private static readonly string baseDir = @"C:\Users\jeffb\Desktop\dev\csharp\NucleusProject\NucleusProject\";
+        private static readonly string baseDir = @"C:Path\To\NucleusProject\NucleusProject\";
 
         public static string ConnectionString { get {
                 SqlConnectionStringBuilder builder = new SqlConnectionStringBuilder();
                 builder.DataSource = @"(LocalDB)\MSSQLLocalDB";
-                builder.AttachDBFilename = baseDir+ "App_Data\\NucleusDatabase.mdf";
+                builder.AttachDBFilename = baseDir+ @"App_Data\NucleusDatabase.mdf";
                 builder.IntegratedSecurity= true;
 
                 return builder.ToString();
