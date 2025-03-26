@@ -10,14 +10,23 @@ namespace NucleusProject
     public partial class ScheduleList : System.Web.UI.Page
     {
         ScheduleData scheduleData;
+        bool forceReload = false;
         protected void Page_Load(object sender, EventArgs e)
         {
-            scheduleData = new ScheduleData();
-            scheduleData.Sync();
+            // Load data from DB only when forced or for a fresh (ie. no-Postback) page request
+            if (forceReload||!Page.IsPostBack)
+            {
+                // Get data
+                scheduleData = new ScheduleData();
+                scheduleData.setCurrentWeek();
+                //Response.Write(scheduleData.from);
+                scheduleData.Sync();
 
-            GV_Schedule.DataSource = scheduleData.dataSet;
-            GV_Schedule.DataBind();
-            GV_Schedule.HeaderRow.TableSection=TableRowSection.TableHeader;
+                // Link data to Gridview
+                GV_Schedule.DataSource = scheduleData.dataSet;
+                GV_Schedule.DataBind();
+                GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
+            }
         }
     }
 }
