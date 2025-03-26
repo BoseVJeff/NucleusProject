@@ -18,6 +18,14 @@
                     <asp:Label runat="server" Text='<%# Eval("Name") %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
+            <asp:TemplateField>
+                <HeaderTemplate>
+                    Admission Year
+                </HeaderTemplate>
+                <ItemTemplate>
+                    <asp:Label runat="server" Text='<%# Eval("Ad_Year") %>'></asp:Label>
+                </ItemTemplate>
+            </asp:TemplateField>
         </Columns>
     </asp:GridView>
 </asp:Content>

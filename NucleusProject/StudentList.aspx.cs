@@ -10,10 +10,10 @@ namespace NucleusProject
 {
     public partial class AttendanceDaily : System.Web.UI.Page
     {
-        Student student;
+        StudentData student;
         protected void Page_Load(object sender, EventArgs e)
         {
-            this.student = new Student();
+            this.student = new StudentData();
             student.Sync();
 
             // Populate Gridview

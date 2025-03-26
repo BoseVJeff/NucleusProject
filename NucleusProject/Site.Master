@@ -12,6 +12,8 @@
         <%: Scripts.Render("~/bundles/modernizr") %>
     </asp:PlaceHolder>
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
@@ -56,9 +58,8 @@
         <div class="container body-content">
             <asp:ContentPlaceHolder ID="MainContent" runat="server">
             </asp:ContentPlaceHolder>
-            <footer class="fixed-bottom">
-                <hr />
-                <p class="text-center">Made by Vineet, Arpan, Mohit</p>
+            <footer class="sticky-bottom card">
+                <p class="text-center card-title container-fluid">Made by Vineet, Arpan, Mohit</p>
             </footer>
         </div>
     </form>
