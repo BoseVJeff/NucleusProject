@@ -17,7 +17,7 @@ namespace NucleusProject
             if (forceReload||!Page.IsPostBack)
             {
                 // Get data
-                scheduleData = new ScheduleData();
+                scheduleData = new ScheduleData(3); // TODO: Set this from session
                 scheduleData.setCurrentWeek();
                 //Response.Write(scheduleData.from);
                 scheduleData.Sync();
