@@ -109,6 +109,7 @@
     </Content>
     <Content Include="Attendance.aspx" />
     <Content Include="CourseList.aspx" />
+    <Content Include="IconsDemo.aspx" />
     <Content Include="ScheduleList.aspx" />
     <Content Include="StudentList.aspx" />
     <Content Include="Contact.aspx" />
@@ -217,6 +218,13 @@
     </Compile>
     <Compile Include="CourseList.aspx.designer.cs">
       <DependentUpon>CourseList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="IconsDemo.aspx.cs">
+      <DependentUpon>IconsDemo.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="IconsDemo.aspx.designer.cs">
+      <DependentUpon>IconsDemo.aspx</DependentUpon>
     </Compile>
     <Compile Include="ScheduleList.aspx.cs">
       <DependentUpon>ScheduleList.aspx</DependentUpon>

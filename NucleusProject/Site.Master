@@ -17,9 +17,17 @@
     <webopt:bundlereference runat="server" path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
+    <style>
+        html, body {
+            margin:0;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
 </head>
-<body>
-    <form runat="server">
+<body class="">
+    <form runat="server" class="">
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
@@ -56,8 +64,10 @@
             </div>
         </nav>
         <div class="container body-content">
-            <asp:ContentPlaceHolder ID="MainContent" runat="server">
-            </asp:ContentPlaceHolder>
+            <div style="padding-bottom: 0.5rem;">
+                <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                </asp:ContentPlaceHolder>
+            </div>
             <footer class="sticky-bottom card">
                 <p class="text-center card-title container-fluid">Made by Vineet, Arpan, Mohit</p>
             </footer>
