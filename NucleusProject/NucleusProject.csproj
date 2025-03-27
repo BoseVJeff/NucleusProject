@@ -107,6 +107,7 @@
     <Content Include="App_Data\NucleusDatabase_log.ldf">
       <DependentUpon>NucleusDatabase.mdf</DependentUpon>
     </Content>
+    <Content Include="Attendance.aspx" />
     <Content Include="CourseList.aspx" />
     <Content Include="ScheduleList.aspx" />
     <Content Include="StudentList.aspx" />
@@ -203,6 +204,13 @@
       <DependentUpon>About.aspx</DependentUpon>
     </Compile>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Attendance.aspx.cs">
+      <DependentUpon>Attendance.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Attendance.aspx.designer.cs">
+      <DependentUpon>Attendance.aspx</DependentUpon>
+    </Compile>
     <Compile Include="CourseList.aspx.cs">
       <DependentUpon>CourseList.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>

@@ -17,7 +17,7 @@ namespace NucleusProject
             student.Sync();
 
             // Populate Gridview
-            GridView1.DataSource = student.dataSet;
+            GridView1.DataSource = student;
             GridView1.DataBind();
             GridView1.HeaderRow.TableSection=TableRowSection.TableHeader;
         }

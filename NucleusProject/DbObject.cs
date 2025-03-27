@@ -7,9 +7,121 @@ using System.Web;
 
 namespace NucleusProject
 {
+    class AttendanceCheck
+    {
+        public int presentCnt=0;
+        public int totalCnt=-1;
+        public int allClassCnt = -1;
+
+        public AttendanceCheck() { }
+    }
     abstract public class DbObject
     {
         abstract public void Sync(string connectionString=null);
+    }
+
+    class AttendanceData:DbObject
+    {
+        public DataSet dataSet;
+
+        int studentId;
+        int presentCount=0;
+        int totalCount = 0;
+        public Dictionary<string,AttendanceCheck> subjectAttendanceMap = new Dictionary<string,AttendanceCheck>();
+
+        public AttendanceData(int student) {
+            this.studentId = student;
+            dataSet = new DataSet();
+        }
+
+        public override void Sync(string connectionString = null)
+        {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            const string cmd2 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Map_Trn_Schedule_Student_Attendance.""Attendance""=1 GROUP BY Mst_Course.""Name""";
+            const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" GROUP BY Mst_Course.""Name""";
+            const string cmd3 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Trn_Schedule.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id GROUP BY Mst_Course.""Name""";
+            SqlConnection connection = new SqlConnection(connStr);
+            try
+            {
+                SqlCommand sqlCommand = new SqlCommand(cmd, connection);
+                sqlCommand.Parameters.Add("@student", SqlDbType.BigInt);
+                sqlCommand.Parameters["@student"].Value = this.studentId;
+
+                sqlCommand.CommandText = cmd;
+
+                connection.Open();
+
+                SqlDataReader reader= sqlCommand.ExecuteReader();
+                Console.WriteLine("CMD 1:");
+                while (reader.Read())
+                {
+                    //List<int> list = new List<int>(2);
+                    AttendanceCheck check = new AttendanceCheck();
+                    check.totalCnt = reader.GetInt32(1);
+                    //list[0]=reader.GetInt32(1);
+                    this.subjectAttendanceMap.Add(reader.GetString(0), check);
+                    //Console.WriteLine(reader.GetIn(0));
+                    //this.presentCount = reader.GetInt32(0);
+                }
+                reader.Close();
+                // At this point, all subjects should have an entry in the Dictionary
+
+                sqlCommand.CommandText= cmd2;
+
+                reader = sqlCommand.ExecuteReader();
+                while (reader.Read())
+                {
+                    this.subjectAttendanceMap[reader.GetString(0)].presentCnt=reader.GetInt32(1);
+                }
+                reader.Close();
+
+                sqlCommand.CommandText= cmd3;
+
+                reader=sqlCommand.ExecuteReader();
+                while (reader.Read()) {
+                    this.subjectAttendanceMap[reader.GetString(0)].allClassCnt=reader.GetInt32(1);
+                }
+            }
+            finally
+            {
+                if (connection.State != ConnectionState.Closed)
+                {
+                    connection.Close();
+                }
+            }
+            // Convert dictionary to datatable
+            dataSet.Clear();
+            DataTable dt = new DataTable();
+            dataSet.AcceptChanges();
+
+            // Get back to a known state, as Sync is expected to clean and refetch al data
+            dt.Reset();
+
+            // Setup columns
+            dt.Columns.Add("Course",typeof(String));
+            dt.Columns.Add("Present", typeof(int));
+            dt.Columns.Add("Total",typeof(int));
+            dt.Columns.Add("All",typeof(int));
+
+            // Add data to DataTable
+            foreach (var item in this.subjectAttendanceMap.ToArray())
+            {
+                DataRow row= dt.NewRow();
+                row["Course"] = item.Key;
+                row["Present"] = item.Value.presentCnt;
+                row["Total"]=item.Value.totalCnt;
+                row["All"] = item.Value.allClassCnt;
+                dt.Rows.Add(row);
+            }
+            dataSet.Tables.Add(dt);
+            dataSet.AcceptChanges();
+
+            return;
+        }
     }
 
     /// <summary>
