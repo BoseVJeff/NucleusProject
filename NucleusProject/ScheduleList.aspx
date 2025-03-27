@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ScheduleList.aspx.cs" Inherits="NucleusProject.ScheduleList" %>
+﻿<%@ Page Title="Schedule" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ScheduleList.aspx.cs" Inherits="NucleusProject.ScheduleList" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script runat="server">
         // Generate icon for attendance
