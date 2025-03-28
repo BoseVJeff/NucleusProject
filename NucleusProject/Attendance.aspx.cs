@@ -12,7 +12,11 @@ namespace NucleusProject
         AttendanceData attendanceData;
         protected void Page_Load(object sender, EventArgs e)
         {
-            int studentId = 3;
+            if (Session["id"] == null)
+            {
+                Response.Redirect("~/");
+            }
+            int studentId = (int) Session["id"];
 
             attendanceData = new AttendanceData(studentId);
             attendanceData.Sync();

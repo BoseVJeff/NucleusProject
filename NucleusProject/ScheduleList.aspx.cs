@@ -13,20 +13,20 @@ namespace NucleusProject
         bool forceReload = false;
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Load data from DB only when forced or for a fresh (ie. no-Postback) page request
-            if (forceReload||!Page.IsPostBack)
+            if (Session["id"]==null)
             {
-                // Get data
-                scheduleData = new ScheduleData(3); // TODO: Set this from session
-                scheduleData.setCurrentWeek();
-                //Response.Write(scheduleData.from);
-                scheduleData.Sync();
-
-                // Link data to Gridview
-                GV_Schedule.DataSource = scheduleData.dataSet;
-                GV_Schedule.DataBind();
-                GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
+                Response.Redirect("~/");
             }
+            // Get data
+            scheduleData = new ScheduleData((int) Session["id"]);
+            scheduleData.setCurrentWeek();
+            //Response.Write(scheduleData.from);
+            scheduleData.Sync();
+
+            // Link data to Gridview
+            GV_Schedule.DataSource = scheduleData.dataSet;
+            GV_Schedule.DataBind();
+            GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
         }
     }
 }
