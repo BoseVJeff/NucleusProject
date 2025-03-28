@@ -68,7 +68,7 @@
                 <asp:ContentPlaceHolder ID="MainContent" runat="server">
                 </asp:ContentPlaceHolder>
             </div>
-            <footer class="sticky-bottom card">
+            <footer class="sticky-bottom card shadow-sm">
                 <p class="text-center card-title container-fluid">Made by Vineet, Arpan, Mohit</p>
             </footer>
         </div>
