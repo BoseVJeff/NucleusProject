@@ -191,15 +191,17 @@ namespace NucleusProject
             {
                 connStr = Values.ConnectionString;
             }
-            const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", Mst_Class.""Name"" AS ""Class"", E_Days.""Name"" AS ""Day"", E_Class_Status.""Name"" AS ""Status"", Mst_Faculty.""Name"" AS ""Faculty"", Mst_Faculty.""Email"" AS ""Email"", Mst_Faculty.""Phone"" AS ""Phone"", ""Start"", ""End"", E_Attendance.""Name"" AS ""Attendance"" FROM Trn_Schedule JOIN E_Class_Status ON Trn_Schedule.""Status""=E_Class_Status.Id JOIN E_Days ON Trn_Schedule.""Day""=E_Days.Id JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id JOIN Mst_Class ON Trn_Schedule.""Class""=Mst_Class.""Id"" JOIN Mst_Faculty ON Trn_Schedule.""Faculty""=Mst_Faculty.""Id"" LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=3 LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Trn_Schedule.""Start"">=@start AND Trn_Schedule.""End""<=@end ORDER BY Trn_Schedule.""Start"" ASC";
+            const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", Mst_Class.""Name"" AS ""Class"", E_Days.""Name"" AS ""Day"", E_Class_Status.""Name"" AS ""Status"", Mst_Faculty.""Name"" AS ""Faculty"", Mst_Faculty.""Email"" AS ""Email"", Mst_Faculty.""Phone"" AS ""Phone"", ""Start"", ""End"", E_Attendance.""Name"" AS ""Attendance"" FROM Trn_Schedule JOIN E_Class_Status ON Trn_Schedule.""Status""=E_Class_Status.Id JOIN E_Days ON Trn_Schedule.""Day""=E_Days.Id JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id JOIN Mst_Class ON Trn_Schedule.""Class""=Mst_Class.""Id"" JOIN Mst_Faculty ON Trn_Schedule.""Faculty""=Mst_Faculty.""Id"" LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Trn_Schedule.""Start"">=@start AND Trn_Schedule.""End""<=@end ORDER BY Trn_Schedule.""Start"" ASC";
             SqlConnection connection = new SqlConnection(connStr);
             try
             {
                 SqlCommand sqlCommand = new SqlCommand(cmd, connection);
                 sqlCommand.Parameters.Add("@start",SqlDbType.BigInt);
                 sqlCommand.Parameters.Add("@end", SqlDbType.BigInt);
+                sqlCommand.Parameters.Add("@student", SqlDbType.BigInt);
                 sqlCommand.Parameters["@start"].Value=this.from.ToUnixTimeSeconds();
                 sqlCommand.Parameters["@end"].Value=this.to.ToUnixTimeSeconds();
+                sqlCommand.Parameters["@student"].Value = this.studentId;
 
                 sqlCommand.CommandText = cmd;
                 SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
