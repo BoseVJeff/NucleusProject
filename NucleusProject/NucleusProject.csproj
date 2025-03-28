@@ -110,6 +110,7 @@
     <Content Include="Attendance.aspx" />
     <Content Include="CourseList.aspx" />
     <Content Include="IconsDemo.aspx" />
+    <Content Include="Logout.aspx" />
     <Content Include="ScheduleList.aspx" />
     <Content Include="StudentList.aspx" />
     <Content Include="Contact.aspx" />
@@ -225,6 +226,13 @@
     </Compile>
     <Compile Include="IconsDemo.aspx.designer.cs">
       <DependentUpon>IconsDemo.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Logout.aspx.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Logout.aspx.designer.cs">
+      <DependentUpon>Logout.aspx</DependentUpon>
     </Compile>
     <Compile Include="ScheduleList.aspx.cs">
       <DependentUpon>ScheduleList.aspx</DependentUpon>
