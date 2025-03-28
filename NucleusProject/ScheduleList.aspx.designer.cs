@@ -15,6 +15,33 @@ namespace NucleusProject
     {
 
         /// <summary>
+        /// MonthBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button MonthBtn;
+
+        /// <summary>
+        /// WeekBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button WeekBtn;
+
+        /// <summary>
+        /// DayBtn control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button DayBtn;
+
+        /// <summary>
         /// GV_Schedule control.
         /// </summary>
         /// <remarks>

@@ -15,6 +15,11 @@ namespace NucleusProject
             if (Session["id"]!=null)
             {
                 Response.Redirect("~/Attendance");
+                ((HyperLink)Master.FindControl("LogoutLink")).Visible = true;
+            } else
+            {
+                // Hide the logout button
+                ((HyperLink)Master.FindControl("LogoutLink")).Visible = false;
             }
         }
 

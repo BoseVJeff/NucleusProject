@@ -55,7 +55,12 @@
             }
         }
     </script>
-    <asp:GridView ID="GV_Schedule" runat="server" AutoGenerateColumns="false" CssClass="table table-hover">
+    <div class="btn-group mb-1">
+        <asp:Button runat="server" Text="Month" CssClass="btn btn-primary" OnClick="Unnamed_Click" ID="MonthBtn" />
+        <asp:Button runat="server" Text="Week" CssClass="btn btn-primary" OnClick="Unnamed_Click1" ID="WeekBtn" />
+        <asp:Button runat="server" Text="Day" CssClass="btn btn-primary" OnClick="Unnamed_Click2" ID="DayBtn" />
+    </div>
+    <asp:GridView ID="GV_Schedule" runat="server" AutoGenerateColumns="false" CssClass="table table-hover ">
         <Columns>
             <asp:TemplateField HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
                 <HeaderTemplate>
