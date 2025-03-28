@@ -64,49 +64,39 @@
             }
         }
     </script>
-    <asp:GridView ID="AttendanceTable" runat="server" CssClass="table table-hover" AutoGenerateColumns="false">
-        <Columns>
-            <asp:TemplateField>
-                <HeaderTemplate>
-                    Course
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# Eval("Course") %>'></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateField>
-            <asp:TemplateField ItemStyle-CssClass="text-center" HeaderStyle-CssClass="text-center">
-                <HeaderTemplate>
-                    Present
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# Eval("Present") %>'></asp:Label>
-                    <asp:Label runat="server" Text='<%# getCurrentRatio() %>'></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateField>
-            <asp:TemplateField ItemStyle-CssClass="text-center" HeaderStyle-CssClass="text-center">
-                <HeaderTemplate>
-                    Conducted
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# Eval("Total") %>'></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateField>
-            <asp:TemplateField ItemStyle-CssClass="text-center" HeaderStyle-CssClass="text-center">
-                <HeaderTemplate>
-                    Total
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# Eval("All") %>'></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateField>
-            <asp:TemplateField ItemStyle-CssClass="text-center" HeaderStyle-CssClass="text-center">
-                <HeaderTemplate>
-                    Ratio Range
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# getMaxRatio() %>'></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateField>
-        </Columns>
-    </asp:GridView>
+    <div class="d-flex flex-row flex-wrap justify-content-between" style="gap:1rem">
+    <asp:Repeater runat="server" ID="AttendanceRepeater">
+        <ItemTemplate>
+            <div class="card bg-light shadow-sm" style="width: 18rem;">
+            <div class="card-body">
+    <h5 class="card-title">
+        <asp:Label runat="server" Text='<%# Eval("Course") %>'></asp:Label>
+    </h5>
+    <p class="card-text">
+        Attendance Data
+    </p>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item bg-light">
+            Present:
+            <asp:Label runat="server" Text='<%# Eval("Present") %>'></asp:Label>
+            <asp:Label runat="server" Text='<%# getCurrentRatio() %>'></asp:Label>
+        </li>
+        <li class="list-group-item bg-light">
+            Classes marked in:
+            <asp:Label runat="server" Text='<%# Eval("Total") %>'></asp:Label>
+        </li>
+        <li class="list-group-item bg-light">
+            All classes:
+            <asp:Label runat="server" Text='<%# Eval("All") %>'></asp:Label>
+        </li>
+        <li class="list-group-item bg-light">
+            Attendance Range:
+            <asp:Label runat="server" Text='<%# getMaxRatio() %>'></asp:Label>
+        </li>
+      </ul>
+  </div>
+                </div>
+        </ItemTemplate>
+    </asp:Repeater>
+        </div>
 </asp:Content>

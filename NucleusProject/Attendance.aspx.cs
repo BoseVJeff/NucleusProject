@@ -17,10 +17,10 @@ namespace NucleusProject
             attendanceData = new AttendanceData(studentId);
             attendanceData.Sync();
 
-            //Response.Write(attendanceData.subjectAttendanceMap.ToString());
-            AttendanceTable.DataSource= attendanceData.dataSet;
-            AttendanceTable.DataBind();
-            AttendanceTable.HeaderRow.TableSection = TableRowSection.TableHeader;
+            // Data table
+            AttendanceRepeater.DataSource= attendanceData.dataSet;
+            AttendanceRepeater.DataBind();
+            AttendanceRepeater.EnableViewState = false;
         }
     }
 }
