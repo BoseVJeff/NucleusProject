@@ -73,24 +73,25 @@
         <asp:Label runat="server" Text='<%# Eval("Course") %>'></asp:Label>
     </h5>
     <p class="card-text">
-        Attendance Data
+        Course Code
     </p>
     <ul class="list-group list-group-flush">
         <li class="list-group-item bg-light">
             Present:
             <asp:Label runat="server" Text='<%# Eval("Present") %>'></asp:Label>
+            of <asp:Label runat="server" Text='<%# Eval("Total") %>'></asp:Label>
             <asp:Label runat="server" Text='<%# getCurrentRatio() %>'></asp:Label>
         </li>
-        <li class="list-group-item bg-light">
+        <!--<li class="list-group-item bg-light">
             Classes marked in:
             <asp:Label runat="server" Text='<%# Eval("Total") %>'></asp:Label>
-        </li>
+        </li>-->
         <li class="list-group-item bg-light">
-            All classes:
+            Classes In Semester:
             <asp:Label runat="server" Text='<%# Eval("All") %>'></asp:Label>
         </li>
         <li class="list-group-item bg-light">
-            Attendance Range:
+            Attendance Scale:
             <asp:Label runat="server" Text='<%# getMaxRatio() %>'></asp:Label>
         </li>
       </ul>
