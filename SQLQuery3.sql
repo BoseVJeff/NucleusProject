@@ -1,0 +1,1 @@
+﻿SELECT Mst_Course."Name" AS "Name", Mst_Course."Code" AS "Code", Mst_School."Name" AS "School", Mst_School."Short_Name" AS "SchoolShort" FROM Mst_Course JOIN Mst_School ON Mst_Course."School"=Mst_School."Id";
