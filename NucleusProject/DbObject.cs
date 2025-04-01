@@ -12,8 +12,16 @@ namespace NucleusProject
         public int presentCnt=0;
         public int totalCnt=-1;
         public int allClassCnt = -1;
+        public string code = "";
 
         public AttendanceCheck() { }
+    }
+    class CourseDetails
+    {
+        public string code;
+        public string school;
+        public string schoolShort;
+        public CourseDetails() { }
     }
     abstract public class DbObject
     {
@@ -36,14 +44,18 @@ namespace NucleusProject
 
         public override void Sync(string connectionString = null)
         {
+            // TODO: Add support for semester choice
             string connStr = connectionString;
             if (connStr == null)
             {
                 connStr = Values.ConnectionString;
             }
-            const string cmd2 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Map_Trn_Schedule_Student_Attendance.""Attendance""=1 GROUP BY Mst_Course.""Name""";
             const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" GROUP BY Mst_Course.""Name""";
+            const string cmd2 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Map_Trn_Schedule_Student_Attendance.""Attendance""=1 GROUP BY Mst_Course.""Name""";
             const string cmd3 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Trn_Schedule.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id GROUP BY Mst_Course.""Name""";
+            //const string cmd4 = @"SELECT ""Name"",""Code"" FROM Mst_Course";
+            const string cmd4 = @"SELECT Mst_Course.""Name"" AS ""Name"", Mst_Course.""Code"" AS ""Code"", Mst_School.""Name"" AS ""School"", Mst_School.""Short_Name"" AS ""SchoolShort"" FROM Mst_Course JOIN Mst_School ON Mst_Course.""School""=Mst_School.""Id"";";
+            Dictionary<string,CourseDetails> courseCodeMap= new Dictionary<string,CourseDetails>();
             SqlConnection connection = new SqlConnection(connStr);
             try
             {
@@ -62,6 +74,7 @@ namespace NucleusProject
                     //List<int> list = new List<int>(2);
                     AttendanceCheck check = new AttendanceCheck();
                     check.totalCnt = reader.GetInt32(1);
+                    //check.code=reader.GetString(2);
                     //list[0]=reader.GetInt32(1);
                     this.subjectAttendanceMap.Add(reader.GetString(0), check);
                     //Console.WriteLine(reader.GetIn(0));
@@ -85,6 +98,18 @@ namespace NucleusProject
                 while (reader.Read()) {
                     this.subjectAttendanceMap[reader.GetString(0)].allClassCnt=reader.GetInt32(1);
                 }
+                reader.Close();
+
+                sqlCommand.CommandText = cmd4;
+
+                reader=sqlCommand.ExecuteReader();
+                while (reader.Read()) {
+                    CourseDetails details = new CourseDetails();
+                    details.code= reader.GetString(1);
+                    details.school=reader.GetString(2);
+                    details.schoolShort=reader.GetString(3);
+                    courseCodeMap.Add(reader.GetString(0), details);
+                }
             }
             finally
             {
@@ -106,6 +131,9 @@ namespace NucleusProject
             dt.Columns.Add("Present", typeof(int));
             dt.Columns.Add("Total",typeof(int));
             dt.Columns.Add("All",typeof(int));
+            dt.Columns.Add("Code", typeof(string));
+            dt.Columns.Add("School", typeof(string));
+            dt.Columns.Add("SchoolShort", typeof(string));
 
             // Add data to DataTable
             foreach (var item in this.subjectAttendanceMap.ToArray())
@@ -115,6 +143,14 @@ namespace NucleusProject
                 row["Present"] = item.Value.presentCnt;
                 row["Total"]=item.Value.totalCnt;
                 row["All"] = item.Value.allClassCnt;
+                CourseDetails tmp;
+                if(courseCodeMap.TryGetValue(item.Key, out tmp))
+                {
+                    row["Code"] = tmp.code;
+                    row["School"] = tmp.school;
+                    row["SchoolShort"] = tmp.schoolShort;
+                }
+                
                 dt.Rows.Add(row);
             }
             dataSet.Tables.Add(dt);
@@ -159,7 +195,8 @@ namespace NucleusProject
         // Set the range to be the entire current month.
         // Extra work done to set the hours correctly.
         public void setCurrentMonth() {
-            this.to = DateTimeOffset.Now;
+            //this.to = DateTimeOffset.Now;
+            this.to = DateTimeOffset.FromUnixTimeSeconds(1743206399); // Saturday, March 29, 2025 5:29:59 AM GMT+05:30
             // End of last day
             this.to = to.AddHours(-to.Hour).AddHours(24);
             // Last day of month
@@ -192,10 +229,12 @@ namespace NucleusProject
                 connStr = Values.ConnectionString;
             }
             const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", Mst_Class.""Name"" AS ""Class"", E_Days.""Name"" AS ""Day"", E_Class_Status.""Name"" AS ""Status"", Mst_Faculty.""Name"" AS ""Faculty"", Mst_Faculty.""Email"" AS ""Email"", Mst_Faculty.""Phone"" AS ""Phone"", ""Start"", ""End"", E_Attendance.""Name"" AS ""Attendance"" FROM Trn_Schedule JOIN E_Class_Status ON Trn_Schedule.""Status""=E_Class_Status.Id JOIN E_Days ON Trn_Schedule.""Day""=E_Days.Id JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id JOIN Mst_Class ON Trn_Schedule.""Class""=Mst_Class.""Id"" JOIN Mst_Faculty ON Trn_Schedule.""Faculty""=Mst_Faculty.""Id"" LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Trn_Schedule.""Start"">=@start AND Trn_Schedule.""End""<=@end ORDER BY Trn_Schedule.""Start"" ASC";
+            //const string cmd = "SELECT * FROM Mst_Course";
             SqlConnection connection = new SqlConnection(connStr);
             try
             {
                 SqlCommand sqlCommand = new SqlCommand(cmd, connection);
+
                 sqlCommand.Parameters.Add("@start",SqlDbType.BigInt);
                 sqlCommand.Parameters.Add("@end", SqlDbType.BigInt);
                 sqlCommand.Parameters.Add("@student", SqlDbType.BigInt);

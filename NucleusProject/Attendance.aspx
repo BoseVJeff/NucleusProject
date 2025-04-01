@@ -64,16 +64,18 @@
             }
         }
     </script>
-    <div class="d-flex flex-row flex-wrap justify-content-between" style="gap:1rem">
+    <div class="d-flex flex-row flex-wrap justify-content-start" style="gap:1rem">
     <asp:Repeater runat="server" ID="AttendanceRepeater">
         <ItemTemplate>
-            <div class="card bg-light shadow-sm" style="width: 18rem;">
+            <div class="card bg-light shadow-sm" style="width: 24rem;">
             <div class="card-body">
     <h5 class="card-title">
         <asp:Label runat="server" Text='<%# Eval("Course") %>'></asp:Label>
+        <br />
+        <asp:Label runat="server" Text='<%# Eval("Code") %>' CssClass="h6"></asp:Label>
     </h5>
     <p class="card-text">
-        Course Code
+        <asp:Label runat="server" Text='<%# Eval("School") %>'></asp:Label>
     </p>
     <ul class="list-group list-group-flush">
         <li class="list-group-item bg-light">
