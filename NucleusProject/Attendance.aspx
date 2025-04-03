@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Attendance Summary" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Attendance.aspx.cs" Inherits="NucleusProject.Attendance" %>
+<%@ Register Assembly="System.Web.DataVisualization, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Namespace="System.Web.UI.DataVisualization.Charting" TagPrefix="asp" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
     <script runat="server">
         protected string getCurrentRatio()
@@ -65,41 +66,59 @@
         }
     </script>
     <div class="d-flex flex-row flex-wrap justify-content-start" style="gap:1rem">
-    <asp:Repeater runat="server" ID="AttendanceRepeater">
-        <ItemTemplate>
-            <div class="card bg-light shadow-sm" style="width: 24rem;">
-            <div class="card-body">
-    <h5 class="card-title">
-        <asp:Label runat="server" Text='<%# Eval("Course") %>'></asp:Label>
-        <br />
-        <asp:Label runat="server" Text='<%# Eval("Code") %>' CssClass="h6"></asp:Label>
-    </h5>
-    <p class="card-text">
-        <asp:Label runat="server" Text='<%# Eval("School") %>'></asp:Label>
-    </p>
-    <ul class="list-group list-group-flush">
-        <li class="list-group-item bg-light">
-            Present:
-            <asp:Label runat="server" Text='<%# Eval("Present") %>'></asp:Label>
-            of <asp:Label runat="server" Text='<%# Eval("Total") %>'></asp:Label>
-            <asp:Label runat="server" Text='<%# getCurrentRatio() %>'></asp:Label>
-        </li>
-        <!--<li class="list-group-item bg-light">
-            Classes marked in:
-            <asp:Label runat="server" Text='<%# Eval("Total") %>'></asp:Label>
-        </li>-->
-        <li class="list-group-item bg-light">
-            Classes In Semester:
-            <asp:Label runat="server" Text='<%# Eval("All") %>'></asp:Label>
-        </li>
-        <li class="list-group-item bg-light">
-            Attendance Scale:
-            <asp:Label runat="server" Text='<%# getMaxRatio() %>'></asp:Label>
-        </li>
-      </ul>
-  </div>
+        <asp:Repeater runat="server" ID="AttendanceRepeater">
+            <ItemTemplate>
+                <div class="card bg-light shadow-sm" style="width: 24rem;">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <asp:Label runat="server" Text='<%# Eval("Course") %>'></asp:Label>
+                            <br />
+                            <asp:Label runat="server" ID="CourseCode" Text='<%# Eval("Code") %>' CssClass="h6"></asp:Label>
+                        </h5>
+                        <p class="card-text">
+                            <asp:Label runat="server" Text='<%# Eval("School") %>'></asp:Label>
+                        </p>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-6">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item bg-light">
+                                            Present:
+                                            <asp:Label runat="server" Text='<%# Eval("Present") %>'></asp:Label>
+                                            of <asp:Label runat="server" Text='<%# Eval("Total") %>'></asp:Label>
+                                            <asp:Label runat="server" Text='<%# getCurrentRatio() %>'></asp:Label>
+                                        </li>
+                                        <li class="list-group-item bg-light">
+                                            Classes In Semester:
+                                            <asp:Label runat="server" Text='<%# Eval("All") %>'></asp:Label>
+                                        </li>
+                                        <li class="list-group-item bg-light">
+                                            Attendance Scale:
+                                            <asp:Label runat="server" Text='<%# getMaxRatio() %>'></asp:Label>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-6">
+                                    <asp:Chart ID="AttendanceChart" runat="server" Width="256px" Height="256px">
+                                        <Titles>
+                                            <asp:Title Text="Sample Chart"></asp:Title>
+                                        </Titles>
+                                        <Series>
+                                            <asp:Series Name="Series1" ChartType="Doughnut"></asp:Series>
+                                        </Series>
+                                        <Legends>
+                                            <asp:Legend Alignment="Center" Docking="Bottom"></asp:Legend>
+                                        </Legends>
+                                        <ChartAreas>
+                                            <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
+                                        </ChartAreas>
+                                    </asp:Chart>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-        </ItemTemplate>
-    </asp:Repeater>
-        </div>
+            </ItemTemplate>
+        </asp:Repeater>
+    </div>
 </asp:Content>
