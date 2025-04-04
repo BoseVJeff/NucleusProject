@@ -126,7 +126,40 @@ namespace NucleusProject
                 }
                 else
                 {
-                    AttendanceChart.Visible= false;
+                    int i = AttendanceChart.Series["Series1"].Points.AddXY("dummy", 100);
+                    AttendanceChart.Series["Series1"].Points[i].IsValueShownAsLabel = false;
+                   
+
+                    AttendanceChart.Palette = ChartColorPalette.None;
+                    AttendanceChart.PaletteCustomColors = new Color[] {Color.Gray };
+                    AttendanceChart.Series["Series1"].ChartType = SeriesChartType.Doughnut;
+                    AttendanceChart.Series["Series1"]["DoughnutRadius"] = "35";
+                    AttendanceChart.Series["Series1"].IsValueShownAsLabel = false;
+                    ElementPosition position = new ElementPosition();
+                    AttendanceChart.ChartAreas[0].InnerPlotPosition = position;
+
+
+                    AttendanceChart.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+
+                    AttendanceChart.ChartAreas[0].BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+
+
+
+                    //Retrieve the value of getCurrentRatio() for the current item
+                    string currentRatio = "0%";
+                    //Add text annotation to the center of the chart
+                    TextAnnotation annotation = new TextAnnotation();
+                    annotation.Text = currentRatio;
+                    //Center Horizontally
+                    annotation.X = 35;
+                    //Center Vertically
+                    annotation.Y = 42.5;
+                    annotation.Font = new System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold);
+                    annotation.ForeColor = System.Drawing.Color.Black;
+                    annotation.Alignment = ContentAlignment.MiddleCenter;
+                    annotation.AnchorX = 50;
+                    annotation.AnchorY = 50;
+                    AttendanceChart.Annotations.Add(annotation);
                 }
             }
         }

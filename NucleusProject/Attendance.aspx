@@ -79,7 +79,7 @@
                             <asp:Label runat="server" Text='<%# Eval("School") %>'></asp:Label>
                         </p>
                         <div class="container">
-                            <div class="row justify-content-end" style="height:120px">
+                            <div class="row justify-content-end">
                                 <div class="col-7 align-items-center">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item bg-light">
@@ -111,7 +111,7 @@
                                     </asp:Chart>
                                 </div>
                             </div>
-                            <div class="row bg-light" style="left:0;right:0; bottom: 1rem;margin-inline: 1rem;">
+                            <div class="row bg-light">
                                 Attendance Scale 
                                 <div class="progress p-0">
                                     <!-- All classes set here WILL be overridden. Change `baseProgressClass` in the CodeBehind instead. -->
