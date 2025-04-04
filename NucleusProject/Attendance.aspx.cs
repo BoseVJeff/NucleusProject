@@ -32,21 +32,11 @@ namespace NucleusProject
             AttendanceRepeater.DataBind();
             AttendanceRepeater.EnableViewState = false;
 
-            //// Add data points to the chart
-            //Chart1.Series["Series1"].Points.AddXY("Category 1", 76);
-            //Chart1.Series["Series1"].Points.AddXY("Category 2", 56);
-            //Chart1.Series["Series1"].Points.AddXY("Category 3", 88);
-            //Chart1.Series["Series1"].Points.AddXY("Category 4", 65);
-
-            //// Set chart appearance
-            //Chart1.Series["Series1"].Color = System.Drawing.Color.SteelBlue;
-            //Chart1.Series["Series1"].ChartType = SeriesChartType.Doughnut;
+ 
 
             foreach (RepeaterItem item in AttendanceRepeater.Items)
             {
-                //Label LblCode = (Label)item.FindControl("CourseCode"); // Find chart
-
-                //Response.Write(item.ItemIndex + ": " + LblCode.Text + attendanceData.dataSet.Tables[0].Rows[item.ItemIndex]["Course"] + "<br>");
+               
                 // Set values
                 DataRow AttendanceRow = attendanceData.dataSet.Tables[0].Rows[item.ItemIndex];
                 int present = Convert.ToInt32(AttendanceRow["Present"]);
@@ -102,8 +92,7 @@ namespace NucleusProject
                     }
 
 
-                    //AttendanceChart.Series["Series1"].Color = System.Drawing.Color.Green;
-                    //AttendanceChart.PaletteCustomColors = new Color[] { Color.Green, Color.LightGray };
+                    
                     AttendanceChart.Palette = ChartColorPalette.None;
                     AttendanceChart.PaletteCustomColors = new Color[] { Color.FromArgb(25, 135, 84), Color.LightGray };
                     AttendanceChart.Series["Series1"].ChartType = SeriesChartType.Doughnut;
@@ -112,14 +101,11 @@ namespace NucleusProject
                     ElementPosition position = new ElementPosition();
                     AttendanceChart.ChartAreas[0].InnerPlotPosition = position;
 
-                    //Title title=new Title   
-                    //AttendanceChart.Titles
-                    //Legend legend = new Legend();
-                    //AttendanceChart.Legends.Add(legend);
+                    
                     AttendanceChart.BackColor = System.Drawing.Color.FromArgb(248, 249,250);
-                    //AttendanceChart.BackColor = System.Drawing.Color.ForestGreen; 
+                    
                     AttendanceChart.ChartAreas[0].BackColor=System.Drawing.Color.FromArgb(248, 249, 250);
-                    //AttendanceChart.ChartAreas[0].BackColor = System.Drawing.Color.Yellow;
+                    
 
 
                     //Retrieve the value of getCurrentRatio() for the current item
