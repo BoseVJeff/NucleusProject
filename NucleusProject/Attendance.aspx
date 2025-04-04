@@ -79,34 +79,32 @@
                             <asp:Label runat="server" Text='<%# Eval("School") %>'></asp:Label>
                         </p>
                         <div class="container">
-                            <div class="row">
-                                <div class="col-6">
+                            <div class="row justify-content-end">
+                                <div class="col-7 align-items-center">
                                     <ul class="list-group list-group-flush">
                                         <li class="list-group-item bg-light">
                                             Present:
                                             <asp:Label runat="server" Text='<%# Eval("Present") %>'></asp:Label>
                                             of <asp:Label runat="server" Text='<%# Eval("Total") %>'></asp:Label>
-                                            <asp:Label runat="server" Text='<%# getCurrentRatio() %>'></asp:Label>
+                                            <!--<asp:Label runat="server" Text='<%# getCurrentRatio() %>'></asp:Label>-->
                                         </li>
                                         <li class="list-group-item bg-light">
-                                            Classes In Semester:
+                                            Total Sessions:
                                             <asp:Label runat="server" Text='<%# Eval("All") %>'></asp:Label>
                                         </li>
                                         <li class="list-group-item bg-light">
-                                            Attendance Scale:
-                                            <asp:Label runat="server" Text='<%# getMaxRatio() %>'></asp:Label>
+                                            <!--Attendance Scale:
+                                            <asp:Label runat="server" Text='<%# getMaxRatio() %>'></asp:Label>-->
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="col-6">
-                                    <asp:Chart ID="AttendanceChart" runat="server" Width="190px" Height="190px">
+                                <div class="col-5 d-flex flex-nowrap justify-content-end">
+                                    <asp:Chart ID="AttendanceChart" runat="server" Width="140" Height="140">
                                         
                                         <Series>
-                                            <asp:Series Name="Series1" ChartType="Doughnut" IsValueShownAsLabel="false" Label=" " LegendText="Present"></asp:Series>
+                                            <asp:Series Name="Series1" ChartType="Doughnut" IsValueShownAsLabel="false" Label=" "></asp:Series>
                                         </Series>
-                                        <Legends>
-                                            <asp:Legend Alignment="Center" Docking="Bottom" ></asp:Legend>
-                                        </Legends>
+                                        
                                         <ChartAreas>
                                             <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
                                         </ChartAreas>
@@ -114,7 +112,7 @@
                                 </div>
                             </div>
                             <div class="row bg-light">
-                                Attendance Range
+                                Attendance Scale 
                                 <div class="progress p-0">
                                     <!-- All classes set here WILL be overridden. Change `baseProgressClass` in the CodeBehind instead. -->
                                     <div class="progress-bar bg-warning user-select-none" role="progressbar" id="minattprogress" runat="server" aria-valuemin="0" aria-valuemax="100" title="Minimum Attendance"></div>

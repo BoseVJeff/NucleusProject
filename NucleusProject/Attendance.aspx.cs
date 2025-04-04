@@ -7,6 +7,9 @@ using System.Web.UI.WebControls;
 using System.Web.UI.DataVisualization.Charting;
 using System.Data;
 using System.Web.UI.HtmlControls;
+using AjaxControlToolkit;
+using System.Drawing;
+using System.Configuration;
 
 namespace NucleusProject
 {
@@ -49,7 +52,7 @@ namespace NucleusProject
                 int present = Convert.ToInt32(AttendanceRow["Present"]);
                 int total = Convert.ToInt32(AttendanceRow["Total"]);
                 int all = Convert.ToInt32(AttendanceRow["All"]);
-                int absent = total - present;
+                int classesLeft = total - present;
 
                 double minAttRatio = (present * 100.0) / all;
                 string minAttRatioString = String.Format("{0:0.0}",minAttRatio);
@@ -93,29 +96,79 @@ namespace NucleusProject
                 {
                     int i=AttendanceChart.Series["Series1"].Points.AddXY("Present",present);
                     AttendanceChart.Series["Series1"].Points[i].IsValueShownAsLabel = false;
-                    if (absent > 0)
+                    if (classesLeft > 0)
                     {
                         AttendanceChart.Series["Series1"].Points.AddXY("",total - present);
                     }
 
-                    AttendanceChart.Legends[0].BackColor= System.Drawing.Color.FromArgb(248, 249, 250);
 
-                    AttendanceChart.Series["Series1"].Color = System.Drawing.Color.SteelBlue;
+                    //AttendanceChart.Series["Series1"].Color = System.Drawing.Color.Green;
+                    //AttendanceChart.PaletteCustomColors = new Color[] { Color.Green, Color.LightGray };
+                    AttendanceChart.Palette = ChartColorPalette.None;
+                    AttendanceChart.PaletteCustomColors = new Color[] { Color.FromArgb(25, 135, 84), Color.LightGray };
                     AttendanceChart.Series["Series1"].ChartType = SeriesChartType.Doughnut;
+                    AttendanceChart.Series["Series1"]["DoughnutRadius"] = "35";
                     AttendanceChart.Series["Series1"].IsValueShownAsLabel = false;
                     ElementPosition position = new ElementPosition();
                     AttendanceChart.ChartAreas[0].InnerPlotPosition = position;
-                    
+
                     //Title title=new Title   
                     //AttendanceChart.Titles
-                        //Legend legend = new Legend();
+                    //Legend legend = new Legend();
                     //AttendanceChart.Legends.Add(legend);
-                    AttendanceChart.BackColor = System.Drawing.Color.FromArgb(248,249,250);
+                    AttendanceChart.BackColor = System.Drawing.Color.FromArgb(248, 249,250);
+                    //AttendanceChart.BackColor = System.Drawing.Color.ForestGreen; 
                     AttendanceChart.ChartAreas[0].BackColor=System.Drawing.Color.FromArgb(248, 249, 250);
-                } else
+                    //AttendanceChart.ChartAreas[0].BackColor = System.Drawing.Color.Yellow;
+
+
+                    //Retrieve the value of getCurrentRatio() for the current item
+                    string currentRatio = getCurrentRatio(AttendanceRow);
+                    //Add text annotation to the center of the chart
+                    TextAnnotation annotation = new TextAnnotation();
+                    annotation.Text = currentRatio;
+                    //Center Horizontally
+                    annotation.X = 30;
+                    //Center Vertically
+                    annotation.Y = 42.5;
+                    annotation.Font = new System.Drawing.Font("Arial", 12, System.Drawing.FontStyle.Bold);
+                    annotation.ForeColor = System.Drawing.Color.Black;
+                    annotation.Alignment = ContentAlignment.MiddleCenter;
+                    annotation.AnchorX = 50;
+                    annotation.AnchorY = 50;
+                    AttendanceChart.Annotations.Add(annotation);
+                }
+                else
                 {
                     AttendanceChart.Visible= false;
                 }
+            }
+        }
+
+        protected string getCurrentRatio(DataRow row)
+        {
+            object present = row["Present"];
+            object total = row["Total"];
+            
+            if(present is System.DBNull || total is System.DBNull)
+            {
+                //Some data is unavailable
+                return "";
+            } else
+            {
+                //Both fields are present.
+                int pre = (int)present;
+                int tot = (int)total;
+
+                if (tot == 0)
+                {
+                    //No classes have been marked present/absent
+                    return "";
+                }
+
+                int ratio = (int)((pre * 100) / tot);
+                //Round to two decimal palces
+                return ratio.ToString() + "%";
             }
         }
     }
