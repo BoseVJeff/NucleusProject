@@ -6,6 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Web.UI.DataVisualization.Charting;
 using System.Data;
+using System.Web.UI.HtmlControls;
 
 namespace NucleusProject
 {
@@ -49,6 +50,42 @@ namespace NucleusProject
                 int total = Convert.ToInt32(AttendanceRow["Total"]);
                 int all = Convert.ToInt32(AttendanceRow["All"]);
                 int absent = total - present;
+
+                double minAttRatio = (present * 100.0) / all;
+                string minAttRatioString = String.Format("{0:0.0}",minAttRatio);
+                double maxAttRatio = ((all - total + present) * 100.0) / all;
+                string maxAttRatioString= String.Format("{0:0.0}",maxAttRatio);
+
+                // Remember to leave a space at the end here
+                string baseProgressClass = "progress-bar user-select-none ";
+
+                // Set progress bar
+                HtmlGenericControl minAttProgress = (HtmlGenericControl)item.FindControl("minattprogress");
+                minAttProgress.Attributes.CssStyle.Add("width",minAttRatio.ToString()+"%");
+                if(minAttRatio<50)
+                {
+                    // No possiblity of exam. Danger
+                    minAttProgress.Attributes.Add("class", baseProgressClass + "bg-danger");
+                } else if(minAttRatio>=50 && minAttRatio<80)
+                {
+                    // Grade drop. Warning
+                    minAttProgress.Attributes.Add("class", baseProgressClass + "bg-warning");
+                } else if(minAttRatio>=80)
+                {
+                    // No grade drop. Fine
+                    minAttProgress.Attributes.Add("class", baseProgressClass + "bg-success");
+                } else
+                {
+                    // Default styling
+                    minAttProgress.Attributes.Add("class", baseProgressClass + "bg-secondary");
+                }
+                minAttProgress.Attributes.Add("aria-valuenow", minAttRatioString);
+                minAttProgress.InnerText= minAttRatioString;
+
+                HtmlGenericControl maxAttProgress = (HtmlGenericControl)item.FindControl("maxattprogress");
+                maxAttProgress.Attributes.CssStyle.Add("width", (maxAttRatio-minAttRatio).ToString()+"%");
+                maxAttProgress.Attributes.Add("aria-valuenow",maxAttRatioString);
+                maxAttProgress.InnerText= maxAttRatioString;
 
                 Chart AttendanceChart = (Chart)item.FindControl("AttendanceChart");
 
