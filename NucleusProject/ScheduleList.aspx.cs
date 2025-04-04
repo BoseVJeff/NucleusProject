@@ -54,6 +54,11 @@ namespace NucleusProject
             }
             scheduleData.Sync();
 
+            if(scheduleData.dataSet.Tables.Count==0 || scheduleData.dataSet.Tables[0].Rows.Count==0) {
+                // Dataset has no tables or dataset table has no rows
+
+            }
+
             // Link data to Gridview
             GV_Schedule.DataSource = scheduleData.dataSet;
             GV_Schedule.DataBind();

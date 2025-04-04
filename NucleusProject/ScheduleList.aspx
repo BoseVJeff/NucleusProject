@@ -60,6 +60,10 @@
         <asp:Button runat="server" Text="Week" CssClass="btn btn-primary" OnClick="Unnamed_Click1" ID="WeekBtn" />
         <asp:Button runat="server" Text="Day" CssClass="btn btn-primary" OnClick="Unnamed_Click2" ID="DayBtn" />
     </div>
+    <asp:Label runat="server" CssClass="text-center font-weight-bold" Text="No schedule available"></asp:Label>
+    <div class="text-center d-none">
+        <b>No schedule available!</b>
+    </div>
     <asp:GridView ID="GV_Schedule" runat="server" AutoGenerateColumns="false" CssClass="table table-hover ">
         <Columns>
             <asp:TemplateField HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
