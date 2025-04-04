@@ -28,15 +28,15 @@ namespace NucleusProject
             AttendanceRepeater.DataBind();
             AttendanceRepeater.EnableViewState = false;
 
-            // Add data points to the chart
-            Chart1.Series["Series1"].Points.AddXY("Category 1", 76);
-            Chart1.Series["Series1"].Points.AddXY("Category 2", 56);
-            Chart1.Series["Series1"].Points.AddXY("Category 3", 88);
-            Chart1.Series["Series1"].Points.AddXY("Category 4", 65);
+            //// Add data points to the chart
+            //Chart1.Series["Series1"].Points.AddXY("Category 1", 76);
+            //Chart1.Series["Series1"].Points.AddXY("Category 2", 56);
+            //Chart1.Series["Series1"].Points.AddXY("Category 3", 88);
+            //Chart1.Series["Series1"].Points.AddXY("Category 4", 65);
 
-            // Set chart appearance
-            Chart1.Series["Series1"].Color = System.Drawing.Color.SteelBlue;
-            Chart1.Series["Series1"].ChartType = SeriesChartType.Doughnut;
+            //// Set chart appearance
+            //Chart1.Series["Series1"].Color = System.Drawing.Color.SteelBlue;
+            //Chart1.Series["Series1"].ChartType = SeriesChartType.Doughnut;
 
             foreach (RepeaterItem item in AttendanceRepeater.Items)
             {

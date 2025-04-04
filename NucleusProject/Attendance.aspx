@@ -68,7 +68,7 @@
     <div class="d-flex flex-row flex-wrap justify-content-start" style="gap:1rem">
         <asp:Repeater runat="server" ID="AttendanceRepeater">
             <ItemTemplate>
-                <div class="card bg-light shadow-sm" style="width: 24rem;">
+                <div class="card bg-light shadow-sm" style="width: 26rem;">
                     <div class="card-body">
                         <h5 class="card-title">
                             <asp:Label runat="server" Text='<%# Eval("Course") %>'></asp:Label>
@@ -99,15 +99,13 @@
                                     </ul>
                                 </div>
                                 <div class="col-6">
-                                    <asp:Chart ID="AttendanceChart" runat="server" Width="256px" Height="256px">
-                                        <Titles>
-                                            <asp:Title Text="Sample Chart"></asp:Title>
-                                        </Titles>
+                                    <asp:Chart ID="AttendanceChart" runat="server" Width="190px" Height="190px">
+                                        
                                         <Series>
-                                            <asp:Series Name="Series1" ChartType="Doughnut"></asp:Series>
+                                            <asp:Series Name="Series1" ChartType="Doughnut" IsValueShownAsLabel="false" Label=" " LegendText="Present"></asp:Series>
                                         </Series>
                                         <Legends>
-                                            <asp:Legend Alignment="Center" Docking="Bottom"></asp:Legend>
+                                            <asp:Legend Alignment="Center" Docking="Bottom" ></asp:Legend>
                                         </Legends>
                                         <ChartAreas>
                                             <asp:ChartArea Name="ChartArea1"></asp:ChartArea>
