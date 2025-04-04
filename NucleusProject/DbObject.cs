@@ -50,10 +50,13 @@ namespace NucleusProject
             {
                 connStr = Values.ConnectionString;
             }
+            // Get number of classes 
             const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" GROUP BY Mst_Course.""Name""";
+            // Get number of classes student was present in
             const string cmd2 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Map_Trn_Schedule_Student_Attendance.""Attendance""=1 GROUP BY Mst_Course.""Name""";
+            // Get 
             const string cmd3 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Trn_Schedule.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id GROUP BY Mst_Course.""Name""";
-            //const string cmd4 = @"SELECT ""Name"",""Code"" FROM Mst_Course";
+            // Get code for each course
             const string cmd4 = @"SELECT Mst_Course.""Name"" AS ""Name"", Mst_Course.""Code"" AS ""Code"", Mst_School.""Name"" AS ""School"", Mst_School.""Short_Name"" AS ""SchoolShort"" FROM Mst_Course JOIN Mst_School ON Mst_Course.""School""=Mst_School.""Id"";";
             Dictionary<string,CourseDetails> courseCodeMap= new Dictionary<string,CourseDetails>();
             SqlConnection connection = new SqlConnection(connStr);
@@ -71,14 +74,9 @@ namespace NucleusProject
                 Console.WriteLine("CMD 1:");
                 while (reader.Read())
                 {
-                    //List<int> list = new List<int>(2);
                     AttendanceCheck check = new AttendanceCheck();
                     check.totalCnt = reader.GetInt32(1);
-                    //check.code=reader.GetString(2);
-                    //list[0]=reader.GetInt32(1);
                     this.subjectAttendanceMap.Add(reader.GetString(0), check);
-                    //Console.WriteLine(reader.GetIn(0));
-                    //this.presentCount = reader.GetInt32(0);
                 }
                 reader.Close();
                 // At this point, all subjects should have an entry in the Dictionary
