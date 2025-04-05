@@ -9,7 +9,7 @@
         </b>
     </div>
     <div class="mb-3">
-        <table class="table table-bordered text-center">
+        <table class="table table-bordered text-center table-sm">
             <thead>
                 <tr>
                     <th>Student ID</th>
@@ -32,7 +32,7 @@
         </b>
     </div>
     <div class="mb-3">
-        <table class="table table-bordered">
+        <table class="table table-bordered table-sm">
             <thead class="text-center">
                 <tr>
                     <th>Course Code</th>
@@ -94,7 +94,7 @@
             </b>
         </div>
         <div class="mb-3">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-sm">
                 <thead class="text-center">
                     <tr>
                         <th>Credits Registered</th>
@@ -119,7 +119,7 @@
             </b>
         </div>
         <div class="mb-3">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-sm">
                 <thead class="text-center">
                     <tr>
                         <th>Credits Registered</th>
@@ -138,8 +138,8 @@
                 </tbody>
             </table>
         </div>
-        <div class="mb-3">
-            <table class="table table-borderless">
+        <div class="mb-3" id="signatures">
+            <table class="table table-borderless table-sm">
                 <tbody class="text-center">
                     <tr>
                         <th class="py-5"></th>
@@ -152,4 +152,102 @@
                 </tbody>
             </table>
         </div>
+    <div class="text-uppercase mb-3">
+        <b>
+            Grading System
+        </b>
+    </div>
+    <div class="mb-3">
+        <table class="table table-bordered table-sm text-center">
+            <thead>
+                <tr>
+                    <th>Letter Grade</th>
+                    <th>Corresponding points</th>
+                    <th>Explaination</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>A+</td>
+                    <td>10</td>
+                    <td>Outstanding</td>
+                </tr>
+                                <tr>
+                    <td>A</td>
+                    <td>9</td>
+                    <td>Excellent</td>
+                </tr>
+                <tr>
+                    <td>A-</td>
+                    <td>8</td>
+                    <td>Very Good</td>
+                </tr>
+                <tr>
+                    <td>B+</td>
+                    <td>7</td>
+                    <td>Good</td>
+                </tr>
+                <tr>
+                    <td>B</td>
+                    <td>6</td>
+                    <td>Above Average</td>
+                </tr>
+                <tr>
+                    <td>B-</td>
+                    <td>5</td>
+                    <td>Average</td>
+                </tr>
+                <tr>
+                    <td>C</td>
+                    <td>4</td>
+                    <td>Pass</td>
+                </tr>
+                <tr>
+                    <td>NI</td>
+                    <td>0</td>
+                    <td>Needs Improvement</td>
+                </tr>
+                <tr>
+                    <td>I</td>
+                    <td>0</td>
+                    <td>Incomplete</td>
+                </tr>
+                <tr>
+                    <td>P</td>
+                    <td>Non GPA Course</td>
+                    <td>Pass</td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-borderless table-sm">
+            <tbody>
+                <tr>
+                    <th scope="row">
+                        Credits
+                    </th>
+                    <td>
+                        Indicates the Load
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">Grade Points
+                    </th>
+                    <td>Product of Credits and points of a letter grade
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">SGPA
+                    </th>
+                    <td>Weighted average of the grade points obtained in the courses registered in a semester
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">CGPA
+                    </th>
+                    <td>Weighted average of the grade points obtained in all the courses registered after entering the program
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </asp:Content>

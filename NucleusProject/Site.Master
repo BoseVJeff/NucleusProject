@@ -18,10 +18,28 @@
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
     <style>
+/*Basic page reset*/
         html, body {
             margin:0;
             width: 100%;
             height: 100%;
+        }
+/*Print setup*/
+        @page {
+            size: A4;
+            margin: 1cm;
+            padding: 0cm;
+        }
+/*Override default Bootstrap responsive layout for print only*/
+        @media print {
+            .body-content {
+                max-width: 100% !important;
+                padding-bottom: 0 !important;
+            }
+        }
+/*Force page break after the signatures section*/
+        #signatures {
+            break-after: page;
         }
     </style>
 
@@ -77,8 +95,8 @@
                 </div>
             </div>
         </nav>
-        <div class="container body-content">
-            <div style="padding-bottom: 0.5rem;">
+        <div style="padding-bottom: 0.5rem;" class="container body-content">
+            <div  class="container-fluid">
                 <asp:ContentPlaceHolder ID="MainContent" runat="server">
                 </asp:ContentPlaceHolder>
             </div>
