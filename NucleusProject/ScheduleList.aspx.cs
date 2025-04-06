@@ -63,6 +63,10 @@ namespace NucleusProject
             GV_Schedule.DataSource = scheduleData.dataSet;
             GV_Schedule.DataBind();
             GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
+            //if (GV_Schedule.HeaderRow != null)
+            //{
+            //    GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
+            //}
         }
 
         protected void Unnamed_Click(object sender, EventArgs e)
