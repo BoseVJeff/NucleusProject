@@ -91,12 +91,17 @@ namespace NucleusProject
                         AttendanceChart.Series["Series1"].Points.AddXY("",total - present);
                     }
 
-
+                    
                     
                     AttendanceChart.Palette = ChartColorPalette.None;
                     AttendanceChart.PaletteCustomColors = new Color[] { Color.FromArgb(25, 135, 84), Color.LightGray };
+
+                    // Doughnut docs: https://learn.microsoft.com/en-us/previous-versions/visualstudio/visual-studio-2012/dd456717(v=vs.110)
+                    // Includes list of custom properties
                     AttendanceChart.Series["Series1"].ChartType = SeriesChartType.Doughnut;
                     AttendanceChart.Series["Series1"]["DoughnutRadius"] = "35";
+                    AttendanceChart.Series["Series1"]["PieStartAngle"] = "270";
+                    AttendanceChart.Series["Series1"]["Clockwise"] = "False";
                     AttendanceChart.Series["Series1"].IsValueShownAsLabel = false;
                     ElementPosition position = new ElementPosition();
                     AttendanceChart.ChartAreas[0].InnerPlotPosition = position;
