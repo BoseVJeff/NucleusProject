@@ -17,6 +17,14 @@ namespace NucleusProject
             //{
                 //Response.Redirect("~/");
             //}
+            Grades grades = new Grades();
+            grades.Sync();
+            GradeExplanation.DataSource = grades.dataSet;
+            GradeExplanation.DataBind();
+            if(GradeExplanation.HeaderRow!=null)
+            {
+                GradeExplanation.HeaderRow.TableSection = TableRowSection.TableHeader;
+            }
         }
 
         protected string ResolvePath(string path)

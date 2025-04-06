@@ -7,6 +7,32 @@ using System.Web;
 
 namespace NucleusProject
 {
+    class Grades : DbObject
+    {
+        public DataSet dataSet;
+        public Grades() {
+            this.dataSet = new DataSet();
+        }
+        public override void Sync(string connectionString = null)
+        {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            const string cmd = @"SELECT Id, Name, Explanation, Points FROM E_Grade";
+            SqlConnection conn=new SqlConnection(connStr);
+            try {
+                SqlCommand sqlCommand=new SqlCommand(cmd, conn);
+                SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+                adapter.Fill(dataSet);
+            } finally {
+                if (conn.State != ConnectionState.Open) {
+                    conn.Close(); 
+                } 
+            }
+        }
+    }
     class AttendanceCheck
     {
         public int presentCnt=0;
@@ -193,8 +219,8 @@ namespace NucleusProject
         // Set the range to be the entire current month.
         // Extra work done to set the hours correctly.
         public void setCurrentMonth() {
-            this.to = DateTimeOffset.Now;
-            //this.to = DateTimeOffset.FromUnixTimeSeconds(1743206399); // Saturday, March 29, 2025 5:29:59 AM GMT+05:30
+            //this.to = DateTimeOffset.Now;
+            this.to = DateTimeOffset.FromUnixTimeSeconds(1743206399); // Saturday, March 29, 2025 5:29:59 AM GMT+05:30
             // End of last day
             this.to = to.AddHours(-to.Hour).AddHours(24);
             // Last day of month
@@ -226,7 +252,7 @@ namespace NucleusProject
             {
                 connStr = Values.ConnectionString;
             }
-            const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", Mst_Class.""Name"" AS ""Class"", E_Days.""Name"" AS ""Day"", E_Class_Status.""Name"" AS ""Status"", Mst_Faculty.""Name"" AS ""Faculty"", Mst_Faculty.""Email"" AS ""Email"", Mst_Faculty.""Phone"" AS ""Phone"", ""Start"", ""End"", E_Attendance.""Name"" AS ""Attendance"" FROM Trn_Schedule JOIN E_Class_Status ON Trn_Schedule.""Status""=E_Class_Status.Id JOIN E_Days ON Trn_Schedule.""Day""=E_Days.Id JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id JOIN Mst_Class ON Trn_Schedule.""Class""=Mst_Class.""Id"" JOIN Mst_Faculty ON Trn_Schedule.""Faculty""=Mst_Faculty.""Id"" LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Trn_Schedule.""Start"">=@start AND Trn_Schedule.""End""<=@end ORDER BY Trn_Schedule.""Start"" ASC";
+            const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", Mst_Class.""Name"" AS ""Class"", E_Days.""Name"" AS ""Day"", Mst_Faculty.""Name"" AS ""Faculty"", Mst_Faculty.""Email"" AS ""Email"", Mst_Faculty.""Phone"" AS ""Phone"", ""Start"", ""End"", E_Attendance.""Name"" AS ""Attendance"" FROM Trn_Schedule JOIN E_Days ON Trn_Schedule.""Day""=E_Days.Id JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id JOIN Mst_Class ON Trn_Schedule.""Class""=Mst_Class.""Id"" JOIN Mst_Faculty ON Trn_Schedule.""Faculty""=Mst_Faculty.""Id"" LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" ORDER BY Trn_Schedule.""Start"" ASC";
             //const string cmd = "SELECT * FROM Mst_Course";
             SqlConnection connection = new SqlConnection(connStr);
             try
