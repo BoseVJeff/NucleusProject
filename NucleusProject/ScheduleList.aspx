@@ -8,10 +8,11 @@
             //string attStr;
             if(att is System.DBNull)
             {
-                return "";
+                return "<i class=\"bi bi-circle-fill text-warning\"></i>";
             } else
             {
                 string attStr = (string)att;
+                //return attStr;
                 StringBuilder sb = new StringBuilder();
                 sb.Append("<i class=\"bi bi-circle-fill text-");
                 // TODO: Make this comparision on the basis of values from E_Attendance
@@ -28,31 +29,6 @@
                 return sb.ToString();
             }
             //return attStr;
-        }
-        protected string getClassStatusClass()
-        {
-            object status = Eval("Status");
-            if(status is System.DBNull)
-            {
-                return "N/A";
-            } else
-            {
-                string statusStr = (string)status;
-                switch (statusStr)
-                {
-                    case "Scheduled":
-                        return "<i class=\"bi bi-calendar-event-fill text-secondary\"></i>";
-                    case "Ongoing":
-                        return "<i class=\"bi bi-clock-fill text-warning\"></i>";
-                    case "Completed":
-                        return "<i class=\"bi bi-check-circle-fill text-success\"></i>";
-                    case "Cancelled":
-                        return "<i class=\"bi bi-x-circle-fill text-danger\"></i>";
-                    default:
-                        // Unknown Status
-                        return "<i class=\"bi bi-question-circle-fill text-secondary\"></i>";
-                }
-            }
         }
     </script>
     <div class="btn-group mb-1">
@@ -74,14 +50,7 @@
                     <asp:Label runat="server" Text='<%# getAttendanceClass() %>' CssClass="text-center"></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
-            <asp:TemplateField ItemStyle-CssClass="text-center" HeaderStyle-CssClass="text-center">
-                <HeaderTemplate>
-                    Status
-                </HeaderTemplate>
-                <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# getClassStatusClass() %>'></asp:Label>
-                </ItemTemplate>
-            </asp:TemplateField>
+            
             <asp:TemplateField>
                 <HeaderTemplate>
                     Course
