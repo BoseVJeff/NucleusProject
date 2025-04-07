@@ -158,67 +158,36 @@
         </b>
     </div>
     <div class="mb-3">
-        <table class="table table-bordered table-sm text-center">
-            <thead>
-                <tr>
-                    <th>Letter Grade</th>
-                    <th>Corresponding points</th>
-                    <th>Explaination</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>A+</td>
-                    <td>10</td>
-                    <td>Outstanding</td>
-                </tr>
-                                <tr>
-                    <td>A</td>
-                    <td>9</td>
-                    <td>Excellent</td>
-                </tr>
-                <tr>
-                    <td>A-</td>
-                    <td>8</td>
-                    <td>Very Good</td>
-                </tr>
-                <tr>
-                    <td>B+</td>
-                    <td>7</td>
-                    <td>Good</td>
-                </tr>
-                <tr>
-                    <td>B</td>
-                    <td>6</td>
-                    <td>Above Average</td>
-                </tr>
-                <tr>
-                    <td>B-</td>
-                    <td>5</td>
-                    <td>Average</td>
-                </tr>
-                <tr>
-                    <td>C</td>
-                    <td>4</td>
-                    <td>Pass</td>
-                </tr>
-                <tr>
-                    <td>NI</td>
-                    <td>0</td>
-                    <td>Needs Improvement</td>
-                </tr>
-                <tr>
-                    <td>I</td>
-                    <td>0</td>
-                    <td>Incomplete</td>
-                </tr>
-                <tr>
-                    <td>P</td>
-                    <td>Non GPA Course</td>
-                    <td>Pass</td>
-                </tr>
-            </tbody>
-        </table>
+        <asp:GridView ID="GradeExplanation" runat="server" AutoGenerateColumns="false" CssClass="table table-bordered table-sm text-center">
+            <Columns>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        Letter Grade
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Eval("Name") %>'></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        Corresponding Points
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Eval("Points") %>'></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        Explanation
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Eval("Explanation")??"-" %>'></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
+    </div>
+    <div class="mb-3">
         <table class="table table-borderless table-sm">
             <tbody>
                 <tr>
