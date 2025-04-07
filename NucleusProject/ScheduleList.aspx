@@ -55,15 +55,65 @@
             }
         }
     </script>
+    <script>
+        function toogleFilterCard() {
+            var filterCard = document.getElementById("filterCard");
+            if (filterCard.style.display === "none" || filterCard.style.display === "") {
+                filterCard.style.display = "block";
+            }
+            else {
+                filterCard.style.display = "none";
+            }
+        }
+    </script>
     <div class="btn-group mb-1">
         <asp:Button runat="server" Text="Month" CssClass="btn btn-primary" OnClick="Unnamed_Click" ID="MonthBtn" />
         <asp:Button runat="server" Text="Week" CssClass="btn btn-primary" OnClick="Unnamed_Click1" ID="WeekBtn" />
         <asp:Button runat="server" Text="Day" CssClass="btn btn-primary" OnClick="Unnamed_Click2" ID="DayBtn" />
+        
     </div>
-    <asp:Label runat="server" CssClass="text-center font-weight-bold" Text="No schedule available"></asp:Label>
+
+    <div class="btn-group mb-1">
+        <button type="button" class="btn btn-secondary" onclick="toogleFilterCard()">Filter</button>
+    </div>
+
+    <div class="text-center mb-4 align-text-top">
+         
+        <button runat="server" onclick="PreviousBtn_Click" class="btn btn-secondary" id="PreviousBtn">
+            <i class="bi bi-arrow-left"></i>
+        </button>
+        <asp:Label runat="server" CssClass="font-weight-bold" ID="DateRangeLabel" Text="Current Range"></asp:Label>
+        <button runat="server" onclick="NextBtn_Click" id="NextBtn" class="btn btn-secondary">
+            <i class="bi bi-arrow-right"></i>
+        </button>
+        
+    </div>
+
+    <div id="filterCard" class="card" style="display: none">
+        <div class="card-body">
+            <div class="d-flex">
+                <div class="form-group col-md-4">
+                    <label for="fromDate">From</label>
+                    <asp:TextBox ID="fromDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="toDate">To</label>
+                    <asp:TextBox ID="toDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
+                </div>
+                <div class="form-group col-md-4 align-self-end">
+                    <asp:Button runat="server" Text="Submit" CssClass="btn btn-primary" OnClick="FilterBtn_Click" ID="Button1" />
+                </div>
+            </div>
+        </div>
+    </div><br />
+    
+   <!-- <asp:Label runat="server" CssClass="text-center font-weight-bold" Text="No schedule available"></asp:Label>
     <div class="text-center d-none">
         <b>No schedule available!</b>
-    </div>
+    </div>-->
+
+    <asp:Label ID="NoDataLabel" runat="server" Text="No Data Available" Visible="false"></asp:Label>
+    
     <asp:GridView ID="GV_Schedule" runat="server" AutoGenerateColumns="false" CssClass="table table-hover ">
         <Columns>
             <asp:TemplateField HeaderStyle-CssClass="text-center" ItemStyle-CssClass="text-center">
