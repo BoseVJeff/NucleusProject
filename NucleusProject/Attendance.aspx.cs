@@ -16,6 +16,15 @@ namespace NucleusProject
     public partial class Attendance : System.Web.UI.Page
     {
         AttendanceData attendanceData;
+
+        const string baseProgressClass = "progress-bar user-select-none";
+        private void setBarGraph(double size, HtmlGenericControl barGraph, string cssClass/*, string value*/) {
+            barGraph.Attributes.CssStyle.Add("width", size.ToString() + "%");
+            barGraph.Attributes.Add("class", baseProgressClass+ " " + cssClass);
+            //barGraph.Attributes.Add("aria-valuenow", value);
+            // Max is always 100 in this case
+            //barGraph.InnerText= value;
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
             if (Session["id"] == null)
@@ -44,41 +53,39 @@ namespace NucleusProject
                 int all = Convert.ToInt32(AttendanceRow["All"]);
                 int classesLeft = total - present;
 
+                double attRatio = (present * 100) / total;
                 double minAttRatio = (present * 100.0) / all;
                 string minAttRatioString = String.Format("{0:0.0}",minAttRatio);
                 double maxAttRatio = ((all - total + present) * 100.0) / all;
                 string maxAttRatioString= String.Format("{0:0.0}",maxAttRatio);
 
-                // Remember to leave a space at the end here
-                string baseProgressClass = "progress-bar user-select-none ";
+                // Sizes of each bar
+                // Note that each value is a percentage (ie. out of 100%)
+                
+                // 0 - <min attendance> -> Guaranteed value
+                double barOneSize = minAttRatio - 0;
+                // <min attendance> - <current attendance> - 0.5% -> Possible drop
+                double barTwoSize = attRatio - minAttRatio - 0.5;
+                // <current attendance> - 0.5% - <current attendance> + 0.5% -> Current attendance, +/- 0.5% (ie. Width is always 1%)
+                double barThreeSize = 1;
+                // <current attendance> + 0.5% - <max attendance> -> Possible Gain
+                double barFourSize = maxAttRatio - minAttRatio - 0.5;
+                // <max attendance> - 100% -> Impossible value
+                double barFiveSize = 100 - maxAttRatio;
 
-                // Set progress bar
-                HtmlGenericControl minAttProgress = (HtmlGenericControl)item.FindControl("minattprogress");
-                minAttProgress.Attributes.CssStyle.Add("width",minAttRatio.ToString()+"%");
-                if(minAttRatio<50)
-                {
-                    // No possiblity of exam. Danger
-                    minAttProgress.Attributes.Add("class", baseProgressClass + "bg-danger");
-                } else if(minAttRatio>=50 && minAttRatio<80)
-                {
-                    // Grade drop. Warning
-                    minAttProgress.Attributes.Add("class", baseProgressClass + "bg-warning");
-                } else if(minAttRatio>=80)
-                {
-                    // No grade drop. Fine
-                    minAttProgress.Attributes.Add("class", baseProgressClass + "bg-success");
-                } else
-                {
-                    // Default styling
-                    minAttProgress.Attributes.Add("class", baseProgressClass + "bg-secondary");
-                }
-                minAttProgress.Attributes.Add("aria-valuenow", minAttRatioString);
-                minAttProgress.InnerText= minAttRatioString;
+                // Get progress bars
+                // TODO: Add aria labels and accessiblity titles
+                HtmlGenericControl barOne = (HtmlGenericControl)item.FindControl("barone");
+                HtmlGenericControl barTwo = (HtmlGenericControl)item.FindControl("bartwo");
+                HtmlGenericControl barThree = (HtmlGenericControl)item.FindControl("barthree");
+                HtmlGenericControl barFour = (HtmlGenericControl)item.FindControl("barfour");
+                HtmlGenericControl barFive = (HtmlGenericControl)item.FindControl("barfive");
 
-                HtmlGenericControl maxAttProgress = (HtmlGenericControl)item.FindControl("maxattprogress");
-                maxAttProgress.Attributes.CssStyle.Add("width", (maxAttRatio-minAttRatio).ToString()+"%");
-                maxAttProgress.Attributes.Add("aria-valuenow",maxAttRatioString);
-                maxAttProgress.InnerText= maxAttRatioString;
+                setBarGraph(barOneSize, barOne, "bg-success");
+                setBarGraph(barTwoSize, barTwo, "bg-secondary");
+                setBarGraph(barThreeSize, barThree, "bg-dark");
+                setBarGraph(barFourSize, barFour, "bg-secondary");
+                setBarGraph(barFiveSize, barFive, "bg-danger");
 
                 Chart AttendanceChart = (Chart)item.FindControl("AttendanceChart");
 
