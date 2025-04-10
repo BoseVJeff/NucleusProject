@@ -58,11 +58,11 @@
 
     <div class="text-center mb-4 align-text-top">
          
-        <button runat="server" onclick="PreviousBtn_Click" class="btn btn-secondary" id="PreviousBtn">
+        <button runat="server" onserverClick="PreviousBtn_Click" class="btn btn-secondary" id="PreviousBtn" disabled="disabled">
             <i class="bi bi-arrow-left"></i>
         </button>
         <asp:Label runat="server" CssClass="font-weight-bold" ID="DateRangeLabel" Text="Current Range"></asp:Label>
-        <button runat="server" onclick="NextBtn_Click" id="NextBtn" class="btn btn-secondary">
+        <button runat="server" onserverClick="NextBtn_Click" id="NextBtn" class="btn btn-secondary" disabled="disabled">
             <i class="bi bi-arrow-right"></i>
         </button>
         

@@ -16,7 +16,7 @@ namespace NucleusProject
         ScheduleData scheduleData;
         bool forceReload = false;
 
-        void LoadAttendanceGrid(int id,TimeDuration duration)
+        void LoadAttendanceGrid(int id, TimeDuration duration)
         {
             // Set fromDate and toDate entries
             fromDate.Text = duration.start.Date.ToString("yyyy-MM-dd");
@@ -32,7 +32,11 @@ namespace NucleusProject
             scheduleData.Sync();
 
             // Populate only if dataset has tables (expected - 1) and that table (idx = 0) has rows
-            if(scheduleData.dataSet.Tables.Count>0 && scheduleData.dataSet.Tables[0].Rows.Count>0){
+            if (scheduleData.dataSet.Tables.Count > 0 && scheduleData.dataSet.Tables[0].Rows.Count > 0)
+            {
+                GV_Schedule.Visible = true;
+                NoDataLabel.Visible = false;
+
                 GV_Schedule.DataSource = scheduleData.dataSet;
                 GV_Schedule.DataBind();
                 GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
@@ -41,6 +45,12 @@ namespace NucleusProject
                 //TableCell cell = new TableCell();
                 //cell.ColumnSpan = GV_Schedule.Columns.Count;
                 //cell.Text = "";
+            }
+            else
+            {
+                // Dataset has no rows
+                GV_Schedule.Visible = false;
+                NoDataLabel.Visible = true;
             }
         }
         // TODO: Store defaults as class property
@@ -52,21 +62,31 @@ namespace NucleusProject
                     DayBtn.Enabled = false;
                     WeekBtn.Enabled = true;
                     MonthBtn.Enabled = true;
+                    PreviousBtn.Disabled = false;
+                    NextBtn.Disabled = false;
                     break;
                 case ViewSpan.Week:
                     DayBtn.Enabled = true;
                     WeekBtn.Enabled = false;
                     MonthBtn.Enabled = true;
+                    PreviousBtn.Disabled = false;
+                    NextBtn.Disabled = false;
                     break;
                 case ViewSpan.Month:
                     DayBtn.Enabled = true;
                     WeekBtn.Enabled = true;
                     MonthBtn.Enabled = false;
+                    PreviousBtn.Disabled = false;
+                    NextBtn.Disabled = false;
                     break;
                 case ViewSpan.Custom:
                     DayBtn.Enabled = true;
                     WeekBtn.Enabled = true;
                     MonthBtn.Enabled = true;
+                    // Disable back/forward for custom ranges
+                    // TODO: Maybe go back/forward by the length of the current date range?
+                    PreviousBtn.Disabled = false;
+                    NextBtn.Disabled = false;
                     break;
                 default:
                     // Default view is month
@@ -81,7 +101,7 @@ namespace NucleusProject
             // Session vars used: `id`, `view`, `startDate`, `endDate`
 
             // All event handlers can assume that `id` is available after this point
-            if (Session["id"]==null)
+            if (Session["id"] == null)
             {
                 Response.Redirect("~/");
             }
@@ -90,14 +110,17 @@ namespace NucleusProject
             if (!Page.IsPostBack)
             {
                 // First load, check for preferences
-                ViewSpan? span=(ViewSpan?)Session["view"];
+                ViewSpan? span = (ViewSpan?)Session["view"];
                 int studentId = (int)Session["id"]; // Null check earlier in the function, not needed here
 
                 setButtonGroup(span);
                 // Set the appropriate duration - setting default here
-                TimeDuration duration=TimeDuration.AroundDateTime(DateTimeOffset.Now,ViewSpan.Month);
+                TimeDuration duration = TimeDuration.AroundDateTime(DateTimeOffset.Now, ViewSpan.Month);
+                Session["startDate"] = duration.start.DateTime;
+                Session["endDate"] = duration.end.DateTime;
+                Session["view"] = ViewSpan.Month;
                 setButtonGroup(ViewSpan.Month);
-                if(span==ViewSpan.Custom) // TODO: Maybe more explicit behaviour?
+                if (span == ViewSpan.Custom) // TODO: Maybe more explicit behaviour?
                 {
                     if (Session["startDate"] != null && Session["endDate"] != null)
                     {
@@ -105,10 +128,11 @@ namespace NucleusProject
                         // See the TODO in `FilterBtn_Click` for more details
                         duration = new TimeDuration((DateTime)Session["startDate"], ((DateTime)Session["endDate"]).AddDays(1).AddSeconds(-1));
                         setButtonGroup(ViewSpan.Custom);
-                    } else
+                    }
+                    else
                     {
                         // TODO: Maybe log?
-                        Debug.WriteLine("[Incomplete data!]"+Session["startDate"]+ " -> " + Session["endDate"]);
+                        Debug.WriteLine("[Incomplete data!]" + Session["startDate"] + " -> " + Session["endDate"]);
                         // Potentially partial data
                         // Reset session vars to known good state
                         Session["startDate"] = null;
@@ -117,7 +141,8 @@ namespace NucleusProject
                     }
 
 
-                } else if(span!=null)
+                }
+                else if (span != null)
                 {
                     // Defined, but not custom
                     duration = TimeDuration.AroundDateTime(DateTime.Now, (ViewSpan)span);
@@ -132,11 +157,13 @@ namespace NucleusProject
         // Month view button
         protected void Unnamed_Click(object sender, EventArgs e)
         {
-            // Store value in session
-            Session["view"] = ViewSpan.Month;
-            // Set duration and load appropriate gridview
             // TODO: Set this to be around the start date instead
             TimeDuration duration = TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Month);
+            // Store value in session
+            Session["view"] = ViewSpan.Month;
+            Session["startDate"] = duration.start;
+            Session["endDate"] = duration.end;
+            // Set duration and load appropriate gridview
             //Debug.WriteLine(duration);
             LoadAttendanceGrid((int)Session["id"], duration);
             // Set the button config
@@ -146,11 +173,13 @@ namespace NucleusProject
         // Week view Button
         protected void Unnamed_Click1(object sender, EventArgs e)
         {
-            // Store value in session
-            Session["view"] = ViewSpan.Week;
-            // Set duration and load appropriate gridview
             // TODO: Set this to be around the start date instead
             TimeDuration duration = TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Week);
+            // Store value in session
+            Session["view"] = ViewSpan.Week;
+            Session["startDate"] = duration.start.DateTime;
+            Session["endDate"] = duration.end.DateTime;
+            // Set duration and load appropriate gridview
             //Debug.WriteLine(duration);
             LoadAttendanceGrid((int)Session["id"], duration);
             // Set the button config
@@ -160,11 +189,15 @@ namespace NucleusProject
         // Day view button
         protected void Unnamed_Click2(object sender, EventArgs e)
         {
+            // TODO: Set this to be around the start date instead
+            TimeDuration duration = TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Day);
             // Store value in session
             Session["view"] = ViewSpan.Day;
+            Session["startDate"] = duration.start.DateTime;
+            Session["endDate"] = duration.end.DateTime;
             // Set duration and load appropriate gridview
             // TODO: Set this to be around the start date instead
-            LoadAttendanceGrid((int)Session["id"], TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Day));
+            LoadAttendanceGrid((int)Session["id"], duration);
             // Set the button config
             setButtonGroup(ViewSpan.Day);
         }
@@ -184,118 +217,92 @@ namespace NucleusProject
                 //Debug.WriteLine("Hidden input: "+tzData.Value);
 
                 Session["view"] = ViewSpan.Custom;
-                Session["startDate"]= fromDateValue;
-                Session["endDate"]= toDateValue;
+                Session["startDate"] = fromDateValue;
+                Session["endDate"] = toDateValue;
 
                 // For now, working around by adding one day to the endDate
                 // This ensures that the end date selected by the user is included, as expected
-                LoadAttendanceGrid((int)Session["id"],new TimeDuration(fromDateValue, toDateValue.AddDays(1).AddSeconds(-1)));
+                LoadAttendanceGrid((int)Session["id"], new TimeDuration(fromDateValue, toDateValue.AddDays(1).AddSeconds(-1)));
                 setButtonGroup(ViewSpan.Custom);
             }
             else
             {
                 // Invalid value - Default to month view
-                Session["view"]=ViewSpan.Month;
-                LoadAttendanceGrid((int)Session["id"],TimeDuration.AroundDateTime(DateTime.Now,ViewSpan.Month));
+                Session["view"] = ViewSpan.Month;
+                LoadAttendanceGrid((int)Session["id"], TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Month));
                 setButtonGroup(ViewSpan.Month);
-               
+
             }
         }
 
         protected void PreviousBtn_Click(object sender, EventArgs e)
         {
-            // logic to navigate to the previous month or week
+            DateTimeOffset start = (DateTime)Session["startDate"];
+            DateTimeOffset end = (DateTime)Session["endDate"];
+            int id = (int)Session["id"];
+            TimeDuration timeDuration=TimeDuration.AroundDateTime(DateTimeOffset.Now,ViewSpan.Day);
+            //Debug.WriteLine(Session["view"]);
+
             switch ((ViewSpan)Session["view"])
             {
                 case ViewSpan.Day:
-                    scheduleData.from = scheduleData.from.AddDays(-1);
-                    scheduleData.to = scheduleData.to.AddDays(-1);
+                    timeDuration = new TimeDuration(start.AddDays(-1), end.AddDays(-1));
+                    LoadAttendanceGrid(id, timeDuration);
                     break;
-
                 case ViewSpan.Week:
-                    scheduleData.from = scheduleData.from.AddDays(-7);
-                    scheduleData.to = scheduleData.to.AddDays(-7);
+                    // Assuming 7 days in a week
+                    timeDuration = new TimeDuration(start.AddDays(-7), end.AddDays(-7));
+                    LoadAttendanceGrid(id, timeDuration);
                     break;
-
                 case ViewSpan.Month:
-                    scheduleData.from = scheduleData.from.AddMonths(-1);
-                    scheduleData.from = scheduleData.to.AddMonths(-1);
+                    // Every month is different in size so duration needs to be recomputed every time
+                    DateTimeOffset newRef = start.AddMonths(-1);
+                    timeDuration = TimeDuration.AroundDateTime(newRef, ViewSpan.Month);
+                    LoadAttendanceGrid(id, timeDuration);
+                    break;
+                case ViewSpan.Custom:
+                    TimeSpan timeSpan = end - start;
+                    timeDuration = new TimeDuration(start.Add(-timeSpan), end.Add(-timeSpan));
+                    LoadAttendanceGrid(id, timeDuration);
                     break;
             }
-
-            scheduleData.Sync();
-            if(scheduleData.dataSet.Tables.Count == 0 || scheduleData.dataSet.Tables[0].Rows.Count == 0)
-            {
-                // Dataset has no tables or dataset table has no rows
-                NoDataLabel.Visible = true;
-            }
-            else
-            {
-                NoDataLabel.Visible = false;
-            }
-            GV_Schedule.DataSource = scheduleData.dataSet;
-            GV_Schedule.DataBind();
-            UpdateDateRangeLabel();
+            Session["startDate"] = timeDuration.start.DateTime;
+            Session["endDate"] = timeDuration.end.DateTime;
         }
 
         protected void NextBtn_Click(object sender, EventArgs e)
         {
-            // logic to navigate to the next month or week or day
+            DateTimeOffset start = (DateTime)Session["startDate"];
+            DateTimeOffset end = (DateTime)Session["endDate"];
+            int id = (int)Session["id"];
+            TimeDuration timeDuration = TimeDuration.AroundDateTime(DateTimeOffset.Now, ViewSpan.Day);
+            //Debug.WriteLine(Session["view"]);
+
             switch ((ViewSpan)Session["view"])
             {
                 case ViewSpan.Day:
-                    scheduleData.from = scheduleData.from.AddDays(1);
-                    scheduleData.to = scheduleData.to.AddDays(1).AddTicks(-1);
+                    timeDuration = new TimeDuration(start.AddDays(1), end.AddDays(1));
+                    LoadAttendanceGrid(id, timeDuration);
                     break;
-
                 case ViewSpan.Week:
-                    scheduleData.from = scheduleData.from.AddDays(7);
-                    scheduleData.to = scheduleData.to.AddDays(7).AddTicks(-7);
+                    // Assuming 7 days in a week
+                    timeDuration = new TimeDuration(start.AddDays(7), end.AddDays(7));
+                    LoadAttendanceGrid(id, timeDuration);
                     break;
-
                 case ViewSpan.Month:
-                    scheduleData.from = scheduleData.from.AddMonths(1);
-                    scheduleData.to = scheduleData.to.AddMonths(1).AddTicks(-1);
+                    // Every month is different in size so duration needs to be recomputed every time
+                    DateTimeOffset newRef = start.AddMonths(1);
+                    timeDuration = TimeDuration.AroundDateTime(newRef,ViewSpan.Month);
+                    LoadAttendanceGrid(id, timeDuration);
                     break;
-
-            }
-
-            
-            scheduleData.Sync();
-            if (scheduleData.dataSet.Tables.Count == 0 || scheduleData.dataSet.Tables[0].Rows.Count == 0)
-            {
-                // Dataset has no tables or dataset table has no rows
-                NoDataLabel.Visible = true;
-            }
-            else
-            {
-                NoDataLabel.Visible = false;
-            }
-            GV_Schedule.DataSource = scheduleData.dataSet;
-            GV_Schedule.DataBind();
-            UpdateDateRangeLabel();
-        }
-
-        private void UpdateDateRangeLabel()
-        {
-            switch ((ViewSpan)Session["view"])
-            {
-                case ViewSpan.Day:
-                    DateRangeLabel.Text = $"{scheduleData.from: MMMM dd, yyyy}";
-                    break;
-
-                case ViewSpan.Week:
-                    DateRangeLabel.Text = $"{scheduleData.from: MMMM dd, yyyy} - {scheduleData.to: MMMM dd, yyyy}";
-                    break;
-
-                case ViewSpan.Month:
-                    DateRangeLabel.Text = $"{scheduleData.from: MMMM dd, yyyy} - {scheduleData.to: MMMM dd, yyyy}";
+                case ViewSpan.Custom:
+                    TimeSpan timeSpan = end - start;
+                    timeDuration = new TimeDuration(start.Add(timeSpan), end.Add(timeSpan));
+                    LoadAttendanceGrid(id, timeDuration);
                     break;
             }
-
-            //DateTime firstDayOfMonth = new DateTime(scheduleData.from.Year, scheduleData.from.Month, 1);
-            //DateTime lastDayOfMonth = firstDayOfMonth.AddMonths(1).AddDays(-1);
-            //DateRangeLabel.Text = $"{firstDayOfMonth: MMMM dd, yyyy} - {lastDayOfMonth: MMMM dd, yyyy}";
+            Session["startDate"] = timeDuration.start.DateTime;
+            Session["endDate"] = timeDuration.end.DateTime;
         }
     }
 }
