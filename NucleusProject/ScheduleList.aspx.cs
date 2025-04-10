@@ -19,8 +19,11 @@ namespace NucleusProject
         void LoadAttendanceGrid(int id,TimeDuration duration)
         {
             // Set fromDate and toDate entries
-            fromDate.Text = duration.start.LocalDateTime.Date.ToString("yyyy-MM-dd");
-            toDate.Text = duration.end.LocalDateTime.ToString("yyyy-MM-dd");
+            fromDate.Text = duration.start.Date.ToString("yyyy-MM-dd");
+            toDate.Text = duration.end.Date.ToString("yyyy-MM-dd");
+
+            // Set the span
+            DateRangeLabel.Text = duration.start.Date.ToString("dd MMM, yyyy") + " - " + duration.end.Date.ToString("dd MMM, yyyy");
 
             scheduleData = new ScheduleData(id);
             Console.WriteLine(duration);
