@@ -219,8 +219,8 @@ namespace NucleusProject
         // Set the range to be the entire current month.
         // Extra work done to set the hours correctly.
         public void setCurrentMonth() {
-            //this.to = DateTimeOffset.Now;
-            this.to = DateTimeOffset.FromUnixTimeSeconds(1743206399); // Saturday, March 29, 2025 5:29:59 AM GMT+05:30
+            this.to = DateTimeOffset.Now;
+            //this.to = DateTimeOffset.FromUnixTimeSeconds(1743206399); // Saturday, March 29, 2025 5:29:59 AM GMT+05:30
             // End of last day
             this.to = to.AddHours(-to.Hour).AddHours(24);
             // Last day of month
