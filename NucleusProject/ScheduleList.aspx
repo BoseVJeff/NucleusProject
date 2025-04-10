@@ -31,7 +31,7 @@
             //return attStr;
         }
     </script>
-    <script>
+    <script type="text/javascript">
         function toogleFilterCard() {
             var filterCard = document.getElementById("filterCard");
             if (filterCard.style.display === "none" || filterCard.style.display === "") {
@@ -40,6 +40,9 @@
             else {
                 filterCard.style.display = "none";
             }
+        }
+        function getTimeZone() {
+            let el = document.getElementById("<%= tzData.ClientID %>").value = (new Date(Date.now())).getTimezoneOffset();
         }
     </script>
     <div class="btn-group mb-1">
@@ -77,8 +80,9 @@
                     <asp:TextBox ID="toDate" runat="server" CssClass="form-control" TextMode="Date"></asp:TextBox>
                 </div>
                 <div class="form-group col-md-4 align-self-end">
-                    <asp:Button runat="server" Text="Submit" CssClass="btn btn-primary" OnClick="FilterBtn_Click" ID="Button1" />
+                    <asp:Button runat="server" Text="Submit" CssClass="btn btn-primary" OnClientClick="getTimeZone()" OnClick="FilterBtn_Click" ID="Button1" />
                 </div>
+                <asp:HiddenField runat="server" Value="0" ID="tzData" />
             </div>
         </div>
     </div><br />

@@ -96,6 +96,15 @@ namespace NucleusProject
         protected global::System.Web.UI.WebControls.Button Button1;
 
         /// <summary>
+        /// tzData control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HiddenField tzData;
+
+        /// <summary>
         /// NoDataLabel control.
         /// </summary>
         /// <remarks>
