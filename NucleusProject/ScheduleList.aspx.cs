@@ -100,7 +100,7 @@ namespace NucleusProject
                     {
                         // TODO: Fix workaround
                         // See the TODO in `FilterBtn_Click` for more details
-                        duration = new TimeDuration((DateTime)Session["startDate"], ((DateTime)Session["endDate"]).AddDays(1));
+                        duration = new TimeDuration((DateTime)Session["startDate"], ((DateTime)Session["endDate"]).AddDays(1).AddSeconds(-1));
                         setButtonGroup(ViewSpan.Custom);
                     } else
                     {
@@ -186,7 +186,7 @@ namespace NucleusProject
 
                 // For now, working around by adding one day to the endDate
                 // This ensures that the end date selected by the user is included, as expected
-                LoadAttendanceGrid((int)Session["id"],new TimeDuration(fromDateValue, toDateValue.AddDays(1)));
+                LoadAttendanceGrid((int)Session["id"],new TimeDuration(fromDateValue, toDateValue.AddDays(1).AddSeconds(-1)));
                 setButtonGroup(ViewSpan.Custom);
             }
             else
