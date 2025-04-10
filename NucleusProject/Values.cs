@@ -8,6 +8,13 @@ using System.Web.Hosting;
 
 namespace NucleusProject
 {
+    public enum ViewSpan
+    {
+        Day,
+        Week,
+        Month,
+        Custom
+    }
     public class Values
     {
         private static readonly string baseDir = @"~\";

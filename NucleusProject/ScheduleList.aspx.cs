@@ -9,12 +9,6 @@ using System.Web.UI.WebControls;
 
 namespace NucleusProject
 {
-    public enum ViewSpan
-    {
-        Day,
-        Week,
-        Month
-    }
     public partial class ScheduleList : System.Web.UI.Page
     {
         ScheduleData scheduleData;
