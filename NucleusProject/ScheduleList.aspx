@@ -74,7 +74,9 @@
     </div>
 
     <div class="btn-group mb-1">
-        <button type="button" class="btn btn-secondary" onclick="toogleFilterCard()">Filter</button>
+        <button type="button" class="btn btn-secondary" onclick="toogleFilterCard()">
+            <i class="bi bi-funnel-fill"></i>
+        </button>
     </div>
 
     <div class="text-center mb-4 align-text-top">
