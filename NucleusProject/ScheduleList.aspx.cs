@@ -7,6 +7,7 @@ using System.Net;
 using System.Runtime.Remoting.Services;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace NucleusProject
@@ -56,6 +57,8 @@ namespace NucleusProject
         // TODO: Store defaults as class property
         void setButtonGroup(ViewSpan? span)
         {
+            string enabledIcon = "bi bi-funnel-fill";
+            string disabledIcon = "bi bi-funnel";
             switch (span)
             {
                 case ViewSpan.Day:
@@ -64,6 +67,7 @@ namespace NucleusProject
                     MonthBtn.Enabled = true;
                     PreviousBtn.Disabled = false;
                     NextBtn.Disabled = false;
+                    filtericon.Attributes["class"] = disabledIcon;
                     break;
                 case ViewSpan.Week:
                     DayBtn.Enabled = true;
@@ -71,6 +75,7 @@ namespace NucleusProject
                     MonthBtn.Enabled = true;
                     PreviousBtn.Disabled = false;
                     NextBtn.Disabled = false;
+                    filtericon.Attributes["class"] = disabledIcon;
                     break;
                 case ViewSpan.Month:
                     DayBtn.Enabled = true;
@@ -78,21 +83,22 @@ namespace NucleusProject
                     MonthBtn.Enabled = false;
                     PreviousBtn.Disabled = false;
                     NextBtn.Disabled = false;
+                    filtericon.Attributes["class"] = disabledIcon;
                     break;
                 case ViewSpan.Custom:
                     DayBtn.Enabled = true;
                     WeekBtn.Enabled = true;
                     MonthBtn.Enabled = true;
-                    // Disable back/forward for custom ranges
-                    // TODO: Maybe go back/forward by the length of the current date range?
                     PreviousBtn.Disabled = false;
                     NextBtn.Disabled = false;
+                    filtericon.Attributes["class"] = enabledIcon;
                     break;
                 default:
                     // Default view is month
                     DayBtn.Enabled = true;
                     WeekBtn.Enabled = true;
                     MonthBtn.Enabled = false;
+                    filtericon.Attributes["class"] = disabledIcon;
                     break;
             }
         }

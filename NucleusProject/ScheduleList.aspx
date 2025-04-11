@@ -75,7 +75,7 @@
 
     <div class="btn-group mb-1">
         <button type="button" class="btn btn-secondary" onclick="toogleFilterCard()">
-            <i class="bi bi-funnel-fill"></i>
+            <i runat="server" class="bi bi-funnel" id="filtericon"></i>
         </button>
     </div>
 
