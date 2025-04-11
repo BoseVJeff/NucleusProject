@@ -169,7 +169,7 @@
                     Day
                 </HeaderTemplate>
                 <ItemTemplate>
-                    <asp:Label runat="server" Text='<%# Eval("Day") %>'></asp:Label>
+                    <asp:Label runat="server" Text='<%# DateTimeOffset.FromUnixTimeSeconds((int)Eval("Start")).ToOffset(new TimeSpan(5, 30, 0)).DayOfWeek.ToString() %>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField>
