@@ -3,12 +3,12 @@
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
 
     <main>
-        <div class="card" style="width: 18rem;">
+        <div class="card shadow" style="width: 18rem;" id="login-card">
           <div class="card-body">
-            <h5 class="card-title">Login</h5>
+            <h5 class="card-title">Student Login</h5>
             <div class="card-text pb-1">
                 <div>
-                    <label for="username" class="form-label">Username</label>
+                    <label for="username" class="form-label">Enrollment No</label>
                     <!-- Attrs not known are passed as is. From: https://stackoverflow.com/a/15824040 -->
                     <asp:TextBox runat="server" AutoCompleteType="DisplayName" ID="Username" placeholder="User ID" CssClass="form-control"></asp:TextBox>
                 </div>
@@ -16,7 +16,9 @@
                     <label for="password" class="form-label">Password</label>
                     <asp:TextBox runat="server" AutoCompleteType="None" ID="Password" type="password" placeholder="Password" CssClass="form-control"></asp:TextBox>
                 </div>
+                <div>
                     <asp:CheckBox runat="server" ID="remember" CssClass="custom-control custom-checkbox" Text="Remember Me" />
+                </div>
             </div>
               <asp:Button CssClass="btn btn-primary" Text="Login" runat="server" OnClick="Unnamed_Click" />
           </div>
