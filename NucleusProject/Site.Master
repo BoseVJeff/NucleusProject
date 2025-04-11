@@ -41,11 +41,18 @@
         #signatures {
             break-after: page;
         }
+/*Login card is centered*/
+        #login-card {
+            position: absolute;
+            top:50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
     </style>
 
 </head>
 <body class="">
-    <form runat="server" class="">
+    <form runat="server" class="h-100">
         <asp:ScriptManager runat="server">
             <Scripts>
                 <%--To learn more about bundling scripts in ScriptManager see https://go.microsoft.com/fwlink/?LinkID=301884 --%>
@@ -67,7 +74,7 @@
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark d-print-none">
             <div class="container">
-                <a class="navbar-brand" runat="server" href="~/">NUCLEUS</a>
+                <a class="navbar-brand text-uppercase" runat="server" href="~/">NUCLEUS</a>
                 <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="Toggle navigation" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
