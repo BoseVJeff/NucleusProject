@@ -98,7 +98,7 @@ namespace NucleusProject
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            // Session vars used: `id`, `view`, `startDate`, `endDate`
+            // Session vars used: `int id`, `ViewSpan view`, `TimeDuration duration`
 
             // All event handlers can assume that `id` is available after this point
             if (Session["id"] == null)
@@ -116,27 +116,24 @@ namespace NucleusProject
                 setButtonGroup(span);
                 // Set the appropriate duration - setting default here
                 TimeDuration duration = TimeDuration.AroundDateTime(DateTimeOffset.Now, ViewSpan.Month);
-                Session["startDate"] = duration.start.DateTime;
-                Session["endDate"] = duration.end.DateTime;
+                Session["duration"] = duration;
                 Session["view"] = ViewSpan.Month;
                 setButtonGroup(ViewSpan.Month);
                 if (span == ViewSpan.Custom) // TODO: Maybe more explicit behaviour?
                 {
-                    if (Session["startDate"] != null && Session["endDate"] != null)
+                    if (Session["duration"]!=null)
                     {
                         // TODO: Fix workaround
                         // See the TODO in `FilterBtn_Click` for more details
-                        duration = new TimeDuration((DateTime)Session["startDate"], ((DateTime)Session["endDate"]).AddDays(1).AddSeconds(-1));
+                        duration = (TimeDuration)Session["duration"];
                         setButtonGroup(ViewSpan.Custom);
                     }
                     else
                     {
                         // TODO: Maybe log?
-                        Debug.WriteLine("[Incomplete data!]" + Session["startDate"] + " -> " + Session["endDate"]);
+                        Debug.WriteLine("[Missing duration for custom viewspan!]" + Session["duration"]);
                         // Potentially partial data
                         // Reset session vars to known good state
-                        Session["startDate"] = null;
-                        Session["endDate"] = null;
                         Session["view"] = ViewSpan.Month;
                     }
 
@@ -151,6 +148,8 @@ namespace NucleusProject
 
                 // Fill in the grid
                 LoadAttendanceGrid(studentId, duration);
+                // Save the session used
+                Session["duration"] = duration;
             }
         }
 
@@ -161,8 +160,7 @@ namespace NucleusProject
             TimeDuration duration = TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Month);
             // Store value in session
             Session["view"] = ViewSpan.Month;
-            Session["startDate"] = duration.start;
-            Session["endDate"] = duration.end;
+            Session["duration"] = duration;
             // Set duration and load appropriate gridview
             //Debug.WriteLine(duration);
             LoadAttendanceGrid((int)Session["id"], duration);
@@ -177,8 +175,7 @@ namespace NucleusProject
             TimeDuration duration = TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Week);
             // Store value in session
             Session["view"] = ViewSpan.Week;
-            Session["startDate"] = duration.start.DateTime;
-            Session["endDate"] = duration.end.DateTime;
+            Session["duration"] = duration;
             // Set duration and load appropriate gridview
             //Debug.WriteLine(duration);
             LoadAttendanceGrid((int)Session["id"], duration);
@@ -193,8 +190,7 @@ namespace NucleusProject
             TimeDuration duration = TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Day);
             // Store value in session
             Session["view"] = ViewSpan.Day;
-            Session["startDate"] = duration.start.DateTime;
-            Session["endDate"] = duration.end.DateTime;
+            Session["duration"] = duration;
             // Set duration and load appropriate gridview
             // TODO: Set this to be around the start date instead
             LoadAttendanceGrid((int)Session["id"], duration);
@@ -217,19 +213,21 @@ namespace NucleusProject
                 //Debug.WriteLine("Hidden input: "+tzData.Value);
 
                 Session["view"] = ViewSpan.Custom;
-                Session["startDate"] = fromDateValue;
-                Session["endDate"] = toDateValue;
+                TimeDuration duration= new TimeDuration(fromDateValue, toDateValue.AddDays(1).AddSeconds(-1));
+                Session["duration"] = duration;
 
                 // For now, working around by adding one day to the endDate
                 // This ensures that the end date selected by the user is included, as expected
-                LoadAttendanceGrid((int)Session["id"], new TimeDuration(fromDateValue, toDateValue.AddDays(1).AddSeconds(-1)));
+                LoadAttendanceGrid((int)Session["id"], duration);
                 setButtonGroup(ViewSpan.Custom);
             }
             else
             {
                 // Invalid value - Default to month view
                 Session["view"] = ViewSpan.Month;
-                LoadAttendanceGrid((int)Session["id"], TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Month));
+                TimeDuration duration = TimeDuration.AroundDateTime(DateTime.Now, ViewSpan.Month);
+                Session["duration"] = duration;
+                LoadAttendanceGrid((int)Session["id"], duration);
                 setButtonGroup(ViewSpan.Month);
 
             }
@@ -237,8 +235,9 @@ namespace NucleusProject
 
         protected void PreviousBtn_Click(object sender, EventArgs e)
         {
-            DateTimeOffset start = (DateTime)Session["startDate"];
-            DateTimeOffset end = (DateTime)Session["endDate"];
+            TimeDuration duration = (TimeDuration)Session["duration"];
+            DateTimeOffset start = duration.start;
+            DateTimeOffset end = duration.end;
             int id = (int)Session["id"];
             TimeDuration timeDuration=TimeDuration.AroundDateTime(DateTimeOffset.Now,ViewSpan.Day);
             //Debug.WriteLine(Session["view"]);
@@ -266,14 +265,14 @@ namespace NucleusProject
                     LoadAttendanceGrid(id, timeDuration);
                     break;
             }
-            Session["startDate"] = timeDuration.start.DateTime;
-            Session["endDate"] = timeDuration.end.DateTime;
+            Session["duration"] = timeDuration;
         }
 
         protected void NextBtn_Click(object sender, EventArgs e)
         {
-            DateTimeOffset start = (DateTime)Session["startDate"];
-            DateTimeOffset end = (DateTime)Session["endDate"];
+            TimeDuration duration = (TimeDuration)Session["duration"];
+            DateTimeOffset start = duration.start;
+            DateTimeOffset end = duration.end;
             int id = (int)Session["id"];
             TimeDuration timeDuration = TimeDuration.AroundDateTime(DateTimeOffset.Now, ViewSpan.Day);
             //Debug.WriteLine(Session["view"]);
@@ -301,8 +300,7 @@ namespace NucleusProject
                     LoadAttendanceGrid(id, timeDuration);
                     break;
             }
-            Session["startDate"] = timeDuration.start.DateTime;
-            Session["endDate"] = timeDuration.end.DateTime;
+            Session["duration"] = timeDuration;
         }
     }
 }
