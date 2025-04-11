@@ -5,6 +5,8 @@
         protected string getAttendanceClass()
         {
             object att = Eval("Attendance");
+            object startStr = Eval("Start");
+            object endStr = Eval("End");
             //string attStr;
             if(att is System.DBNull)
             {
@@ -21,14 +23,33 @@
                     sb.Append("success");
                 } else
                 {
-                    // Highlighting danger here as it the student is supposed to case about these scenarios
-                    sb.Append("danger");
+                    if (!(startStr is System.DBNull) && !(endStr is System.DBNull))
+                    {
+                        // Start and end dates ate available for use
+                        DateTimeOffset currentTimestamp = DateTimeOffset.UtcNow;
+                        DateTimeOffset start = DateTimeOffset.FromUnixTimeSeconds((int)startStr);
+                        DateTimeOffset end = DateTimeOffset.FromUnixTimeSeconds((int)endStr);
+
+                        if (start <= currentTimestamp && currentTimestamp <= end)
+                        {
+                            // Mark class as ongoing
+                            sb.Append("info");
+                        }
+                        else
+                        {
+                            // Mark for highlight
+                            sb.Append("danger");
+                        }
+                    }
+                    else
+                    {
+                        // Highlighting danger here as it the student is supposed to case about these scenarios
+                        sb.Append("danger");
+                    }
                 }
                 sb.Append("\"></i>");
-                //sb.Append(attStr);
                 return sb.ToString();
             }
-            //return attStr;
         }
     </script>
     <script type="text/javascript">
