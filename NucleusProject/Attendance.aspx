@@ -115,11 +115,11 @@
                                 Attendance Scale 
                                 <div class="progress p-0">
                                     <!-- All classes set here WILL be overridden. Change `baseProgressClass` in the CodeBehind instead. -->
-                                    <div id="barone" runat="server"></div>
+                                    <div id="barone" runat="server" title="Attendance if you miss all upcoming classes"></div>
                                     <div id="bartwo" runat="server"></div>
-                                    <div id="barthree" runat="server"></div>
+                                    <div id="barthree" runat="server" title="Attendance right now"></div>
                                     <div id="barfour" runat="server"></div>
-                                    <div id="barfive" runat="server"></div>
+                                    <div id="barfive" runat="server" title="Attendance if you attend all future classes"></div>
                                 </div>
                             </div>
                         </div>
