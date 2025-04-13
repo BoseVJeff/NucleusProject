@@ -41,8 +41,6 @@ namespace NucleusProject
             AttendanceRepeater.DataBind();
             AttendanceRepeater.EnableViewState = false;
 
- 
-
             foreach (RepeaterItem item in AttendanceRepeater.Items)
             {
                
@@ -52,6 +50,11 @@ namespace NucleusProject
                 int total = Convert.ToInt32(AttendanceRow["Total"]);
                 int all = Convert.ToInt32(AttendanceRow["All"]);
                 int classesLeft = total - present;
+
+                if(total==0||all==0)
+                {
+                    break;
+                }
 
                 double attRatio = (present * 100) / total;
                 double minAttRatio = (present * 100.0) / all;
