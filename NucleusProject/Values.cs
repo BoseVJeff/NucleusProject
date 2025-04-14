@@ -49,9 +49,11 @@ namespace NucleusProject
                     // TODO: Customisable start of week? Will require additional tests to verify functionality
 
                     // Start at first minute of the first day of the current week
-                    startDate = new DateTimeOffset(year: date.Year, month: date.Month, day: date.Day-((int)date.DayOfWeek)+((int)DayOfWeek.Sunday), hour: 0, minute: 0, second: 0, offset: date.Offset);
+                    startDate = date.AddDays(-((int)date.DayOfWeek) + ((int)DayOfWeek.Sunday));
+                    startDate=new DateTimeOffset(startDate.Year,startDate.Month,startDate.Day,0,0,0,startDate.Offset);
                     // End at the last minute of the last day of the current week
-                    endDate = new DateTimeOffset(year: date.Year, month: date.Month, day: date.Day - (int)date.DayOfWeek + (int)DayOfWeek.Saturday, hour: 23, minute: 59, second: 59, offset: date.Offset);
+                    endDate = date.AddDays(-(int)date.DayOfWeek + (int)DayOfWeek.Saturday);
+                    endDate=new DateTimeOffset(endDate.Year,endDate.Month,endDate.Day,23,59,59,endDate.Offset);
                     break;
                 case ViewSpan.Month:
                     // Start at first day of the current month
