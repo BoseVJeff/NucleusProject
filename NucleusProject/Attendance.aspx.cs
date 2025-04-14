@@ -18,13 +18,30 @@ namespace NucleusProject
         AttendanceData attendanceData;
 
         const string baseProgressClass = "progress-bar user-select-none";
-        private void setBarGraph(double size, HtmlGenericControl barGraph, string cssClass/*, string value*/) {
+
+        private void setBarGraph(double size, HtmlGenericControl barGraph, string cssClass, string value)
+        {
+            if (barGraph == null)
+            {
+                return;
+            }
+
             barGraph.Attributes.CssStyle.Add("width", size.ToString() + "%");
-            barGraph.Attributes.Add("class", baseProgressClass+ " " + cssClass);
-            //barGraph.Attributes.Add("aria-valuenow", value);
-            // Max is always 100 in this case
-            //barGraph.InnerText= value;
+            barGraph.Attributes.Add("class", baseProgressClass + " " + cssClass);
+            barGraph.Attributes.Add("title", value);
+
+            // Only show the value if the bar size is large enough to fit it
+            if (size >= 7)
+            {
+                barGraph.InnerText = value;
+            }
+            else
+            {
+                barGraph.InnerText = ""; // Hide value if bar is too small
+            }
         }
+
+
         protected void Page_Load(object sender, EventArgs e)
         {
             int? studentId = Values.StudentId(Session, Request.Cookies);
@@ -104,11 +121,25 @@ namespace NucleusProject
                 HtmlGenericControl barFour = (HtmlGenericControl)item.FindControl("barfour");
                 HtmlGenericControl barFive = (HtmlGenericControl)item.FindControl("barfive");
 
-                setBarGraph(barOneSize, barOne, "bg-success");
-                setBarGraph(barTwoSize, barTwo, "bg-secondary");
-                setBarGraph(barThreeSize, barThree, "bg-dark");
-                setBarGraph(barFourSize, barFour, "bg-secondary");
-                setBarGraph(barFiveSize, barFive, "bg-danger");
+                // Set progress bars
+                setBarGraph(barOneSize, barOne, "bg-success", $"{minAttRatioString}%"); // Show value
+                setBarGraph(barTwoSize, barTwo, "bg-secondary", ""); // No value
+                setBarGraph(barThreeSize, barThree, "bg-dark", $"{attRatio:0.0}"); // No value
+                setBarGraph(barFourSize, barFour, "bg-secondary", ""); // No value
+                setBarGraph(barFiveSize, barFive, "bg-danger", $"{maxAttRatioString}%"); // Show value
+
+
+                // Add null checks before calling setBarGraph
+                if (barOne != null)
+                    setBarGraph(barOneSize, barOne, "bg-success", $"{minAttRatioString}%");
+                if (barTwo != null)
+                    setBarGraph(barTwoSize, barTwo, "bg-secondary", "");
+                if (barThree != null)
+                    setBarGraph(barThreeSize, barThree, "bg-dark", "");
+                if (barFour != null)
+                    setBarGraph(barFourSize, barFour, "bg-secondary", "");
+                if (barFive != null)
+                    setBarGraph(barFiveSize, barFive, "bg-danger", $"{maxAttRatioString}%");
 
                 Chart AttendanceChart = (Chart)item.FindControl("AttendanceChart");
 
