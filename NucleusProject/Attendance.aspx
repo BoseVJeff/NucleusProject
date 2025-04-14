@@ -81,7 +81,8 @@
                 <div class="card bg-light shadow-sm" style="width: 26rem;">
                     <div class="card-body position-relative">
                         <h5 class="card-title">
-                            <asp:Label runat="server" Text='<%# Eval("Course") %>' ></asp:Label>
+                            <asp:HyperLink runat="server" CssClass="stretched-link text-decoration-none" Text='<%# Eval("Course") %>' href='<%# "/ScheduleList?course="+System.Net.WebUtility.UrlEncode((string)Eval("Course")) %>'></asp:HyperLink>
+                            
                             <br />
                             <asp:Label runat="server" ID="CourseCode" Text='<%# Eval("Code") %>' CssClass="h6"></asp:Label>
                         </h5>
