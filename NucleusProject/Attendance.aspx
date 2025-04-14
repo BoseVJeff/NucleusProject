@@ -65,6 +65,16 @@
             }
         }
     </script>
+    <div class="mb-3">
+        <asp:DropDownList runat="server" CssClass="form-select">
+            <asp:ListItem Text="Select Semester" Value="" />
+            <asp:ListItem Text="Semester 1" Value="1" />
+            <asp:ListItem Text="Semester 2" Value="2" />
+            <asp:ListItem Text="Semester 3" Value="3" />
+            <asp:ListItem Text="Semester 4" Value="4" />
+            <asp:ListItem Text="Semester 5" Value="5" />
+        </asp:DropDownList>
+    </div>
     <div class="d-flex flex-row flex-wrap justify-content-start" style="gap:1rem">
         <asp:Repeater runat="server" ID="AttendanceRepeater">
             <ItemTemplate>
