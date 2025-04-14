@@ -9,12 +9,12 @@
             <div class="card-text pb-1 form-group">
                 <asp:Label runat="server" ID="Incorrect" Visible="false" CssClass="text-danger" Text="Enrollment no / password incorrect"></asp:Label>
                 <div>
-                    <label for="username" class="form-label">Enrollment No</label>
+                    <label for="<%= Username.ClientID %>" class="form-label">Enrollment No</label>
                     <!-- Attrs not known are passed as is. From: https://stackoverflow.com/a/15824040 -->
                     <asp:TextBox runat="server" AutoCompleteType="DisplayName" ID="Username" placeholder="User ID" CssClass="form-control w-100"></asp:TextBox>
                 </div>
                 <div>
-                    <label for="password" class="form-label">Password</label>
+                    <label for="<%= Password.ClientID %>" class="form-label">Password</label>
                     <asp:TextBox runat="server" AutoCompleteType="None" ID="Password" type="password" placeholder="Password" CssClass="form-control"></asp:TextBox>
                 </div>
                 <div>
