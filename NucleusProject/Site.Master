@@ -95,14 +95,12 @@
                         </li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="/">Course Registration</a></li>
                         <li class="nav-item"><a class="nav-link" runat="server" href="/">Academic Fees</a></li>
-                        <li class="nav-item ms-auto">
-                                                    </li>
                     </ul>
                     <div class="d-flex align-items-center ms-auto">
-                        <i class="bi bi-person-circle text-white me-2" style="font-size: 2rem;"></i>
-                        <asp:Label runat="server" CssClass="text-white" Text="Welcome, User" ></asp:Label>
-                        <asp:HyperLink CssClass="nav-link" runat="server" Text="Logout" href="/Logout" ID="LogoutLink">
-                            <i class="bi bi-box-arrow-left text-white ms-5" style="font-size: 1.5rem"></i>
+                        <i class="bi bi-person-circle text-light me-2"></i>
+                        <asp:Label runat="server" CssClass="text-light" Text="Welcome, User" ></asp:Label>
+                        <asp:HyperLink CssClass="text-light ms-5" runat="server" Text="Logout" href="/Logout" ID="LogoutLink">
+                            <i class="bi bi-box-arrow-left" ></i>
                         </asp:HyperLink>
                         
                     </div>
