@@ -7,6 +7,73 @@ using System.Web;
 
 namespace NucleusProject
 {
+    class Student : DbObject
+    {
+        public int? id;
+        public string name;
+        public string enrNo;
+        private string password;
+        public Student(int studentId) {
+            this.id= studentId;
+        }
+        public Student(string enrollmentNumber, string password) {
+            this.enrNo = enrollmentNumber;
+            this.password = password;
+        }
+        public override void Sync(string connectionString = null)
+        {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            SqlConnection conn = new SqlConnection(connStr);
+            SqlCommand sqlCommand;
+            // TODO: Add password
+            if (enrNo!=null && password!=null)
+            {
+                // TODO: Add password
+                const string cmd = @"SELECT ""Id"", ""Name"", ""Enr_no"" FROM Mst_Student WHERE Enr_no=@enr";
+
+                sqlCommand = new SqlCommand(cmd, conn);
+                sqlCommand.Parameters.Add("@enr", SqlDbType.NChar);
+                sqlCommand.Parameters["@enr"].Value = this.enrNo;
+                sqlCommand.Parameters.Add("@password", SqlDbType.Text);
+                sqlCommand.Parameters["@password"].Value = this.password;
+                
+            } else if(id!=null)
+            {
+                const string cmd = @"SELECT ""Id"", ""Name"", ""Enr_no"" FROM Mst_Student WHERE Id=@id";
+
+                sqlCommand = new SqlCommand(cmd, conn);
+                sqlCommand.Parameters.Add("@id", SqlDbType.Int);
+                sqlCommand.Parameters["@enr"].Value = this.id;
+            }
+            else
+            {
+                return;
+            }
+                try
+                {
+                    conn.Open();
+                    SqlDataReader reader = sqlCommand.ExecuteReader();
+                    // Using only the first row as only one row is expected
+                    if (reader.Read())
+                    {
+                        this.id = reader.GetInt32(0);
+                        this.name = reader.GetString(1);
+                        this.enrNo = reader.GetString(2);
+                    }
+                }
+                finally
+                {
+                    if (conn.State == ConnectionState.Open)
+                    {
+                        conn.Close();
+                    }
+                }
+        }
+    }
     class Grades : DbObject
     {
         public DataSet dataSet;

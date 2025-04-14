@@ -6,11 +6,12 @@
         <div class="card shadow" style="width: 18rem;" id="login-card">
           <div class="card-body">
             <h5 class="card-title">Student Login</h5>
-            <div class="card-text pb-1">
+            <div class="card-text pb-1 form-group">
+                <asp:Label runat="server" ID="Incorrect" Visible="false" CssClass="text-danger" Text="Enrollment no / password incorrect"></asp:Label>
                 <div>
                     <label for="username" class="form-label">Enrollment No</label>
                     <!-- Attrs not known are passed as is. From: https://stackoverflow.com/a/15824040 -->
-                    <asp:TextBox runat="server" AutoCompleteType="DisplayName" ID="Username" placeholder="User ID" CssClass="form-control"></asp:TextBox>
+                    <asp:TextBox runat="server" AutoCompleteType="DisplayName" ID="Username" placeholder="User ID" CssClass="form-control w-100"></asp:TextBox>
                 </div>
                 <div>
                     <label for="password" class="form-label">Password</label>

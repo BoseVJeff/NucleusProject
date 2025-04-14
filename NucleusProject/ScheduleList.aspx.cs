@@ -107,17 +107,15 @@ namespace NucleusProject
             // Session vars used: `int id`, `ViewSpan view`, `TimeDuration duration`
 
             // All event handlers can assume that `id` is available after this point
-            if (Session["id"] == null)
+            int? studentId = Values.StudentId(Session, Request.Cookies);
+            if (studentId == null)
             {
                 Response.Redirect("~/");
             }
-            // TODO: Actually use this value
-            int? id = Values.StudentId(Session, Response.Cookies);
             if (!Page.IsPostBack)
             {
                 // First load, check for preferences
                 ViewSpan? span = (ViewSpan?)Session["view"];
-                int studentId = (int)Session["id"]; // Null check earlier in the function, not needed here
 
                 setButtonGroup(span);
                 // Set the appropriate duration - setting default here
@@ -153,7 +151,7 @@ namespace NucleusProject
                 }
 
                 // Fill in the grid
-                LoadAttendanceGrid(studentId, duration);
+                LoadAttendanceGrid((int)studentId, duration);
                 // Save the session used
                 Session["duration"] = duration;
             }

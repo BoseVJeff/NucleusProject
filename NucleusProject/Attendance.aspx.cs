@@ -27,13 +27,13 @@ namespace NucleusProject
         }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["id"] == null)
+            int? studentId = Values.StudentId(Session, Request.Cookies);
+            if (studentId == null)
             {
                 Response.Redirect("~/");
             }
-            int studentId = (int) Session["id"];
 
-            attendanceData = new AttendanceData(studentId);
+            attendanceData = new AttendanceData((int)studentId);
             attendanceData.Sync();
 
             // Data table
