@@ -81,7 +81,7 @@
                 <div class="card bg-light shadow-sm" style="width: 26rem;">
                     <div class="card-body position-relative">
                         <h5 class="card-title">
-                            <asp:Label runat="server" Text='<%# Eval("Course") %>'></asp:Label>
+                            <asp:Label runat="server" Text='<%# Eval("Course") %>' ></asp:Label>
                             <br />
                             <asp:Label runat="server" ID="CourseCode" Text='<%# Eval("Code") %>' CssClass="h6"></asp:Label>
                         </h5>
@@ -125,11 +125,25 @@
                                 Attendance Scale 
                                 <div class="progress p-0">
                                     <!-- All classes set here WILL be overridden. Change `baseProgressClass` in the CodeBehind instead. -->
-                                    <div id="barone" runat="server" title="Attendance if you miss all upcoming classes"></div>
+                                    <div id="barone" runat="server" title="If you skip all classes"></div>
                                     <div id="bartwo" runat="server"></div>
-                                    <div id="barthree" runat="server" title="Attendance right now"></div>
+                                    <div id="barthree" runat="server" title="current attendance"></div>
                                     <div id="barfour" runat="server"></div>
-                                    <div id="barfive" runat="server" title="Attendance if you attend all future classes"></div>
+                                    <div id="barfive" runat="server" title="If you attend all classes"></div>
+                                </div>
+                                <div class="d-flex flex-column justify-content-between mt-2">
+                                    <div class="legend-item d-flex align-items-center">
+                                        <span class="legend-color" style="background-color: green; width: 30px; height: 13px; display: inline-block; margin-right: 5px;"></span>
+                                        <span>If you skip all classes</span>
+                                    </div>
+                                    <div class="legend-item d-flex align-items-center">
+                                        <span class="legend-color" style="background-color: black; width: 30px; height: 13px; display: inline-block; margin-right: 5px;"></span>
+                                        <span>Current Attendance</span>
+                                    </div>
+                                    <div class="legend-item d-flex align-items-center">
+                                        <span class="legend-color" style="background-color: red; width: 30px; height: 13px; display: inline-block; margin-right: 5px;"></span>
+                                        <span>If you attend all classes</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
