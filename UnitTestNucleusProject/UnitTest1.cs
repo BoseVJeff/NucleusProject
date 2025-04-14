@@ -219,59 +219,76 @@ namespace TimeDurationTests
         }
     }
     [TestClass]
-    public class TimeDurationTests
+    public class DayDurationTests
     {
-        // Generic tests on current date
-        // Tests for basic properties
-        private void checkStartOfDay(DateTimeOffset date)
-        {
-            Assert.AreEqual(date.Hour, 0);
-            Assert.AreEqual(date.Minute, 0);
-            Assert.AreEqual(date.Second, 0);
-        }
-        private void checkEndOfDay(DateTimeOffset date)
-        {
-            Assert.AreEqual(23, date.Hour);
-            Assert.AreEqual(59, date.Minute);
-            Assert.AreEqual(59, date.Second);
-        }
         [TestMethod]
-        public void TestDaySpan()
+        public void TestStartOfDay()
         {
-            DateTimeOffset refDate = DateTimeOffset.Now;
+            TimeSpan offset = new TimeSpan(05, 30, 00);
+            DateTimeOffset refDate = new DateTimeOffset(new DateTime(2024, 4, 5, 0, 0, 0), offset);
 
             TimeDuration duration = TimeDuration.AroundDateTime(refDate, ViewSpan.Day);
 
-            Console.WriteLine(refDate.Day);
-
             // Same month
-            Assert.AreEqual(refDate.Month,duration.start.Month);
-            Assert.AreEqual(refDate.Month,duration.end.Month);
+            Assert.AreEqual(duration.start.Month, refDate.Month);
+            Assert.AreEqual(duration.end.Month, refDate.Month);
 
-            // Date is current in both cases
-            Assert.AreEqual(duration.start.Day, refDate.Day);
+            // Same Day
+            Assert.AreEqual(refDate.Day, duration.start.Day);
             Assert.AreEqual(refDate.Day, duration.end.Day);
 
-            checkStartOfDay(duration.start);
-            checkEndOfDay(duration.end);
+            // Offset is propogated properly
+            Assert.AreEqual(offset, duration.start.Offset);
+            Assert.AreEqual(offset, duration.end.Offset);
+
+            TimeDurationTestUtils.CheckStartOfDay(duration.start);
+            TimeDurationTestUtils.CheckEndOfDay(duration.end);
         }
         [TestMethod]
-        public void TestWeekSpan()
+        public void TestEndOfDay()
         {
-            DateTimeOffset refDate = DateTimeOffset.Now;
+            TimeSpan offset = new TimeSpan(05, 30, 00);
+            DateTimeOffset refDate = new DateTimeOffset(new DateTime(2024, 4, 5, 23, 59, 59), offset);
 
-            TimeDuration duration = TimeDuration.AroundDateTime(refDate, ViewSpan.Week);
+            TimeDuration duration = TimeDuration.AroundDateTime(refDate, ViewSpan.Day);
 
             // Same month
-            Assert.AreEqual(refDate.Month, duration.start.Month);
-            Assert.AreEqual(refDate.Month, duration.end.Month);
+            Assert.AreEqual(duration.start.Month, refDate.Month);
+            Assert.AreEqual(duration.end.Month, refDate.Month);
 
-            // Day is Sunday (start) and Saturday (end)
-            Assert.AreEqual(DayOfWeek.Sunday, duration.start.DayOfWeek);
-            Assert.AreEqual(DayOfWeek.Saturday, duration.end.DayOfWeek);
+            // Same Day
+            Assert.AreEqual(refDate.Day, duration.start.Day);
+            Assert.AreEqual(refDate.Day, duration.end.Day);
 
-            checkStartOfDay(duration.start);
-            checkEndOfDay(duration.end);
+            // Offset is propogated properly
+            Assert.AreEqual(offset, duration.start.Offset);
+            Assert.AreEqual(offset, duration.end.Offset);
+
+            TimeDurationTestUtils.CheckStartOfDay(duration.start);
+            TimeDurationTestUtils.CheckEndOfDay(duration.end);
+        }
+        [TestMethod]
+        public void TestMiddleOfDay()
+        {
+            TimeSpan offset = new TimeSpan(05, 30, 00);
+            DateTimeOffset refDate = new DateTimeOffset(new DateTime(2024, 4, 5, 12, 34, 56), offset);
+
+            TimeDuration duration = TimeDuration.AroundDateTime(refDate, ViewSpan.Day);
+
+            // Same month
+            Assert.AreEqual(duration.start.Month, refDate.Month);
+            Assert.AreEqual(duration.end.Month, refDate.Month);
+
+            // Same Day
+            Assert.AreEqual(refDate.Day, duration.start.Day);
+            Assert.AreEqual(refDate.Day, duration.end.Day);
+
+            // Offset is propogated properly
+            Assert.AreEqual(offset, duration.start.Offset);
+            Assert.AreEqual(offset, duration.end.Offset);
+
+            TimeDurationTestUtils.CheckStartOfDay(duration.start);
+            TimeDurationTestUtils.CheckEndOfDay(duration.end);
         }
     }
 }
