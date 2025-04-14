@@ -33,17 +33,34 @@ namespace NucleusProject
                 Response.Redirect("~/");
             }
 
+            Semester semester = new Semester((int)studentId);
+            semester.Sync();
+
+            SemesterSelect.Items.Clear();
+
+            foreach(SemesterData data in semester.data) {
+                ListItem item=new ListItem();
+                item.Text = data.name;
+                item.Value = data.id.ToString();
+                SemesterSelect.Items.Add(item);
+            }
+
+            FillAttendanceData(studentId);
+        }
+
+        private void FillAttendanceData(int? studentId)
+        {
             attendanceData = new AttendanceData((int)studentId);
             attendanceData.Sync();
 
             // Data table
-            AttendanceRepeater.DataSource= attendanceData.dataSet;
+            AttendanceRepeater.DataSource = attendanceData.dataSet;
             AttendanceRepeater.DataBind();
             AttendanceRepeater.EnableViewState = false;
 
             foreach (RepeaterItem item in AttendanceRepeater.Items)
             {
-               
+
                 // Set values
                 DataRow AttendanceRow = attendanceData.dataSet.Tables[0].Rows[item.ItemIndex];
                 int present = Convert.ToInt32(AttendanceRow["Present"]);
@@ -51,27 +68,27 @@ namespace NucleusProject
                 int all = Convert.ToInt32(AttendanceRow["All"]);
                 int classesLeft = total - present;
 
-                if(total==0||all==0)
+                if (total == 0 || all == 0)
                 {
                     break;
                 }
 
                 double attRatio = (present * 100) / total;
                 double minAttRatio = (present * 100.0) / all;
-                string minAttRatioString = String.Format("{0:0.0}",minAttRatio);
+                string minAttRatioString = String.Format("{0:0.0}", minAttRatio);
                 double maxAttRatio = ((all - total + present) * 100.0) / all;
-                string maxAttRatioString= String.Format("{0:0.0}",maxAttRatio);
+                string maxAttRatioString = String.Format("{0:0.0}", maxAttRatio);
 
                 // Sizes of each bar
                 // Note that each value is a percentage (ie. out of 100%)
 
                 // Bar thickness in %
                 int currentBarThickness = 2;
-                
+
                 // 0 - <min attendance> -> Guaranteed value
                 double barOneSize = minAttRatio - 0;
                 // <min attendance> - <current attendance> - 0.5% -> Possible drop
-                double barTwoSize = attRatio - minAttRatio - (currentBarThickness/2);
+                double barTwoSize = attRatio - minAttRatio - (currentBarThickness / 2);
                 // <current attendance> - 0.5% - <current attendance> + 0.5% -> Current attendance, +/- 0.5% (ie. Width is always 1%)
                 double barThreeSize = currentBarThickness;
                 // <current attendance> + 0.5% - <max attendance> -> Possible Gain
@@ -97,15 +114,15 @@ namespace NucleusProject
 
                 if (total > 0)
                 {
-                    int i=AttendanceChart.Series["Series1"].Points.AddXY("Present",present);
+                    int i = AttendanceChart.Series["Series1"].Points.AddXY("Present", present);
                     AttendanceChart.Series["Series1"].Points[i].IsValueShownAsLabel = false;
                     if (classesLeft > 0)
                     {
-                        AttendanceChart.Series["Series1"].Points.AddXY("",total - present);
+                        AttendanceChart.Series["Series1"].Points.AddXY("", total - present);
                     }
 
-                    
-                    
+
+
                     AttendanceChart.Palette = ChartColorPalette.None;
                     AttendanceChart.PaletteCustomColors = new Color[] { Color.FromArgb(25, 135, 84), Color.LightGray };
 
@@ -119,11 +136,11 @@ namespace NucleusProject
                     ElementPosition position = new ElementPosition();
                     AttendanceChart.ChartAreas[0].InnerPlotPosition = position;
 
-                    
-                    AttendanceChart.BackColor = System.Drawing.Color.FromArgb(248, 249,250);
-                    
-                    AttendanceChart.ChartAreas[0].BackColor=System.Drawing.Color.FromArgb(248, 249, 250);
-                    
+
+                    AttendanceChart.BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+
+                    AttendanceChart.ChartAreas[0].BackColor = System.Drawing.Color.FromArgb(248, 249, 250);
+
 
 
                     //Retrieve the value of getCurrentRatio() for the current item
@@ -146,10 +163,10 @@ namespace NucleusProject
                 {
                     int i = AttendanceChart.Series["Series1"].Points.AddXY("dummy", 100);
                     AttendanceChart.Series["Series1"].Points[i].IsValueShownAsLabel = false;
-                   
+
 
                     AttendanceChart.Palette = ChartColorPalette.None;
-                    AttendanceChart.PaletteCustomColors = new Color[] {Color.Gray };
+                    AttendanceChart.PaletteCustomColors = new Color[] { Color.Gray };
                     AttendanceChart.Series["Series1"].ChartType = SeriesChartType.Doughnut;
                     AttendanceChart.Series["Series1"]["DoughnutRadius"] = "35";
                     AttendanceChart.Series["Series1"].IsValueShownAsLabel = false;

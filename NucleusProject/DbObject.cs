@@ -7,6 +7,141 @@ using System.Web;
 
 namespace NucleusProject
 {
+    // Details for a given semester
+    class SemesterData:DbObject
+    {
+        public int id;
+        public string name;
+        public int start;
+        public int end;
+        public string year;
+        public SemesterData(int semesterId) {
+            id = semesterId;
+        }
+
+        public override void Sync(string connectionString = null)
+        {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            SqlConnection conn = new SqlConnection(connStr);
+            const string cmd = @"SELECT Mst_Semester.""Id"",Mst_Semester.""Name"",""Start"",""End"",Mst_Year.""Name"" FROM Mst_Semester JOIN Mst_Year ON Mst_Semester.""Year""=Mst_Year.""Id"" WHERE Mst_Semester.""Id""=@id";
+            SqlCommand command = new SqlCommand(cmd, conn);
+            command.Parameters.Add("@id", SqlDbType.Int);
+            command.Parameters["@id"].Value = id;
+
+            try
+            {
+                conn.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                // Reading by Id so expecting only one row
+                if (reader.Read())
+                {
+                    id=reader.GetInt32(0);
+                    name=reader.GetString(1);
+                    start=reader.GetInt32(2);
+                    end=reader.GetInt32(3);
+                    year=reader.GetString(4);
+                }
+            }
+            finally
+            {
+                if (conn.State != ConnectionState.Closed)
+                {
+                    conn.Close();
+                }
+            }
+        }
+
+        public static SemesterData GetSemesterDataForDateTimeOffset(DateTimeOffset? dateTimeOffset, string connectionString=null) {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            DateTimeOffset offset = dateTimeOffset ?? DateTimeOffset.Now;
+            long timestamp=offset.ToUnixTimeSeconds();
+            SqlConnection conn = new SqlConnection(connStr);
+            const string cmd = @"SELECT Mst_Semester.""Id"",Mst_Semester.""Name"",""Start"",""End"",Mst_Year.""Name"" FROM Mst_Semester JOIN Mst_Year ON Mst_Semester.""Year""=Mst_Year.""Id"" WHERE Mst_Semester.""Start""<=@time AND Mst_Semester.""End"">=time";
+            SqlCommand command = new SqlCommand(cmd, conn);
+            command.Parameters.Add("@time", SqlDbType.Int);
+            command.Parameters["@time"].Value = timestamp;
+
+            SemesterData data=new SemesterData(-1);
+
+            try
+            {
+                conn.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                // Reading by Id so expecting only one row
+                if (reader.Read())
+                {
+                    data.id = reader.GetInt32(0);
+                    data.name = reader.GetString(1);
+                    data.start = reader.GetInt32(2);
+                    data.end = reader.GetInt32(3);
+                    data.year = reader.GetString(4);
+                }
+            }
+            finally
+            {
+                if (conn.State != ConnectionState.Closed)
+                {
+                    conn.Close();
+                }
+            }
+            return data;
+        }
+    }
+    /// <summary>
+    /// Get semesters for a given student
+    /// </summary>
+    class Semester : DbObject
+    {
+        private int id;
+        public List<SemesterData> data;
+        public Semester (int studentId)
+        {
+            this.id = studentId;
+        }
+        public override void Sync(string connectionString = null)
+        {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            SqlConnection conn = new SqlConnection(connStr);
+            const string cmd = @"SELECT Mst_Semester.Id, Mst_Semester.Name from Map_Trn_Schedule_Student_Attendance JOIN Trn_Schedule ON Trn_Schedule.Id=Map_Trn_Schedule_Student_Attendance.Schedule JOIN Mst_Course ON Mst_Course.Id=Trn_Schedule.Course JOIN Mst_Semester ON Mst_Semester.Id=Mst_Course.Semester WHERE Student=@student GROUP BY Mst_Semester.Id, Mst_Semester.Name";
+            
+            SqlCommand command=new SqlCommand(cmd, conn);
+            command.Parameters.Add("@student",SqlDbType.Int);
+            command.Parameters["@student"].Value= id;
+
+            data = new List<SemesterData>();
+
+            try
+            {
+                conn.Open();
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
+                {
+                    SemesterData semester=new SemesterData(reader.GetInt32(0));
+                    semester.name = reader.GetString(1);
+                    data.Add(semester);
+                }
+            }
+            finally
+            {
+                if(conn.State!=ConnectionState.Closed)
+                {
+                    conn.Close();
+                }
+            }
+        }
+    }
     class Student : DbObject
     {
         public int? id;
