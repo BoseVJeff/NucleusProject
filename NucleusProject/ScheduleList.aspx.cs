@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Drawing.Printing;
 using System.Linq;
 using System.Net;
 using System.Runtime.Remoting.Services;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.HtmlControls;
@@ -38,7 +40,18 @@ namespace NucleusProject
                 GV_Schedule.Visible = true;
                 NoDataLabel.Visible = false;
 
-                GV_Schedule.DataSource = scheduleData.dataSet;
+                DataView dataView = new DataView(scheduleData.dataSet.Tables[0]);
+                // From https://learn.microsoft.com/en-us/dotnet/api/system.data.dataview.rowfilter?view=net-9.0
+                StringBuilder stringBuilder = new StringBuilder();
+                if (Request.QueryString["course"]!=null)
+                {
+                    stringBuilder.Append("Course = '");
+                    stringBuilder.Append((string)Request.QueryString["course"]);
+                    stringBuilder.Append("'");
+                }
+                dataView.RowFilter = stringBuilder.ToString();
+
+                GV_Schedule.DataSource = dataView;
                 GV_Schedule.DataBind();
                 GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
                 //GV_Schedule.Controls[0].Controls.Add
