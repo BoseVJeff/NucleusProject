@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using NucleusProject;
 
 namespace NucleusProject
 {
@@ -25,8 +22,26 @@ namespace NucleusProject
 
         protected void Unnamed_Click(object sender, EventArgs e)
         {
-            Session["id"] = Convert.ToInt32(Username.Text);
-            Response.Redirect("~/Attendance");
+            string username=Username.Text;
+            string password=Password.Text;
+            Student student=new Student(username,password);
+            student.Sync();
+            if(student.id==null)
+            {
+                Incorrect.Visible = true;
+            } else
+            {
+                Session["student"] = student;
+                Session["id"] = student.id;
+                if (remember.Checked) {
+                    HttpCookie cookie = new HttpCookie("id");
+                    cookie.Value = student.id.ToString();
+                    cookie.Expires = DateTime.Now.AddMonths(4);
+                    Response.Cookies.Add(cookie);
+                }
+                // TODO: Reqdirect from url param
+                Response.Redirect("~/Attendance");
+            }
         }
     }
 }
