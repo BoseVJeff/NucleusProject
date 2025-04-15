@@ -53,7 +53,10 @@ namespace NucleusProject
 
                 GV_Schedule.DataSource = dataView;
                 GV_Schedule.DataBind();
-                GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
+                if (GV_Schedule.Rows.Count > 0)
+                {
+                    GV_Schedule.HeaderRow.TableSection = TableRowSection.TableHeader;
+                }
                 //GV_Schedule.Controls[0].Controls.Add
                 //TableRow row=new TableRow();
                 //TableCell cell = new TableCell();
