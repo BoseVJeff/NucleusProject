@@ -31,7 +31,7 @@ namespace NucleusProject
             barGraph.Attributes.Add("title", value);
 
             // Only show the value if the bar size is large enough to fit it
-            if (size >= 7)
+            if (size >= 10)
             {
                 barGraph.InnerText = value;
             }
@@ -130,18 +130,6 @@ namespace NucleusProject
                 setBarGraph(barFourSize, barFour, "bg-secondary", ""); // No value
                 setBarGraph(barFiveSize, barFive, "bg-danger", $"{maxAttRatioString}%"); // Show value
 
-
-                // Add null checks before calling setBarGraph
-                if (barOne != null)
-                    setBarGraph(barOneSize, barOne, "bg-success", $"{minAttRatioString}%");
-                if (barTwo != null)
-                    setBarGraph(barTwoSize, barTwo, "bg-secondary", "");
-                if (barThree != null)
-                    setBarGraph(barThreeSize, barThree, "bg-dark", "");
-                if (barFour != null)
-                    setBarGraph(barFourSize, barFour, "bg-secondary", "");
-                if (barFive != null)
-                    setBarGraph(barFiveSize, barFive, "bg-danger", $"{maxAttRatioString}%");
 
                 Chart AttendanceChart = (Chart)item.FindControl("AttendanceChart");
 
