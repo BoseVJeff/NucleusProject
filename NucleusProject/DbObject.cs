@@ -64,7 +64,7 @@ namespace NucleusProject
             DateTimeOffset offset = dateTimeOffset ?? DateTimeOffset.Now;
             long timestamp=offset.ToUnixTimeSeconds();
             SqlConnection conn = new SqlConnection(connStr);
-            const string cmd = @"SELECT Mst_Semester.""Id"",Mst_Semester.""Name"",""Start"",""End"",Mst_Year.""Name"" FROM Mst_Semester JOIN Mst_Year ON Mst_Semester.""Year""=Mst_Year.""Id"" WHERE Mst_Semester.""Start""<=@time AND Mst_Semester.""End"">=time";
+            const string cmd = @"SELECT Mst_Semester.""Id"",Mst_Semester.""Name"",""Start"",""End"",Mst_Year.""Name"" FROM Mst_Semester JOIN Mst_Year ON Mst_Semester.""Year""=Mst_Year.""Id"" WHERE Mst_Semester.""Start""<=@time AND Mst_Semester.""End"">=@time";
             SqlCommand command = new SqlCommand(cmd, conn);
             command.Parameters.Add("@time", SqlDbType.Int);
             command.Parameters["@time"].Value = timestamp;
