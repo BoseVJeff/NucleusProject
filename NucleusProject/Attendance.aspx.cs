@@ -10,6 +10,7 @@ using System.Web.UI.HtmlControls;
 using AjaxControlToolkit;
 using System.Drawing;
 using System.Configuration;
+using System.Diagnostics;
 
 namespace NucleusProject
 {
@@ -64,15 +65,21 @@ namespace NucleusProject
                 SemesterSelect.Items.Add(item);
             }
 
-            SemesterData currentSemester = SemesterData.GetSemesterDataForDateTimeOffset(DateTimeOffset.Now);
-            SemesterSelect.Items.FindByValue(currentSemester.id.ToString()).Selected= true;
+            if(!IsPostBack)
+            {
+                SemesterData currentSemester = SemesterData.GetSemesterDataForDateTimeOffset(DateTimeOffset.Now);
+                SemesterSelect.Items.FindByValue(currentSemester.id.ToString()).Selected = true;
 
-            FillAttendanceData(studentId);
+                Debug.WriteLine("[Semester Dropdown SelectedValue] " + SemesterSelect.SelectedValue);
+                Session["semesterId"] = Convert.ToInt32(SemesterSelect.SelectedValue);
+
+                FillAttendanceData(studentId, (int)Session["semesterId"]);
+            }
         }
 
-        private void FillAttendanceData(int? studentId)
+        private void FillAttendanceData(int? studentId,int semesterId)
         {
-            attendanceData = new AttendanceData((int)studentId);
+            attendanceData = new AttendanceData((int)studentId,semesterId);
             attendanceData.Sync();
 
             // Data table
@@ -248,6 +255,12 @@ namespace NucleusProject
                 //Round to two decimal palces
                 return ratio.ToString() + "%";
             }
+        }
+
+        protected void SemesterSelect_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Assuming that user is logged in and session var is set
+            FillAttendanceData((int)Session["id"], (int)Session["semesterId"]);
         }
     }
 }

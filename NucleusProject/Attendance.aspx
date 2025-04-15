@@ -66,7 +66,7 @@
         }
     </script>
     <div class="mb-3">
-        <asp:DropDownList runat="server" CssClass="form-select" ID="SemesterSelect">
+        <asp:DropDownList runat="server" CssClass="form-select" ID="SemesterSelect" OnSelectedIndexChanged="SemesterSelect_SelectedIndexChanged">
             <asp:ListItem Text="Select Semester" Value="" />
             <asp:ListItem Text="Semester 1" Value="1" />
             <asp:ListItem Text="Semester 2" Value="2" />
