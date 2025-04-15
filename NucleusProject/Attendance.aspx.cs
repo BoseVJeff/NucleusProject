@@ -64,9 +64,6 @@ namespace NucleusProject
                 SemesterSelect.Items.Add(item);
             }
 
-            SemesterData currentSemester = SemesterData.GetSemesterDataForDateTimeOffset(DateTimeOffset.Now);
-            SemesterSelect.Items.FindByValue(currentSemester.id.ToString()).Selected= true;
-
             FillAttendanceData(studentId);
         }
 

@@ -64,10 +64,10 @@ namespace NucleusProject
             DateTimeOffset offset = dateTimeOffset ?? DateTimeOffset.Now;
             long timestamp=offset.ToUnixTimeSeconds();
             SqlConnection conn = new SqlConnection(connStr);
-            const string cmd = @"SELECT Mst_Semester.""Id"",Mst_Semester.""Name"",""Start"",""End"",Mst_Year.""Name"" FROM Mst_Semester JOIN Mst_Year ON Mst_Semester.""Year""=Mst_Year.""Id"" WHERE Mst_Semester.""Start""<=@currentOffset AND Mst_Semester.""End"">=@currentOffset";
+            const string cmd = @"SELECT Mst_Semester.""Id"",Mst_Semester.""Name"",""Start"",""End"",Mst_Year.""Name"" FROM Mst_Semester JOIN Mst_Year ON Mst_Semester.""Year""=Mst_Year.""Id"" WHERE Mst_Semester.""Start""<=@time AND Mst_Semester.""End"">=time";
             SqlCommand command = new SqlCommand(cmd, conn);
-            command.Parameters.Add("@currentOffset", SqlDbType.Int);
-            command.Parameters["@currentOffset"].Value = timestamp;
+            command.Parameters.Add("@time", SqlDbType.Int);
+            command.Parameters["@time"].Value = timestamp;
 
             SemesterData data=new SemesterData(-1);
 
@@ -207,41 +207,6 @@ namespace NucleusProject
                         conn.Close();
                     }
                 }
-        }
-    }
-    class StudentCourse : DbObject
-    {
-        private int _Studentid;
-        public DataSet dataSet;
-
-        public StudentCourse(int studentId) {
-            this._Studentid = studentId;
-        }
-
-        public override void Sync(string connectionString = null)
-        {
-            string connStr = connectionString;
-            if (connStr == null)
-            {
-                connStr = Values.ConnectionString;
-            }
-            const string cmd = @"SELECT Mst_Student.Name AS ""Name"", Mst_Student.Enr_no AS Enr, Mst_Programme.Name AS ""Programme"", Mst_Programme.Short_Name AS ""ShortProgramme"" FROM Mst_Student JOIN Map_Student_Programme ON Map_Student_Programme.Student=Mst_Student.Id JOIN Mst_Programme ON Map_Student_Programme.Programme=Mst_Programme.Id WHERE Mst_Student.Id=@StudentId";
-            SqlConnection conn = new SqlConnection(connStr);
-            try
-            {
-                SqlCommand sqlCommand = new SqlCommand(cmd, conn);
-                sqlCommand.Parameters.Add("@StudentId",SqlDbType.BigInt);
-                sqlCommand.Parameters["@StudentId"].Value=this._Studentid;
-                SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
-                adapter.Fill(dataSet);
-            }
-            finally
-            {
-                if (conn.State == ConnectionState.Open)
-                {
-                    conn.Close();
-                }
-            }
         }
     }
     class Grades : DbObject
