@@ -65,7 +65,10 @@
             }
         }
     </script>
-    <div class="mb-3">
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" style="border-bottom-right-radius: 0px;border-top-right-radius: 0px;">Semester</span>
+        </div>
         <asp:DropDownList runat="server" CssClass="form-select" ID="SemesterSelect" OnSelectedIndexChanged="SemesterSelect_SelectedIndexChanged">
             <asp:ListItem Text="Select Semester" Value="" />
             <asp:ListItem Text="Semester 1" Value="1" />
