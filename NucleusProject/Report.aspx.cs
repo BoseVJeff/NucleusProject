@@ -12,11 +12,13 @@ namespace NucleusProject
         string path = @"~/favicon.ico";
         protected void Page_Load(object sender, EventArgs e)
         {
-            // TODO: Enable this once actual report generation and download is figured out
-            //if (Session["id"] == null)
-            //{
-                //Response.Redirect("~/");
-            //}
+            int? studentId = Values.StudentId(Session, Request.Cookies);
+            if (studentId == null)
+            {
+                Response.Redirect("~/");
+            }
+
+            ((Label)Master.FindControl("DisplayName")).Text = ((Student)Session["student"]).enrNo;
             Grades grades = new Grades();
             grades.Sync();
             GradeExplanation.DataSource = grades.dataSet;

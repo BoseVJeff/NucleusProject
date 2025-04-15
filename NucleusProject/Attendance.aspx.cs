@@ -50,6 +50,8 @@ namespace NucleusProject
                 Response.Redirect("~/");
             }
 
+            ((Label)Master.FindControl("DisplayName")).Text = ((Student)Session["student"]).enrNo;
+
             Semester semester = new Semester((int)studentId);
             semester.Sync();
 

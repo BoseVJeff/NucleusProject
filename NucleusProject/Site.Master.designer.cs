@@ -15,15 +15,6 @@ namespace NucleusProject
     {
 
         /// <summary>
-        /// HomeLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HomeLink;
-
-        /// <summary>
         /// AttendanceLink control.
         /// </summary>
         /// <remarks>
@@ -49,6 +40,24 @@ namespace NucleusProject
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.HyperLink ReportLink;
+
+        /// <summary>
+        /// userdisplay control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl userdisplay;
+
+        /// <summary>
+        /// DisplayName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label DisplayName;
 
         /// <summary>
         /// LogoutLink control.

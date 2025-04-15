@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 
 namespace NucleusProject
@@ -12,11 +14,16 @@ namespace NucleusProject
             if (Session["id"]!=null)
             {
                 Response.Redirect("~/Attendance");
-                ((HyperLink)Master.FindControl("LogoutLink")).Visible = true;
+                //((HyperLink)Master.FindControl("LogoutLink")).Visible = true;
+                // Hide the user display section
+                ((HtmlGenericControl)Master.FindControl("userdisplay")).Visible = true;
             } else
             {
+                // User is logged out
                 // Hide the logout button
-                ((HyperLink)Master.FindControl("LogoutLink")).Visible = false;
+                //((HyperLink)Master.FindControl("LogoutLink")).Visible = false;
+                // Hide the user display section
+                ((HtmlGenericControl)Master.FindControl("userdisplay")).Visible = false;
             }
         }
 
@@ -39,6 +46,9 @@ namespace NucleusProject
                     cookie.Expires = DateTime.Now.AddMonths(4);
                     Response.Cookies.Add(cookie);
                 }
+                Debug.WriteLine("[" + DateTime.Now + "][Enrollment No.] " + student.enrNo);
+                ((Label)Master.FindControl("DisplayName")).Text = student.enrNo;
+                Debug.WriteLine("[" + DateTime.Now + "][Label] " + ((Label)Master.FindControl("DisplayName")).Text);
                 // TODO: Reqdirect from url param
                 Response.Redirect("~/Attendance");
             }
