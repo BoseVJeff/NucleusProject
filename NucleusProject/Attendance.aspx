@@ -81,7 +81,7 @@
                 <div class="card bg-light shadow-sm" style="width: 26rem;">
                     <div class="card-body position-relative">
                         <h5 class="card-title">
-                            <asp:HyperLink runat="server" CssClass="stretched-link text-decoration-none" Text='<%# Eval("Course") %>' href='<%# "/ScheduleList?course="+System.Net.WebUtility.UrlEncode((string)Eval("Course")) %>'></asp:HyperLink>
+                            <asp:HyperLink runat="server" CssClass="text-decoration-none" Text='<%# Eval("Course") %>' href='<%# "/ScheduleList?course="+System.Net.WebUtility.UrlEncode((string)Eval("Course")) %>'></asp:HyperLink>
                             
                             <br />
                             <asp:Label runat="server" ID="CourseCode" Text='<%# Eval("Code") %>' CssClass="h6"></asp:Label>
@@ -132,25 +132,25 @@
                                     <div id="barfour" runat="server"></div>
                                     <div id="barfive" runat="server" title="If you attend all classes"></div>
                                 </div>
-                                <div class="d-flex flex-column justify-content-between mt-2">
-                                    <div class="legend-item d-flex align-items-center">
-                                        <span class="legend-color" style="background-color: green; width: 30px; height: 13px; display: inline-block; margin-right: 5px;"></span>
-                                        <span>If you skip all classes</span>
-                                    </div>
-                                    <div class="legend-item d-flex align-items-center">
-                                        <span class="legend-color" style="background-color: black; width: 30px; height: 13px; display: inline-block; margin-right: 5px;"></span>
-                                        <span>Current Attendance</span>
-                                    </div>
-                                    <div class="legend-item d-flex align-items-center">
-                                        <span class="legend-color" style="background-color: red; width: 30px; height: 13px; display: inline-block; margin-right: 5px;"></span>
-                                        <span>If you attend all classes</span>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </ItemTemplate>
         </asp:Repeater>
+        <div class="container-fluid border rounded border-2" >
+            <div class="legend-item d-flex align-items-center">
+                <span class="legend-color bg-success rounded" style="width: 2rem; height: 1rem; display: inline-block; margin-right: 5px;"></span>
+                <span>Estimated Attendance if no further sessions are attended</span>
+            </div>
+            <div class="legend-item d-flex align-items-center">
+                <span class="legend-color bg-dark rounded" style="width: 2rem; height: 1rem; display: inline-block; margin-right: 5px;"></span>
+                <span>Current Attendance</span>
+            </div>
+            <div class="legend-item d-flex align-items-center">
+                <span class="legend-color bg-danger rounded" style="width: 2rem; height: 1rem; display: inline-block; margin-right: 5px;"></span>
+                <span>Estimated Attendance if all further sessioins are attended</span>
+            </div>
+        </div>
     </div>
 </asp:Content>
