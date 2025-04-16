@@ -49,6 +49,18 @@ namespace NucleusProject
             StudentName.Text=student.name;
             StudentSemester.Text = currentSemester.name;
 
+            Semester semesters = new Semester((int)studentId);
+            semesters.Sync();
+
+            SemesterSelect.Items.Clear();
+            foreach(SemesterData data in semesters.data)
+            {
+                ListItem item = new ListItem();
+                item.Text = data.name;
+                item.Value = data.id.ToString();
+                SemesterSelect.Items.Add(item);
+            } 
+
             Grades grades = new Grades();
             grades.Sync();
             GradeExplanation.DataSource = grades.dataSet;
