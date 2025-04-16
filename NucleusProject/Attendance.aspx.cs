@@ -88,9 +88,20 @@ namespace NucleusProject
                 } else
                 {
                     // Maybe add the item in?
+                    ListItem item = new ListItem();
+                    item.Text = currentSemester.name;
+                    item.Value = currentSemester.id.ToString();
+                    item.Selected = true;
+                    SemesterSelect.Items.Add(item);
+                    FillAttendanceData(studentId, currentSemester.id);
                 }
 
                 Debug.WriteLine("[Semester Dropdown SelectedValue] " + SemesterSelect.SelectedValue);
+            } else
+            {
+                int selectedValue = Convert.ToInt32(Request.Form[SemesterSelect.UniqueID]);
+                SemesterSelect.Items.FindByValue(selectedValue.ToString()).Selected= true;
+                FillAttendanceData(studentId, selectedValue);
             }
         }
 

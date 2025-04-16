@@ -69,7 +69,7 @@
         <div class="input-group-prepend">
             <span class="input-group-text" style="border-bottom-right-radius: 0px;border-top-right-radius: 0px;">Semester</span>
         </div>
-        <asp:DropDownList runat="server" CssClass="form-select" ID="SemesterSelect" OnSelectedIndexChanged="SemesterSelect_SelectedIndexChanged">
+        <asp:DropDownList runat="server" CssClass="form-select" ID="SemesterSelect" AutoPostBack="true">
             <asp:ListItem Text="Select Semester" Value="" />
             <asp:ListItem Text="Semester 1" Value="1" />
             <asp:ListItem Text="Semester 2" Value="2" />
