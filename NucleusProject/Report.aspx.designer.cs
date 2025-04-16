@@ -15,40 +15,76 @@ namespace NucleusProject
     {
 
         /// <summary>
-        /// PreviewButton control.
+        /// StudentEnr control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button PreviewButton;
+        protected global::System.Web.UI.WebControls.Label StudentEnr;
 
         /// <summary>
-        /// PrintButton control.
+        /// StudentName control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button PrintButton;
+        protected global::System.Web.UI.WebControls.Label StudentName;
 
         /// <summary>
-        /// CourseRepeater control.
+        /// StudentSemester control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater CourseRepeater;
+        protected global::System.Web.UI.WebControls.Label StudentSemester;
 
         /// <summary>
-        /// ResultPreview control.
+        /// GV_Result control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ResultPreview;
+        protected global::System.Web.UI.WebControls.GridView GV_Result;
+
+        /// <summary>
+        /// RegCredits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label RegCredits;
+
+        /// <summary>
+        /// Credits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Credits;
+
+        /// <summary>
+        /// Points control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Points;
+
+        /// <summary>
+        /// Sgpa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Sgpa;
 
         /// <summary>
         /// GradeExplanation control.
