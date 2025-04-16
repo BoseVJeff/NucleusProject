@@ -128,7 +128,19 @@ namespace NucleusProject
             {
                 Response.Redirect("~/");
             }
-            ((Label)Master.FindControl("DisplayName")).Text = ((Student)Session["student"]).enrNo;
+            Student student;
+            if (Session["student"] != null)
+            {
+                student = (Student)Session["student"];
+            }
+            else
+            {
+                student = new Student((int)studentId);
+                student.Sync();
+                Session["student"] = student;
+            }
+
+            ((Label)Master.FindControl("DisplayName")).Text = student.enrNo;
             if (!Page.IsPostBack)
             {
                 // First load, check for preferences
