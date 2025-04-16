@@ -2,63 +2,24 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="d-flex mb-3">
-        <!-- Preview Button -->
-        <asp:Button runat="server" ID="PreviewButton" Text="Show Report Preview" CssClass="btn btn-primary d-print-none me-3" OnClick="Unnamed_Click" />
-
-        <!-- Print Button -->
-        <button class="btn btn-primary d-print-none me-3" onclick="window.print()">Print Report</button>
-
-
+    <div class="input-group mb-3">
+        <div class="input-group-prepend">
+            <span class="input-group-text" style="border-bottom-right-radius: 0px; border-top-right-radius: 0px;">Semester</span>
+        </div>
+        <asp:DropDownList runat="server" CssClass="form-select" >
+            <asp:ListItem Text="Select Semester" Value="" />
+            <asp:ListItem Text="Semester 1" Value="1" />
+            <asp:ListItem Text="Semester 2" Value="2" />
+            <asp:ListItem Text="Semester 3" Value="3" />
+            <asp:ListItem Text="Semester 4" Value="4" />
+            <asp:ListItem Text="Semester 5" Value="5" />
+        </asp:DropDownList>
     </div>
 
-    <div class="row mt-3">
-        <asp:Repeater ID="CourseRepeater" runat="server">
-            <ItemTemplate>
-                <div class="col-md-12 mb-4">
-                    <div class="card shadow-lg">
-                        <div class="card-header bg-gradient">
-                            <b style="font-size: 20px;"><%# Eval("CourseTitle") %>
-                                <br />
-                            </b>
-                            <span><%# Eval("CourseCode") %></span>
-                        </div>
-                        <div class="card-body bg-light">
-                            <table class="table table-bordered table-sm text-center">
-                                <thead>
-                                    <tr>
-                                        <th style="width: 25rem;">Exam</th>
-                                        <th>Obtained Marks</th>
-                                        <th>Total Marks</th>
-                                        <th>Percentage</th>
-                                        <th>Published Date</th>
-                                        <th>Published By</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <asp:Repeater ID="ExamRepeater" runat="server">
-                                        <ItemTemplate>
-                                            <tr>
-                                                <td style="text-align: justify;"><%# Eval("ExamName") %></td>
-                                                <td><%# Eval("ObtainedMarks") %></td>
-                                                <td><%# Eval("TotalMarks") %></td>
-                                                <td><%# Eval("Percentage") %>%</td>
-                                                <td><%# Eval("PublishedDate") %></td>
-                                                <td><%# Eval("PublishedBy") %></td>
-                                            </tr>
-                                        </ItemTemplate>
-                                    </asp:Repeater>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </ItemTemplate>
-        </asp:Repeater>
-    </div>
+    
 
-    <!--<button class="btn btn-primary d-print-none" onclick="window.print()">Print Report</button>-->
-    <div id="ResultPreview" runat="server" visible="false">
+    <button class="btn btn-primary d-print-none mb-3" onclick="window.print()">Print Report</button>
+    <div id="ResultPreview" runat="server">
         <h2 class="text-center text-uppercase">Semester Grade Report / Transcript</h2>
         <hr />
         <div class="text-uppercase mb-3">
