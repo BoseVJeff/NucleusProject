@@ -15,6 +15,33 @@ namespace NucleusProject
     {
 
         /// <summary>
+        /// StudentEnr control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label StudentEnr;
+
+        /// <summary>
+        /// StudentName control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label StudentName;
+
+        /// <summary>
+        /// StudentSemester control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label StudentSemester;
+
+        /// <summary>
         /// GV_Result control.
         /// </summary>
         /// <remarks>

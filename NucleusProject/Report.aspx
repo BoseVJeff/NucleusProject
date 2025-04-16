@@ -19,9 +19,15 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>23000068</td>
-                    <td>Vineet Maurya</td>
-                    <td>Autumn (July to Dec 2024)</td>
+                    <td>
+                        <asp:Label runat="server" Id="StudentEnr"></asp:Label>
+                    </td>
+                    <td>
+                        <asp:Label runat="server" Id="StudentName"></asp:Label>
+                    </td>
+                    <td>
+                        <asp:Label runat="server" Id="StudentSemester"></asp:Label>
+                    </td>
                 </tr>
             </tbody>
         </table>
