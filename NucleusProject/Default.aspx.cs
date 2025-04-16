@@ -11,8 +11,17 @@ namespace NucleusProject
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Session["id"]!=null)
+            // Reset styling for other items
+            const string otherItemsCss = "nav-link";
+            ((HyperLink)Master.FindControl("AttendanceLink")).CssClass = otherItemsCss;
+            ((HyperLink)Master.FindControl("ScheduleLink")).CssClass = otherItemsCss;
+            ((HyperLink)Master.FindControl("ReportLink")).CssClass = otherItemsCss;
+
+            int? studentId = Values.StudentId(Session, Request.Cookies);
+
+            if (studentId!=null)
             {
+                Session["studentId"] = (int)studentId;
                 Response.Redirect("~/Attendance");
                 //((HyperLink)Master.FindControl("LogoutLink")).Visible = true;
                 // Hide the user display section
