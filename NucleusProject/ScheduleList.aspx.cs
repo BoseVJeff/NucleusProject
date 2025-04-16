@@ -121,7 +121,7 @@ namespace NucleusProject
         protected void Page_Load(object sender, EventArgs e)
         {
             // Highlight the schedule link in the navbar
-            const string currentItemCss = "nav-link disabled text-white";
+            const string currentItemCss = "nav-link text-white";
             const string otherItemsCss = "nav-link";
             ((HyperLink)Master.FindControl("ScheduleLink")).CssClass = currentItemCss;
             // Reset styling for other items
