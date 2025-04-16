@@ -209,6 +209,41 @@ namespace NucleusProject
                 }
         }
     }
+    class StudentCourse : DbObject
+    {
+        private int _Studentid;
+        public DataSet dataSet;
+
+        public StudentCourse(int studentId) {
+            this._Studentid = studentId;
+        }
+
+        public override void Sync(string connectionString = null)
+        {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            const string cmd = @"SELECT Mst_Student.Name AS ""Name"", Mst_Student.Enr_no AS Enr, Mst_Programme.Name AS ""Programme"", Mst_Programme.Short_Name AS ""ShortProgramme"" FROM Mst_Student JOIN Map_Student_Programme ON Map_Student_Programme.Student=Mst_Student.Id JOIN Mst_Programme ON Map_Student_Programme.Programme=Mst_Programme.Id WHERE Mst_Student.Id=@StudentId";
+            SqlConnection conn = new SqlConnection(connStr);
+            try
+            {
+                SqlCommand sqlCommand = new SqlCommand(cmd, conn);
+                sqlCommand.Parameters.Add("@StudentId",SqlDbType.BigInt);
+                sqlCommand.Parameters["@StudentId"].Value=this._Studentid;
+                SqlDataAdapter adapter = new SqlDataAdapter(sqlCommand);
+                adapter.Fill(dataSet);
+            }
+            finally
+            {
+                if (conn.State == ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+    }
     class Grades : DbObject
     {
         public DataSet dataSet;
@@ -261,12 +296,14 @@ namespace NucleusProject
         public DataSet dataSet;
 
         int studentId;
+        int semesterId;
         int presentCount=0;
         int totalCount = 0;
         public Dictionary<string,AttendanceCheck> subjectAttendanceMap = new Dictionary<string,AttendanceCheck>();
 
-        public AttendanceData(int student) {
+        public AttendanceData(int student, int semester) {
             this.studentId = student;
+            this.semesterId=semester;
             dataSet = new DataSet();
         }
 
@@ -279,13 +316,13 @@ namespace NucleusProject
                 connStr = Values.ConnectionString;
             }
             // Get number of classes 
-            const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" GROUP BY Mst_Course.""Name""";
+            const string cmd = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id AND Mst_Course.""Semester""=@sem LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" GROUP BY Mst_Course.""Name""";
             // Get number of classes student was present in
-            const string cmd2 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Map_Trn_Schedule_Student_Attendance.""Attendance""=1 GROUP BY Mst_Course.""Name""";
+            const string cmd2 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Map_Trn_Schedule_Student_Attendance.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id AND Mst_Course.""Semester""=@sem LEFT JOIN Map_Trn_Schedule_Student_Attendance ON Map_Trn_Schedule_Student_Attendance.""Schedule"" = Trn_Schedule.""Id"" AND Map_Trn_Schedule_Student_Attendance.""Student""=@student LEFT JOIN E_Attendance ON Map_Trn_Schedule_Student_Attendance.""Attendance"" = E_Attendance.""Id"" WHERE Map_Trn_Schedule_Student_Attendance.""Attendance""=1 GROUP BY Mst_Course.""Name""";
             // Get 
-            const string cmd3 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Trn_Schedule.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id GROUP BY Mst_Course.""Name""";
+            const string cmd3 = @"SELECT Mst_Course.""Name"" AS ""Course"", COUNT(Trn_Schedule.""Id"") AS Cnt FROM Trn_Schedule JOIN Mst_Course ON Trn_Schedule.""Course""=Mst_Course.Id AND Mst_Course.""Semester""=@sem GROUP BY Mst_Course.""Name""";
             // Get code for each course
-            const string cmd4 = @"SELECT Mst_Course.""Name"" AS ""Name"", Mst_Course.""Code"" AS ""Code"", Mst_School.""Name"" AS ""School"", Mst_School.""Short_Name"" AS ""SchoolShort"" FROM Mst_Course JOIN Mst_School ON Mst_Course.""School""=Mst_School.""Id"";";
+            const string cmd4 = @"SELECT Mst_Course.""Name"" AS ""Name"", Mst_Course.""Code"" AS ""Code"", Mst_School.""Name"" AS ""School"", Mst_School.""Short_Name"" AS ""SchoolShort"" FROM Mst_Course JOIN Mst_School ON Mst_Course.""School""=Mst_School.""Id"" WHERE Mst_Course.""Semester""=@sem";
             Dictionary<string,CourseDetails> courseCodeMap= new Dictionary<string,CourseDetails>();
             SqlConnection connection = new SqlConnection(connStr);
             try
@@ -293,6 +330,8 @@ namespace NucleusProject
                 SqlCommand sqlCommand = new SqlCommand(cmd, connection);
                 sqlCommand.Parameters.Add("@student", SqlDbType.BigInt);
                 sqlCommand.Parameters["@student"].Value = this.studentId;
+                sqlCommand.Parameters.Add("@sem", SqlDbType.BigInt);
+                sqlCommand.Parameters["@sem"].Value= this.semesterId;
 
                 sqlCommand.CommandText = cmd;
 
