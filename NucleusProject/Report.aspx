@@ -2,11 +2,11 @@
 
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
-    <div class="input-group mb-3">
+    <div class="input-group mb-3 d-print-none">
         <div class="input-group-prepend">
             <span class="input-group-text" style="border-bottom-right-radius: 0px; border-top-right-radius: 0px;">Semester</span>
         </div>
-        <asp:DropDownList runat="server" CssClass="form-select" ID="SemesterSelect">
+        <asp:DropDownList runat="server" CssClass="form-select" ID="SemesterSelect" AutoPostBack="true">
             <asp:ListItem Text="Select Semester" Value="" />
             <asp:ListItem Text="Semester 1" Value="1" />
             <asp:ListItem Text="Semester 2" Value="2" />
@@ -15,7 +15,7 @@
             <asp:ListItem Text="Semester 5" Value="5" />
         </asp:DropDownList>
     </div>
-    <button class="btn btn-primary d-print-none mb-3" onclick="window.print()">Print Report</button>
+    <asp:Button CssClass="btn btn-primary d-print-none mb-3" OnClientClick="window.print()" ID="PrintReport" runat="server" Text="Print Report" />
     <div id="ResultPreview" runat="server">
         <h2 class="text-center text-uppercase">Semester Grade Report / Transcript</h2>
         <hr />
@@ -95,6 +95,9 @@
                         </ItemTemplate>
                     </asp:TemplateField>
                 </Columns>
+                <EmptyDataTemplate>
+                    <asp:Label Text="No data available!" runat="server"></asp:Label>
+                </EmptyDataTemplate>
             </asp:GridView>
         </div>
         <div class="text-uppercase mb-3">
