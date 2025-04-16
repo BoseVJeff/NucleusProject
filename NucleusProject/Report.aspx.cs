@@ -14,6 +14,14 @@ namespace NucleusProject
         string path = @"~/favicon.ico";
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Highlight the report link in the navbar
+            const string currentItemCss = "nav-link disabled text-white";
+            const string otherItemsCss = "nav-link";
+            ((HyperLink)Master.FindControl("ReportLink")).CssClass = currentItemCss;
+            // Reset styling for other items
+            ((HyperLink)Master.FindControl("ScheduleLink")).CssClass = otherItemsCss;
+            ((HyperLink)Master.FindControl("AttendanceLink")).CssClass = otherItemsCss;
+
             int? studentId = Values.StudentId(Session, Request.Cookies);
             if (studentId == null)
             {

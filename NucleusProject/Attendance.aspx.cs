@@ -45,6 +45,15 @@ namespace NucleusProject
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            // Highlight the attendance link in the navbar
+            const string currentItemCss = "nav-link disabled text-white";
+            const string otherItemsCss = "nav-link";
+            ((HyperLink)Master.FindControl("AttendanceLink")).CssClass=currentItemCss;
+            // Reset styling for other items
+            ((HyperLink)Master.FindControl("ScheduleLink")).CssClass = otherItemsCss;
+            ((HyperLink)Master.FindControl("ReportLink")).CssClass = otherItemsCss;
+
+            // Disable the other 
             int? studentId = Values.StudentId(Session, Request.Cookies);
             if (studentId == null)
             {
