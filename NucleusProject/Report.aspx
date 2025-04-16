@@ -143,15 +143,23 @@
                         <th>Credits Registered</th>
                         <th>Credits Earned</th>
                         <th>Grade Points Earned</th>
-                        <th>SGPA</th>
+                        <th>CGPA</th>
                     </tr>
                 </thead>
                 <tbody class="text-center">
                     <tr>
-                        <td>67</td>
-                        <td>67</td>
-                        <td>634</td>
-                        <td>9.46</td>
+                        <td>
+                            <asp:Label runat="server" Id="CumRegCredits"></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="server" ID="CumCredits"></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="server" ID="CumPoints"></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="server" ID="Cgpa"></asp:Label>
+                        </td>
                     </tr>
                 </tbody>
             </table>

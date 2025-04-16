@@ -132,6 +132,17 @@ namespace NucleusProject
             StudentEnr.Text = student.enrNo;
             StudentName.Text = student.name;
             StudentSemester.Text = currentSemester.name;
+
+            OverallGrades overallGrades = new OverallGrades((int)student.id);
+            overallGrades.Sync();
+
+            CumRegCredits.Text=overallGrades.regCreditSum.ToString();
+            CumCredits.Text = overallGrades.creditSum.ToString();
+            CumPoints.Text=overallGrades.pointSum.ToString();
+            if(overallGrades.creditSum!=0)
+            {
+                Cgpa.Text = String.Format("{0:0.00}", overallGrades.pointSum / overallGrades.creditSum);
+            }
         }
 
         protected string ResolvePath(string path)

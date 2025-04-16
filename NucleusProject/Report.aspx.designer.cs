@@ -114,6 +114,42 @@ namespace NucleusProject
         protected global::System.Web.UI.WebControls.Label Sgpa;
 
         /// <summary>
+        /// CumRegCredits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label CumRegCredits;
+
+        /// <summary>
+        /// CumCredits control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label CumCredits;
+
+        /// <summary>
+        /// CumPoints control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label CumPoints;
+
+        /// <summary>
+        /// Cgpa control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label Cgpa;
+
+        /// <summary>
         /// GradeExplanation control.
         /// </summary>
         /// <remarks>
