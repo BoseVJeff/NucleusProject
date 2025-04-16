@@ -72,15 +72,14 @@ namespace NucleusProject
                 if (cuurentSemItem != null)
                 {
                     cuurentSemItem.Selected = true;
+                    Session["semesterId"] = Convert.ToInt32(SemesterSelect.SelectedValue);
+                    FillAttendanceData(studentId, (int)Session["semesterId"]);
                 } else
                 {
                     // Maybe add the item in?
                 }
 
                 Debug.WriteLine("[Semester Dropdown SelectedValue] " + SemesterSelect.SelectedValue);
-                Session["semesterId"] = Convert.ToInt32(SemesterSelect.SelectedValue);
-
-                FillAttendanceData(studentId, (int)Session["semesterId"]);
             }
         }
 
