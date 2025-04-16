@@ -57,7 +57,7 @@ namespace NucleusProject
             int? studentId = Values.StudentId(Session, Request.Cookies);
             if (studentId == null)
             {
-                Response.Redirect("~/");
+                Response.Redirect("~/?to=Attendance");
             }
 
             Student student;

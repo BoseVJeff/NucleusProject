@@ -58,8 +58,16 @@ namespace NucleusProject
                 Debug.WriteLine("[" + DateTime.Now + "][Enrollment No.] " + student.enrNo);
                 ((Label)Master.FindControl("DisplayName")).Text = student.enrNo;
                 Debug.WriteLine("[" + DateTime.Now + "][Label] " + ((Label)Master.FindControl("DisplayName")).Text);
-                // TODO: Reqdirect from url param
-                Response.Redirect("~/Attendance");
+                // TODO: Redirect from url param
+                string toUrl = Request.QueryString["to"];
+                if (toUrl != null)
+                {
+                    Response.Redirect("~/" + toUrl);
+                }
+                else
+                {
+                    Response.Redirect("~/Attendance");
+                }
             }
         }
     }
