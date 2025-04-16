@@ -1,6 +1,6 @@
 ﻿<%@ Page Title="Report" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Report.aspx.cs" Inherits="NucleusProject.Report" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
-    <asp:Button runat="server" Text="Download Report" CssClass="btn btn-primary d-print-none" OnClick="Unnamed_Click" />
+    <button class="btn btn-primary d-print-none" onclick="window.print()">Print Report</button>
     <h2 class="text-center text-uppercase">Semester Grade Report / Transcript</h2>
     <hr />
     <div class="text-uppercase mb-3">
