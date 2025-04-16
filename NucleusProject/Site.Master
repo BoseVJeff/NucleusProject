@@ -90,8 +90,6 @@
                         <li class="nav-item">
                             <asp:HyperLink CssClass="nav-link" runat="server" Text="Report" href="/Report" ID="ReportLink"></asp:HyperLink>
                         </li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="/">Course Registration</a></li>
-                        <li class="nav-item"><a class="nav-link" runat="server" href="/">Academic Fees</a></li>
                     </ul>
                     <div class="d-flex align-items-center ms-auto" style="gap: 0.5rem;" id="userdisplay" runat="server">
                         <i class="bi bi-person-circle text-light"></i>
