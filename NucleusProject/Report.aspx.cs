@@ -19,6 +19,20 @@ namespace NucleusProject
             }
 
             ((Label)Master.FindControl("DisplayName")).Text = ((Student)Session["student"]).enrNo;
+
+            //SemesterGrades semesterGrades = new SemesterGrades((int)studentId, SemesterData.GetSemesterDataForDateTimeOffset(DateTimeOffset.Now).id);
+            SemesterGrades semesterGrades = new SemesterGrades(1,(int)studentId);
+            semesterGrades.Sync();
+            GV_Result.DataSource = semesterGrades.dataSet;
+            GV_Result.DataBind();
+            if (GV_Result.Rows.Count > 0) {
+                GV_Result.HeaderRow.TableSection = TableRowSection.TableHeader;
+            }
+            RegCredits.Text = semesterGrades.regCreditSum.ToString();
+            Credits.Text=semesterGrades.creditSum.ToString();
+            Points.Text = semesterGrades.pointSum.ToString();
+            Sgpa.Text=String.Format("{0:0.00}",semesterGrades.pointSum/semesterGrades.creditSum);
+
             Grades grades = new Grades();
             grades.Sync();
             GradeExplanation.DataSource = grades.dataSet;

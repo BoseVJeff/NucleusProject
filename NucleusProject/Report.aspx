@@ -32,61 +32,50 @@
         </b>
     </div>
     <div class="mb-3">
-        <table class="table table-bordered table-sm">
-            <thead class="text-center">
-                <tr>
-                    <th>Course Code</th>
-                    <th>Course Title</th>
-                    <th>Credits</th>
-                    <th>Grade</th>
-                    <th>Grade Points</th>
-                </tr>
-            </thead>
-            <tbody class="text-start">
-                <tr>
-                    <td>MAT002</td>
-                    <td>Fuzzy Logic in Artificial Intelligence</td>
-                    <td>2</td>
-                    <td>A</td>
-                    <td>18</td>
-                </tr>
-                <tr>
-                    <td>PRO002</td>
-                    <td>Scientific Writing and Softwares</td>
-                    <td>3</td>
-                    <td>A+</td>
-                    <td>30</td>
-                </tr>
-                <tr>
-                    <td>CA210</td>
-                    <td>Software Engineering</td>
-                    <td>3</td>
-                    <td>A</td>
-                    <td>27</td>
-                </tr>
-                <tr>
-                    <td>CMP304</td>
-                    <td>Introduction to Web Designing and PHP</td>
-                    <td>5</td>
-                    <td>A+</td>
-                    <td>50</td>
-                </tr>
-                <tr>
-                    <td>CMP305</td>
-                    <td>Fundamentals of Cloud Computing</td>
-                    <td>5</td>
-                    <td>A+</td>
-                    <td>50</td>
-                </tr>
-                <tr>
-                    <td>CMP308</td>
-                    <td>Operating Systems</td>
-                    <td>3</td>
-                    <td>A</td>
-                    <td>27</td>
-                </tr>
-            </tbody>
-        </table>
+        <asp:GridView runat="server" ID="GV_Result" AutoGenerateColumns="false" CssClass="table table-bordered table-sm">
+            <Columns>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        <asp:Label runat="server" Text="Course Code" CssClass="d-block text-center"></asp:Label>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Eval("Code") %>' CssClass="d-block text-center"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        Course Title
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Eval("Name") %>'></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        <asp:Label runat="server" Text="Credits" CssClass="d-block text-center"></asp:Label>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Eval("Credits") %>' CssClass="d-block text-center"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        <asp:Label runat="server" Text="Grade" CssClass="d-block text-center"></asp:Label>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Eval("Grade") %>' CssClass="d-block text-center"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+                <asp:TemplateField>
+                    <HeaderTemplate>
+                        <asp:Label runat="server" Text="Grade Points" CssClass="d-block text-center"></asp:Label>
+                    </HeaderTemplate>
+                    <ItemTemplate>
+                        <asp:Label runat="server" Text='<%# Eval("Points") %>' CssClass="d-block text-center"></asp:Label>
+                    </ItemTemplate>
+                </asp:TemplateField>
+            </Columns>
+        </asp:GridView>
         </div>
         <div class="text-uppercase mb-3">
             <b>
@@ -105,10 +94,18 @@
                 </thead>
                 <tbody class="text-center">
                     <tr>
-                        <td>21</td>
-                        <td>21</td>
-                        <td>202</td>
-                        <td>9.62</td>
+                        <td>
+                            <asp:Label runat="server" ID="RegCredits" Text="Registered Credits"></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="server" ID="Credits" Text="Credits"></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="server" ID="Points" Text="Grade Points"></asp:Label>
+                        </td>
+                        <td>
+                            <asp:Label runat="server" ID="Sgpa" Text="SGPA"></asp:Label>
+                        </td>
                     </tr>
                 </tbody>
             </table>
