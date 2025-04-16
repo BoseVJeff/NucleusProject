@@ -175,7 +175,7 @@ namespace NucleusProject
                 connStr = Values.ConnectionString;
             }
             SqlConnection conn = new SqlConnection(connStr);
-            const string cmd = @"SELECT Mst_Semester.Id, Mst_Semester.Name from Map_Trn_Schedule_Student_Attendance JOIN Trn_Schedule ON Trn_Schedule.Id=Map_Trn_Schedule_Student_Attendance.Schedule JOIN Mst_Course ON Mst_Course.Id=Trn_Schedule.Course JOIN Mst_Semester ON Mst_Semester.Id=Mst_Course.Semester WHERE Student=@student GROUP BY Mst_Semester.Id, Mst_Semester.Name";
+            const string cmd = @"SELECT Mst_Semester.Id, Mst_Semester.Name FROM Map_Student_Course JOIN Mst_Course ON Map_Student_Course.""Course""=Mst_Course.""Id"" JOIN Mst_Semester On Mst_Course.Semester=Mst_Semester.Id WHERE Map_Student_Course.""Student""=@student GROUP BY Mst_Semester.Id, Mst_Semester.Name";
             
             SqlCommand command=new SqlCommand(cmd, conn);
             command.Parameters.Add("@student",SqlDbType.Int);
@@ -243,7 +243,7 @@ namespace NucleusProject
 
                 sqlCommand = new SqlCommand(cmd, conn);
                 sqlCommand.Parameters.Add("@id", SqlDbType.Int);
-                sqlCommand.Parameters["@enr"].Value = this.id;
+                sqlCommand.Parameters["@id"].Value = this.id;
             }
             else
             {
