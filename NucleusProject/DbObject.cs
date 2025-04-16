@@ -7,6 +7,67 @@ using System.Web;
 
 namespace NucleusProject
 {
+    class SemesterGrades:DbObject
+    {
+        public int semester;
+        public int student;
+        public DataSet dataSet;
+        public int regCreditSum;
+        public int creditSum;
+        public int pointSum;
+
+        public SemesterGrades(int semesterId, int studentId)
+        {
+            this.student = studentId;
+            this.semester = semesterId;
+            this.dataSet=new DataSet();
+            this.regCreditSum = 0;
+            this.creditSum = 0;
+            this.pointSum = 0;
+        }
+
+        public override void Sync(string connectionString = null)
+        {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            SqlConnection conn = new SqlConnection(connStr);
+            const string cmd = @"SELECT Mst_Course.""Code"" AS ""Code"", Mst_Course.""Name"" AS ""Name"", Mst_Course.""Credits"" AS ""Credits"", E_Grade.""Name"" AS ""Grade"", Mst_Course.""Credits""*E_Grade.""Points"" AS Points FROM Trn_Grades JOIN Mst_Course ON Trn_Grades.""Course""=Mst_Course.""Id"" AND Mst_Course.""Semester""=@sem JOIN E_Grade ON Trn_Grades.""Grade""=E_Grade.""Id"" WHERE Trn_Grades.""Student""=@student";
+            SqlCommand command = new SqlCommand(cmd, conn);
+            command.Parameters.Add("@sem", SqlDbType.Int);
+            command.Parameters["@sem"].Value = this.semester;
+            command.Parameters.Add("@student",SqlDbType.Int);
+            command.Parameters["@student"].Value=this.student;
+            try
+            {
+                // Dump all values
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                adapter.Fill(dataSet);
+
+                // Calculate summary, inc total credits/grade points and sgpa
+                DataTable table = dataSet.Tables[0];
+                foreach (DataRow row in table.Rows) {
+                    int credit = (int)row["Credits"];
+                    int point = (int)row["Points"];
+                    if(point>0)
+                    {
+                        this.creditSum = creditSum+ credit;
+                    }
+                    this.pointSum = pointSum + point;
+                    this.regCreditSum = regCreditSum + credit;
+                }
+            }
+            finally
+            {
+                if(conn.State!=ConnectionState.Closed)
+                {
+                    conn.Close();
+                }
+            }
+        }
+    }
     // Details for a given semester
     class SemesterData:DbObject
     {
