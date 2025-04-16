@@ -268,16 +268,18 @@
                         <div class="col-md-12 mb-4">
                             <div class="card shadow-lg">
                                 <div class="card-header bg-gradient">
-                                    <b style="font-size: 20px;"><%# Eval("CourseTitle") %>
-                                        <br />
-                                    </b>
-                                    <span><%# Eval("CourseCode") %></span>
+                                    <div class="h5">
+                                        <%# Eval("CourseTitle") %>
+                                    </div>
+                                    <div class="h6">
+                                        <%# Eval("CourseCode") %>
+                                    </div>
                                 </div>
                                 <div class="card-body bg-light">
                                     <table class="table table-bordered table-sm text-center">
                                         <thead>
                                             <tr>
-                                                <th style="width: 25rem;">Exam</th>
+                                                <th>Exam</th>
                                                 <th>Obtained Marks</th>
                                                 <th>Total Marks</th>
                                                 <th>Percentage</th>
@@ -289,7 +291,7 @@
                                             <asp:Repeater ID="ExamRepeater" runat="server">
                                                 <ItemTemplate>
                                                     <tr>
-                                                        <td style="text-align: justify;"><%# Eval("ExamName") %></td>
+                                                        <td><%# Eval("ExamName") %></td>
                                                         <td><%# Eval("ObtainedMarks") %></td>
                                                         <td><%# Eval("TotalMarks") %></td>
                                                         <td><%# Eval("Percentage") %>%</td>

@@ -1,5 +1,7 @@
-﻿using System;
+﻿using AjaxControlToolkit;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Diagnostics;
 using System.Linq;
 using System.Web;
@@ -88,13 +90,14 @@ namespace NucleusProject
             }
 
             //SemesterData selectedSemester = (SemesterData)Session["semester"];
-            SemesterData selectedSemester = new SemesterData(Convert.ToInt32(Request.Form[SemesterSelect.UniqueID]));
+            //SemesterData selectedSemester = new SemesterData(Convert.ToInt32(Request.Form[SemesterSelect.UniqueID]));
+            SemesterData selectedSemester = new SemesterData(Convert.ToInt32(SemesterSelect.SelectedValue));
             selectedSemester.Sync();
 
             PopulateResults(student, selectedSemester);
 
             CourseRepeater.ItemDataBound += CourseRepeater_ItemDataBound;
-            List<Course> courses=LoadCourses();
+            List<Course> courses=LoadCourses(student,selectedSemester);
             CourseRepeater.DataSource = courses;
             CourseRepeater.DataBind();
 
@@ -152,182 +155,44 @@ namespace NucleusProject
             }
         }
 
-        private List<Course> LoadCourses()
+        private List<Course> LoadCourses(Student student, SemesterData semester)
         {
-            return new List<Course>
+            InternalGrades internalGrades = new InternalGrades((int)student.id, semester.id);
+            internalGrades.Sync();
+
+            List<Course> courses = new List<Course>();
+
+            // Starting from 1, as `0` is the unfiltered table
+            for (int i = 1; i < internalGrades.subjects.Count; i++)
             {
-                new Course
+                Course course = new Course {
+                    CourseCode= (string)internalGrades.dataSet.Tables[i].Rows[0]["Code"],
+                    CourseTitle= (string)internalGrades.dataSet.Tables[i].Rows[0]["Name"],
+                    Exams=new List<Exam>()
+                };
+                foreach (DataRow eval in internalGrades.dataSet.Tables[i].Rows)
                 {
-                    CourseCode = "CMP305",
-                    CourseTitle = "Fundamentals of Cloud Computing",
-                    Exams = new List<Exam>
-                    {
-                        new Exam
-                        {
-                            ExamName = "Mid-Sem Continuous Evaluation",
-                            ObtainedMarks = 8,
-                            TotalMarks = 10,
-                            Percentage = (8*100)/10,
-                            PublishedDate = "07-11-2024 16:12:08",
-                            PublishedBy = "Rupali Shinde"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Assignment Continuous Evaluation",
-                            ObtainedMarks = 13,
-                            TotalMarks = 15,
-                            Percentage = (13*100)/15,
-                            PublishedDate = "07-11-2024 16:09:45",
-                            PublishedBy = "Rupali Shinde"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Viva Continuous Evaluation",
-                            ObtainedMarks = 8,
-                            TotalMarks = 10,
-                            Percentage = (8*100)/10,
-                            PublishedDate = "11-11-2024 14:26:52",
-                            PublishedBy = "Rupali Shinde"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Presentation Continuous Evaluation",
-                            ObtainedMarks = 8,
-                            TotalMarks = 10,
-                            Percentage = (8*100)/10,
-                            PublishedDate = "11-11-2024 14:26:16",
-                            PublishedBy = "Rupali Shinde"
-                        },
-                        new Exam
-                        {
-                            ExamName = "AWS Certificate Continuous Evaluation",
-                            ObtainedMarks = 15,
-                            TotalMarks = 15,
-                            Percentage = (15*100)/15,
-                            PublishedDate = "07-11-2024 16:17:57",
-                            PublishedBy = "Rupali Shinde"
-                        }
-                    }
-                },
+                    Exam exam = new Exam();
+                    exam.ExamName = (string)eval["Title"];
+                    Decimal marks = (Decimal)eval["Marks"];
+                    exam.ObtainedMarks = String.Format("{0:0.0}", marks);
+                    int total = (int)eval["Max"];
+                    exam.TotalMarks=String.Format("{0:0.0}",total);
+                    DateTimeOffset dateTimeOffset = DateTimeOffset.FromUnixTimeSeconds((int)eval["Timestamp"]);
+                    // TODO: Use client timezone
+                    dateTimeOffset=dateTimeOffset.ToLocalTime();
+                    exam.PublishedDate = dateTimeOffset.ToString("dd-MM-yyyy hh:mm:ss tt");
+                    exam.PublishedBy = (string)eval["Faculty"];
 
-                new Course
-                {
-                    CourseCode = "CA210",
-                    CourseTitle = "Software Engineering",
-                    Exams = new List<Exam>
-                    {
-                        new Exam
-                        {
-                            ExamName = "Quiz Continuous Evaluation",
-                            ObtainedMarks = 10,
-                            TotalMarks = 15,
-                            Percentage = (10*100)/15,
-                            PublishedDate = "29-10-2024 10:04:38",
-                            PublishedBy = "Shraddha Doshi"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Viva Continuous Evaluation",
-                            ObtainedMarks = 27,
-                            TotalMarks = 30,
-                            Percentage = (27*100)/30,
-                            PublishedDate = "14-11-2024 12:01:26",
-                            PublishedBy = "Shraddha Doshi"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Class Participation Continuous Evaluation",
-                            ObtainedMarks = 13,
-                            TotalMarks = 15,
-                            Percentage = (13*100)/15,
-                            PublishedDate = "09-11-2024 13:45:37",
-                            PublishedBy = "Shraddha Doshi"
-                        }
-                    }
-                },
+                    decimal percentage = (marks * 100) / total;
+                    exam.Percentage = String.Format("{0:0.0}", percentage);
 
-                new Course
-                {
-                    CourseCode = "CMP304",
-                    CourseTitle = "Introduction to Web Designing and PHP",
-                    Exams = new List<Exam>
-                    {
-                        new Exam
-                        {
-                            ExamName = "Assignment Continuous Evaluation",
-                            ObtainedMarks = 14,
-                            TotalMarks = 20,
-                            Percentage = (14*100)/20,
-                            PublishedDate = "14-11-2024 09:15:21",
-                            PublishedBy = "Darshana Makani"
-                        },
-                        new Exam
-                        {
-                            ExamName = "CE/CP Continuous Evaluation",
-                            ObtainedMarks = 3,
-                            TotalMarks = 5,
-                            Percentage = (3*100)/5,
-                            PublishedDate = "14-11-2024 09:13:48",
-                            PublishedBy = "Darshana Makani"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Quiz Continuous Evaluation",
-                            ObtainedMarks = 10,
-                            TotalMarks = 15,
-                            Percentage = (10*100)/15,
-                            PublishedDate = "13-11-2024 17:03:32",
-                            PublishedBy = "Darshana Makani"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Viva Continuous Evaluation",
-                            ObtainedMarks = 17,
-                            TotalMarks = 20,
-                            Percentage = (17*100)/20,
-                            PublishedDate = "14-11-2024 11:54:44",
-                            PublishedBy = "Darshana Makani"
-                        }
-                    }
-                },
-
-                new Course
-                {
-                    CourseCode = "CMP308",
-                    CourseTitle = "Operating Systems",
-                    Exams = new List<Exam>
-                    {
-                        new Exam
-                        {
-                            ExamName = "Assignment Continuous Evaluation",
-                            ObtainedMarks = 15,
-                            TotalMarks = 20,
-                            Percentage = (15*100)/20,
-                            PublishedDate = "11-11-2024 21:10:37",
-                            PublishedBy = "Parth Kinjal Shah"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Quiz Continuous Evaluation",
-                            ObtainedMarks = 20,
-                            TotalMarks = 20,
-                            Percentage = (20*100)/20,
-                            PublishedDate = "12-11-2024 21:57:51",
-                            PublishedBy = "Parth Kinjal Shah"
-                        },
-                        new Exam
-                        {
-                            ExamName = "Viva Continuous Evaluation",
-                            ObtainedMarks = 8,
-                            TotalMarks = 20,
-                            Percentage = (8*100)/20,
-                            PublishedDate = "13-11-2024 13:34:10",
-                            PublishedBy = "Parth Kinjal Shah"
-                        }
-
-                    }
+                    course.Exams.Add(exam);
                 }
-            };
+                courses.Add(course);
+            }
+
+            return courses;
         }
 
         protected void CourseRepeater_ItemDataBound(object sender, RepeaterItemEventArgs e)
@@ -356,9 +221,9 @@ namespace NucleusProject
         public class Exam
         {
             public string ExamName { get; set; }
-            public int ObtainedMarks { get; set; }
-            public int TotalMarks { get; set; }
-            public double Percentage { get; set; }
+            public string ObtainedMarks { get; set; }
+            public string TotalMarks { get; set; }
+            public string Percentage { get; set; }
             public string PublishedDate { get; set; }
             public string PublishedBy { get; set; }
         }

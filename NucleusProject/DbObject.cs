@@ -7,6 +7,68 @@ using System.Web;
 
 namespace NucleusProject
 {
+    class InternalGrades:DbObject
+    {
+        public int student;
+        public int semester;
+        public DataSet dataSet;
+        public List<String> subjects;
+
+        public InternalGrades(int studentId, int semesterId)
+        {
+            this.student = studentId;
+            this.semester = semesterId;
+            this.dataSet = new DataSet();
+            this.subjects= new List<String>();
+        }
+
+        public override void Sync(string connectionString = null)
+        {
+            string connStr = connectionString;
+            if (connStr == null)
+            {
+                connStr = Values.ConnectionString;
+            }
+            SqlConnection conn = new SqlConnection(connStr);
+            const string cmd = @"SELECT Trn_Internals.""Title"", Mst_Course.""Code"", Mst_Course.""Name"", Trn_Internals.""Marks"", Trn_Internals.""Max"", Mst_Faculty.""Name"" AS Faculty, Trn_Internals.""Timestamp"" FROM Trn_Internals JOIN Mst_Course ON Trn_Internals.""Course""=Mst_Course.""Id"" AND Mst_Course.""Semester""=@semester JOIN Mst_Faculty ON Trn_Internals.""Faculty""=Mst_Faculty.""Id"" WHERE Trn_Internals.""Student""=@student ORDER BY Trn_Internals.""Timestamp"" ASC";
+            SqlCommand command = new SqlCommand(cmd, conn);
+            command.Parameters.Add("@semester",SqlDbType.Int);
+            command.Parameters["@semester"].Value = this.semester;
+            command.Parameters.Add("@student", SqlDbType.Int);
+            command.Parameters["@student"].Value=this.student;
+            try
+            {
+                // Get all data
+                SqlDataAdapter adapter = new SqlDataAdapter(command);
+                adapter.Fill(dataSet);
+
+                DataTable mainTable = dataSet.Tables[0];
+
+                // Getting a list of all subjects
+                foreach (DataRow row in mainTable.Rows)
+                {
+                    if (!subjects.Contains((string)row["Name"])) {
+                        subjects.Add((string)row["Name"]);
+                    }
+                }
+
+                // Adding a table for each subject to the main dataset
+                foreach (string sub in this.subjects)
+                {
+                    DataView dataView=new DataView(mainTable);
+                    dataView.RowFilter = "Name = '"+sub+"'";
+                    dataSet.Tables.Add(dataView.ToTable(sub));
+                }
+            }
+            finally
+            {
+                if(conn.State==ConnectionState.Open)
+                {
+                    conn.Close();
+                }
+            }
+        }
+    }
     class OverallGrades : DbObject
     {
         public int student;
