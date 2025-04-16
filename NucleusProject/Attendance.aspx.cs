@@ -62,7 +62,7 @@ namespace NucleusProject
                 Session["student"] = student;
             }
 
-                ((Label)Master.FindControl("DisplayName")).Text = student.enrNo;
+            ((Label)Master.FindControl("DisplayName")).Text = student.enrNo;
 
             Semester semester = new Semester((int)studentId);
             semester.Sync();
