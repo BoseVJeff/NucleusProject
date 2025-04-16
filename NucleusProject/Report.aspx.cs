@@ -324,11 +324,6 @@ namespace NucleusProject
             PreviewButton.Text = ResultPreview.Visible ? "Hide Report Preview" : "Show Report Preview";
         }
 
-        protected void PrintButton_Click(object sender, EventArgs e)
-        {
-
-        }
-
     }
 
 }
