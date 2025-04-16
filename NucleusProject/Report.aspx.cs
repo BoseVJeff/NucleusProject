@@ -36,7 +36,14 @@ namespace NucleusProject
             RegCredits.Text = semesterGrades.regCreditSum.ToString();
             Credits.Text=semesterGrades.creditSum.ToString();
             Points.Text = semesterGrades.pointSum.ToString();
-            Sgpa.Text=String.Format("{0:0.00}",semesterGrades.pointSum/semesterGrades.creditSum);
+            if (semesterGrades.creditSum != 0)
+            {
+                Sgpa.Text = String.Format("{0:0.00}", semesterGrades.pointSum / semesterGrades.creditSum);
+            }
+            else
+            {
+                Sgpa.Text=String.Empty;
+            }
 
             StudentEnr.Text = student.enrNo;
             StudentName.Text=student.name;

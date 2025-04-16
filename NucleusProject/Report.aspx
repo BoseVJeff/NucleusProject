@@ -15,9 +15,6 @@
             <asp:ListItem Text="Semester 5" Value="5" />
         </asp:DropDownList>
     </div>
-
-    
-
     <button class="btn btn-primary d-print-none mb-3" onclick="window.print()">Print Report</button>
     <div id="ResultPreview" runat="server">
         <h2 class="text-center text-uppercase">Semester Grade Report / Transcript</h2>
