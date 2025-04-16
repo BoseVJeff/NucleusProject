@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Report" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Report.aspx.cs" Inherits="NucleusProject.Report" %>
+
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 
     <div class="d-flex mb-3">
@@ -7,52 +8,54 @@
 
         <!-- Print Button -->
         <button class="btn btn-primary d-print-none me-3" onclick="window.print()">Print Report</button>
-        
+
 
     </div>
 
-<div class="row mt-3">
-    <asp:Repeater ID="CourseRepeater" runat="server">
-        <ItemTemplate>
-            <div class="col-md-12 mb-4" >
-                <div class="card shadow-lg">
-                    <div class="card-header bg-gradient">
-                        <b style="font-size:20px;"><%# Eval("CourseTitle") %> <br /></b>
+    <div class="row mt-3">
+        <asp:Repeater ID="CourseRepeater" runat="server">
+            <ItemTemplate>
+                <div class="col-md-12 mb-4">
+                    <div class="card shadow-lg">
+                        <div class="card-header bg-gradient">
+                            <b style="font-size: 20px;"><%# Eval("CourseTitle") %>
+                                <br />
+                            </b>
                             <span><%# Eval("CourseCode") %></span>
-                    </div>
-                    <div class="card-body bg-light">
-                        <table class="table table-bordered table-sm text-center">
-                            <thead>
-                                <tr>
-                                    <th style="width:25rem;">Exam</th>
-                                    <th>Obtained Marks</th>
-                                    <th>Total Marks</th>
-                                    <th>Percentage</th>
-                                    <th>Published Date</th>
-                                    <th>Published By</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <asp:Repeater ID="ExamRepeater" runat="server">
-                                    <ItemTemplate>
-                                        <tr>
-                                            <td style="text-align:justify;"><%# Eval("ExamName") %></td>
-                                            <td><%# Eval("ObtainedMarks") %></td>
-                                            <td><%# Eval("TotalMarks") %></td>
-                                            <td><%# Eval("Percentage") %>%</td>
-                                            <td><%# Eval("PublishedDate") %></td>
-                                            <td><%# Eval("PublishedBy") %></td>
-                                        </tr>
-                                    </ItemTemplate>
-                                </asp:Repeater>
-                            </tbody>
-                        </table>
+                        </div>
+                        <div class="card-body bg-light">
+                            <table class="table table-bordered table-sm text-center">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 25rem;">Exam</th>
+                                        <th>Obtained Marks</th>
+                                        <th>Total Marks</th>
+                                        <th>Percentage</th>
+                                        <th>Published Date</th>
+                                        <th>Published By</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <asp:Repeater ID="ExamRepeater" runat="server">
+                                        <ItemTemplate>
+                                            <tr>
+                                                <td style="text-align: justify;"><%# Eval("ExamName") %></td>
+                                                <td><%# Eval("ObtainedMarks") %></td>
+                                                <td><%# Eval("TotalMarks") %></td>
+                                                <td><%# Eval("Percentage") %>%</td>
+                                                <td><%# Eval("PublishedDate") %></td>
+                                                <td><%# Eval("PublishedBy") %></td>
+                                            </tr>
+                                        </ItemTemplate>
+                                    </asp:Repeater>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </ItemTemplate>
-    </asp:Repeater>
-</div>
+            </ItemTemplate>
+        </asp:Repeater>
+    </div>
 
     <!--<button class="btn btn-primary d-print-none" onclick="window.print()">Print Report</button>-->
     <div id="ResultPreview" runat="server" visible="false">
