@@ -127,13 +127,28 @@
                             </div>
                             <div class="row bg-light">
                                 Attendance Scale 
-                                <div class="progress p-0">
-                                    <!-- All classes set here WILL be overridden. Change `baseProgressClass` in the CodeBehind instead. -->
-                                    <div id="barone" runat="server" title="If you skip all classes"></div>
-                                    <div id="bartwo" runat="server"></div>
-                                    <div id="barthree" runat="server" title="current attendance"></div>
-                                    <div id="barfour" runat="server"></div>
-                                    <div id="barfive" runat="server" title="If you attend all classes"></div>
+                                <div class="position-relative">
+                                    <div class="progress p-0">
+                                        <!-- All classes set here WILL be overridden. Change `baseProgressClass` in the CodeBehind instead. -->
+                                        <div id="barone" runat="server" title="If you skip all classes"></div>
+                                        <div id="bartwo" runat="server"></div>
+                                        <div id="barthree" runat="server" title="current attendance"></div>
+                                        <div id="barfour" runat="server"></div>
+                                        <div id="barfive" runat="server" title="If you attend all classes"></div>
+                                    </div>
+                                    <div style="left:0;right:0;margin-inline: calc(var(--bs-gutter-x) * 0.5); pointer-events: none;" class="progress p-0 position-absolute top-0 left-0 right-0 bg-transparent">
+                                        <div style="width: 49.5%" class="progress-bar bg-transparent"></div>
+                                        <div style="width:1%" class="progress-bar bg-dark opacity-50 rounded"></div>
+                                        <div style="width:9%" class="progress-bar bg-transparent"></div>
+                                        <div style="width:1%" class="progress-bar bg-dark opacity-50 rounded"></div>
+                                        <div style="width:9%" class="progress-bar bg-transparent"></div>
+                                        <div style="width:1%" class="progress-bar bg-dark opacity-50 rounded"></div>
+                                        <div style="width:9%" class="progress-bar bg-transparent"></div>
+                                        <div style="width:1%" class="progress-bar bg-dark opacity-50 rounded"></div>
+                                        <div style="width:19.5%" class="progress-bar bg-transparent"></div>
+                                        <!--<div style="width:1%" class="progress-bar bg-dark opacity-50 rounded"></div>
+                                        <div style="width:9.5%" class="progress-bar bg-transparent"></div>-->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -141,7 +156,7 @@
                 </div>
             </ItemTemplate>
         </asp:Repeater>
-        <div class="container-fluid border rounded border-2" >
+        <div class="container-fluid border rounded border-2 bg-light" >
             <div class="legend-item d-flex align-items-center">
                 <span class="legend-color bg-success rounded" style="width: 2rem; height: 1rem; display: inline-block; margin-right: 5px;"></span>
                 <span>Estimated Attendance if no further sessions are attended</span>
