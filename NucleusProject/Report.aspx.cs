@@ -97,6 +97,8 @@ namespace NucleusProject
 
             PopulateResults(student, selectedSemester);
 
+            ReportDate.Text = DateTimeOffset.Now.Date.ToString("dd/MM/yyyy");
+
             CourseRepeater.ItemDataBound += CourseRepeater_ItemDataBound;
             List<Course> courses=LoadCourses(student,selectedSemester);
             CourseRepeater.DataSource = courses;

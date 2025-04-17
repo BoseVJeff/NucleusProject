@@ -188,7 +188,9 @@
                                 <th class="py-5"></th>
                             </tr>
                             <tr>
-                                <td class="text-start text-uppercase">Date: 30/03/2025</td>
+                                <td class="text-start text-uppercase">Date: 
+                                    <asp:Label runat="server" ID="ReportDate" Text=''></asp:Label>
+                                </td>
                                 <td class="text-end text-uppercase">Asst. Registrar (Examination)</td>
                             </tr>
                         </tbody>
