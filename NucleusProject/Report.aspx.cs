@@ -29,6 +29,7 @@ namespace NucleusProject
             {
                 Response.Redirect("~/?to=Report");
             }
+            Session["id"] = (int)studentId;
             Student student;
             if (Session["student"] == null)
             {

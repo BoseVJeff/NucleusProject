@@ -59,7 +59,7 @@ namespace NucleusProject
             {
                 Response.Redirect("~/?to=Attendance");
             }
-
+            Session["id"] = (int)studentId;
             Student student;
             if (Session["student"]!=null)
             {

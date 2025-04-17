@@ -134,6 +134,7 @@ namespace NucleusProject
             {
                 Response.Redirect("~/?to=ScheduleList");
             }
+            Session["id"] = (int)studentId;
             Student student;
             if (Session["student"] != null)
             {
