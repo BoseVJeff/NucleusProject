@@ -158,7 +158,7 @@ namespace NucleusProject
                 // <current attendance> - 0.5% - <current attendance> + 0.5% -> Current attendance, +/- 0.5% (ie. Width is always 1%)
                 double barThreeSize = currentBarThickness;
                 // <current attendance> + 0.5% - <max attendance> -> Possible Gain
-                double barFourSize = maxAttRatio - minAttRatio - (currentBarThickness / 2);
+                double barFourSize = maxAttRatio - attRatio - (currentBarThickness / 2);
                 // <max attendance> - 100% -> Impossible value
                 double barFiveSize = 100 - maxAttRatio;
 
